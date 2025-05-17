@@ -154,7 +154,7 @@
                        Height="132" 
                        Margin="0,-171,0,0" 
                        VerticalAlignment="Top" 
-                       Source="/logo.png" IsEnabled="False"/>
+                       Source="/Images/logo.png" IsEnabled="False"/>
 
                
                 <ComboBox x:Name="serverComboBox" 
