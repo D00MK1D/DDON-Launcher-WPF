@@ -9,19 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Core\**" />
+    <Compile Remove="MVVM\**" />
+    <Compile Remove="Theme\**" />
+    <EmbeddedResource Remove="Core\**" />
+    <EmbeddedResource Remove="MVVM\**" />
+    <EmbeddedResource Remove="Theme\**" />
+    <None Remove="Core\**" />
+    <None Remove="MVVM\**" />
+    <None Remove="Theme\**" />
+    <Page Remove="Core\**" />
+    <Page Remove="MVVM\**" />
+    <Page Remove="Theme\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Theme\" />
-    <Folder Include="MVVM\" />
     <Folder Include="Images\" />
     <Folder Include="Fonts\" />
-    <Folder Include="Core\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="logo.png" />
   </ItemGroup>
 
 </Project>
