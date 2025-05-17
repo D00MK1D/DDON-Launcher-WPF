@@ -1,0 +1,203 @@
+﻿<Window x:Class="DDO_Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DDO_Launcher"
+        mc:Ignorable="d"
+        Title="Dragon's Dogma Online Launcher" Height="500" Width="900"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+
+    <Border Background="#575555"
+            CornerRadius="8">
+
+        <Border Background="#212121" 
+            Margin="28,180,600,26"
+            CornerRadius="10">
+
+            <Grid>
+                <TextBox x:Name="textAccount" 
+                    HorizontalAlignment="Center" 
+                    TextWrapping="Wrap" 
+                    VerticalAlignment="Top" 
+                    Width="240" 
+                    AllowDrop="False" 
+                    TabIndex="1" 
+                    Height="25" 
+                    BorderBrush="{x:Null}" 
+                    Foreground="#D3D3D3" Margin="0,50,0,0" FontFamily="Noto Serif" Text="" FontSize="16" MaxLength="24" MaxLines="1" BorderThickness="0,0,0,0" VerticalScrollBarVisibility="Disabled"
+                     >
+
+                    <TextBox.Resources>
+
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+
+                    </TextBox.Resources>
+
+                    <TextBox.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#494949"/>
+                            <GradientStop Color="#1A1A1A" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBox.Background>
+                </TextBox>
+
+                <TextBox x:Name="textPassword" 
+                    HorizontalAlignment="Center" 
+                    TextWrapping="Wrap" 
+                    TabIndex="2" 
+                    AllowDrop="False" 
+                    VerticalAlignment="Top" 
+                    Width="240" 
+                    Height="25" 
+                    BorderBrush="{x:Null}" 
+                    Foreground="#D3D3D3" 
+                    Margin="0,100,0,0" 
+                    FontFamily="Noto Serif" 
+                    FontSize="16" 
+                    MaxLength="24" 
+                    MaxLines="1" 
+                    BorderThickness="0,0,0,0" 
+                    VerticalScrollBarVisibility="Disabled">
+
+                    <TextBox.Resources>
+
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+
+                    </TextBox.Resources>
+
+                    <TextBox.Background>
+
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#494949"/>
+                            <GradientStop Color="#1A1A1A" Offset="1"/>
+                        </LinearGradientBrush>
+
+                    </TextBox.Background>
+
+                </TextBox>
+
+                <Button x:Name="btnLogin" 
+                        Content="Login" 
+                        HorizontalAlignment="Center" 
+                        Margin="0,202,0,0" 
+                        VerticalAlignment="Top" 
+                        Width="240" TabIndex="4" 
+                        Click="btnLogin_Click" 
+                        Height="48" 
+                        FontFamily="Noto Serif" 
+                        BorderThickness="0,0,0,0" 
+                        FontSize="20">
+
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+
+                    <Button.Background>
+
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFFDF88"/>
+                            <GradientStop Color="#FFEFB101" Offset="1"/>
+                        </LinearGradientBrush>
+
+                    </Button.Background>
+
+                </Button>
+
+                <Button x:Name="btnRegister" 
+                        Content="REGISTER" 
+                        HorizontalAlignment="Center" 
+                        Margin="0,261,0,0" 
+                        VerticalAlignment="Top" 
+                        Width="66" TabIndex="5" 
+                        Height="23" 
+                        Click="btnRegister_Click" 
+                        FontFamily="Noto Serif" 
+                        BorderThickness="0,0,0,0"/>
+
+                <Label x:Name="labelAccount" 
+                       Content="Account" 
+                       HorizontalAlignment="Left" 
+                       Margin="12,26,0,0" 
+                       VerticalAlignment="Top" 
+                       Foreground="LightGray" 
+                       FontFamily="Noto Serif" 
+                       FontSize="14"/>
+
+                <Label x:Name="labelPassword" 
+                       Content="Password" 
+                       HorizontalAlignment="Left" 
+                       Margin="12,75,0,0" 
+                       VerticalAlignment="Top" 
+                       Foreground="LightGray" 
+                       FontFamily="Noto Serif" 
+                       FontSize="14"/>
+
+                <Label x:Name="labelServer" 
+                       Content="Server" 
+                       Margin="12,128,206,137" 
+                       Foreground="LightGray" 
+                       FontFamily="Noto Serif" 
+                       FontSize="14"/>
+
+                <Image x:Name="logoImage" 
+                       Height="132" 
+                       Margin="0,-171,0,0" 
+                       VerticalAlignment="Top" 
+                       Source="/logo.png" IsEnabled="False"/>
+
+               
+                <ComboBox x:Name="serverComboBox" 
+                  VerticalAlignment="Top" FontFamily="Noto Serif" 
+                  BorderThickness="0,0,0,0" 
+                  Foreground="LightGray" 
+                  HorizontalAlignment="Center" 
+                  Width="239" TabIndex="3" Margin="0,157,0,0">
+
+                    <ComboBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </ComboBox.Resources>
+
+                    <ComboBox.Background>
+
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#FF494949"/>
+                            <GradientStop Color="#FF1A1A1A" Offset="1"/>
+                        </LinearGradientBrush>
+
+                    </ComboBox.Background>
+
+
+                </ComboBox>
+
+                <Border Margin="16,155,16,113"
+                        BorderBrush="Gray" 
+                        BorderThickness="2"
+                        CornerRadius="2"
+                        Background="Transparent" IsHitTestVisible="False"
+                        >
+                </Border>
+
+                <Border Background="#212121" 
+                    Margin="301,-111,-576,0"
+                    CornerRadius="10"/>
+                
+            </Grid>
+
+        </Border>
+
+    </Border>
+
+</Window>
