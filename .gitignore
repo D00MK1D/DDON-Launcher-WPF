@@ -2,3 +2,7 @@
 /.vs
 /bin
 /obj
+DDO_Launcher.csproj.user
+DDO_Launcher.csproj.user
+*.user
+/Properties/PublishProfiles

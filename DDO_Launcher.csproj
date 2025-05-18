@@ -24,12 +24,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="logo.png" />
+    <None Remove="Fonts\EBGaramond-Regular.ttf" />
+    <None Remove="Fonts\Jersey25-Regular.ttf" />
+    <None Remove="Images\BtnClose.png" />
+    <None Remove="Images\BtnConfig.png" />
+    <None Remove="Images\BtnMinimize.png" />
+    <None Remove="Images\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
-    <Folder Include="Fonts\" />
+    <Resource Include="Fonts\EBGaramond-Regular.ttf" />
+    <Resource Include="Fonts\Jersey25-Regular.ttf" />
+    <Resource Include="Images\BtnClose.png" />
+    <Resource Include="Images\BtnConfig.png" />
+    <Resource Include="Images\BtnMinimize.png" />
+    <Resource Include="Images\logo.png" />
   </ItemGroup>
 
 </Project>
