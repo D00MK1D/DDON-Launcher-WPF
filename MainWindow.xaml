@@ -66,7 +66,7 @@
                     Height="24" 
                     BorderBrush="{x:Null}" 
                     Foreground="#D3D3D3" 
-                    Margin="0,89,0,0" 
+                    Margin="0,83,0,0" 
                     FontFamily="/Fonts/#EB Garamond" 
                     FontSize="16" 
                     MaxLength="24" 
@@ -90,13 +90,13 @@
 
                 </TextBox>
 
-                <Button x:Name="btnLogin" 
+                <Button x:Name="btnSubmit" 
                         Content="Login" 
                         HorizontalAlignment="Center" 
-                        Margin="0,216,0,0" 
+                        Margin="0,218,0,0" 
                         VerticalAlignment="Top" 
                         Width="240" TabIndex="4" 
-                        Click="btnLogin_Click" 
+                        Click="btnSubmit_Click" 
                         Height="48" 
                         FontFamily="/Fonts/#EB Garamond" 
                         BorderThickness="0,0,0,0" 
@@ -151,17 +151,17 @@
                             </Setter>
                         </Style>
                     </Button.Style>
-                    
+
                 </Button>
 
-                <Button x:Name="btnRegister" 
+                <Button x:Name="btnChangeAction" 
                         Content="Register" 
                         HorizontalAlignment="Left" 
-                        Margin="17,275,0,0" 
+                        Margin="17,277,0,0" 
                         VerticalAlignment="Top" 
                         Width="119" TabIndex="5" 
                         Height="24" 
-                        Click="btnRegister_Click" 
+                        Click="btnChangeAction_Click" 
                         FontFamily="/Fonts/#EB Garamond" 
                         BorderThickness="0,0,0,0" 
                         Foreground="#FFB1B1B1">
@@ -231,14 +231,14 @@
                 <Label x:Name="labelPassword" 
                        Content="Password" 
                        HorizontalAlignment="Left" 
-                       Margin="12,64,0,0" 
+                       Margin="12,58,0,0" 
                        VerticalAlignment="Top" 
                        FontFamily="/Fonts/#EB Garamond" 
                        FontSize="14" Foreground="#FFB1B1B1"/>
 
                 <Label x:Name="labelServer" 
                        Content="Server" 
-                       Margin="12,119,206,0" 
+                       Margin="12,108,206,0" 
                        FontFamily="/Fonts/#EB Garamond" 
                        FontSize="14" Height="25" VerticalAlignment="Top" Foreground="#FFB1B1B1"/>
 
@@ -251,7 +251,7 @@
                   HorizontalAlignment="Left" 
                   Width="208" 
                           TabIndex="3" 
-                          Margin="17,146,0,0" 
+                          Margin="17,134,0,0" 
                           Height="20">
 
                     <ComboBox.Resources>
@@ -272,7 +272,8 @@
 
                 </ComboBox>
 
-                <Border Margin="16,144,45,0"
+                <Border x:Name="serverComboBoxBorder" 
+                        Margin="16,132,45,0"
                         BorderBrush="Gray" 
                         BorderThickness="2"
                         CornerRadius="2"
@@ -286,7 +287,7 @@
                     CornerRadius="5"/>
 
                 <Button x:Name="btnTranslation" 
-                    Margin="232,275,16,0" TabIndex="5" 
+                    Margin="232,277,16,0" TabIndex="5" 
                     FontFamily="Noto Serif" 
                     BorderThickness="0,0,0,0" Foreground="LightGray" Height="24" VerticalAlignment="Top">
 
@@ -304,7 +305,7 @@
                     </Button.Background>
                 </Button>
                 <Button x:Name="btnInstallMods" 
-                    Margin="203,275,45,0" TabIndex="5" 
+                    Margin="203,277,45,0" TabIndex="5" 
                     FontFamily="Noto Serif" 
                     BorderThickness="0,0,0,0" Foreground="LightGray" Height="24" VerticalAlignment="Top">
 
@@ -321,10 +322,10 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <Button x:Name="btnTranslation_Copiar" 
-                    Margin="232,144,16,0" TabIndex="5" 
+                <Button x:Name="btnServerSettings" 
+                    Margin="232,132,16,0" TabIndex="5" 
                     FontFamily="Noto Serif" 
-                    BorderThickness="0,0,0,0" Foreground="LightGray" Height="24" VerticalAlignment="Top">
+                    BorderThickness="0,0,0,0" Foreground="LightGray" Height="24" VerticalAlignment="Top" Click="btnServerSettings_Click">
 
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -339,7 +340,21 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="85,187,0,0" VerticalAlignment="Top" Width="15" Foreground="#FFB1B1B1" BorderBrush="{x:Null}" OpacityMask="White" Height="15" FontFamily="EB Garamond" IsChecked="True" IsTabStop="False" TabIndex="0" Focusable="False" RenderTransformOrigin="0.5,0.5">
+                <CheckBox x:Name="cbRemember" Content="CheckBox" 
+                          HorizontalAlignment="Left" 
+                          Margin="85,180,0,0" 
+                          VerticalAlignment="Top" 
+                          Width="15" 
+                          Foreground="#FFB1B1B1" 
+                          BorderBrush="{x:Null}" 
+                          OpacityMask="White" 
+                          Height="15" 
+                          FontFamily="EB Garamond" 
+                          IsChecked="True" 
+                          IsTabStop="False" 
+                          TabIndex="0" 
+                          Focusable="False" 
+                          RenderTransformOrigin="0.5,0.5">
                     <CheckBox.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -357,7 +372,7 @@
                 </CheckBox>
                 <Label x:Name="labelRemember" 
                     Content="Remember me?" 
-                    Margin="98,179,77,108" 
+                    Margin="98,172,77,115" 
                     Foreground="#FFB1B1B1" 
                        FontFamily="/Fonts/#EB Garamond" 
                     
@@ -372,6 +387,46 @@
                         </TransformGroup>
                     </Image.RenderTransform>
                 </Image>
+                <TextBox x:Name="textEmail" 
+                    HorizontalAlignment="Center" 
+                    TabIndex="2" 
+                    AllowDrop="False" 
+                    VerticalAlignment="Top" 
+                    Width="240" 
+                    Height="24" 
+                    BorderBrush="{x:Null}" 
+                    Foreground="#D3D3D3" 
+                    Margin="0,133,0,0" 
+                    FontFamily="/Fonts/#EB Garamond" 
+                    FontSize="16" 
+                    MaxLength="24" 
+                    MaxLines="1" 
+                    BorderThickness="0,0,0,0" 
+                    VerticalScrollBarVisibility="Disabled" 
+                    UndoLimit="10" Visibility="hidden">
+
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="2"/>
+                        </Style>
+                    </TextBox.Resources>
+
+                    <TextBox.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#494949"/>
+                            <GradientStop Color="#1A1A1A" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBox.Background>
+
+                </TextBox>
+                <Label x:Name="labelEmail" 
+                    Content="E-mail" 
+                    Margin="12,109,206,0" 
+                    FontFamily="/Fonts/#EB Garamond" 
+                    FontSize="14" 
+                    Height="25" 
+                    VerticalAlignment="Top" 
+                    Foreground="#FFB1B1B1" Visibility="hidden"/>
             </Grid>
 
         </Border>

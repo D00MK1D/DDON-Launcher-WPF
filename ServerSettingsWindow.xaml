@@ -1,0 +1,21 @@
+﻿<Window x:Class="DDO_Launcher.ServerSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DDO_Launcher"
+        mc:Ignorable="d"
+        Title="Dragon's Dogma Online Launcher" Height="300" Width="500"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True">
+    <Grid>
+        <Border Background="#212121"
+                BorderBrush="Gray" 
+                BorderThickness="2"
+                CornerRadius="8"
+                IsHitTestVisible="False" Height="300" VerticalAlignment="Center">
+        </Border>
+    </Grid>
+</Window>

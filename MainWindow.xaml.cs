@@ -1,24 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Net.Sockets;
+using System.Net.Http;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DDO_Launcher;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     public MainWindow()
@@ -26,14 +15,53 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private void btnLogin_Click(object sender, RoutedEventArgs e)
+    private void btnSubmit_Click(object sender, RoutedEventArgs e)
     {
-        Operation("login");
+        switch (btnSubmit.Content)
+        {
+            case "Login":
+                Operation("login");
+                break;
+
+            case "Register":
+                Operation("create");
+                break;
+        }
     }
 
-    private void btnRegister_Click(object sender, RoutedEventArgs e)
+    private void btnChangeAction_Click(object sender, RoutedEventArgs e)
     {
-        Operation("create");
+
+        if ((string)btnSubmit.Content == "Login")
+        {
+            btnSubmit.Content = "Register";
+            btnChangeAction.Content = "Login";
+            labelServer.Margin = new Thickness(12, 158, 206, 0);
+            serverComboBox.Margin = new Thickness(17, 184, 0, 0);
+            serverComboBoxBorder.Margin = new Thickness(16, 182, 45, 0);
+            btnServerSettings.Margin = new Thickness(232, 182, 16, 0);
+            labelEmail.Visibility = Visibility.Visible;
+            textEmail.Visibility = Visibility.Visible;
+            labelRemember.Visibility = Visibility.Hidden;
+            cbRemember.Visibility = Visibility.Hidden;
+        }
+
+        else if ((string)btnSubmit.Content == "Register")
+        {
+
+            btnSubmit.Content = "Login";
+            btnChangeAction.Content = "Register";
+            labelServer.Margin = new Thickness(12, 108, 206, 0);
+            serverComboBox.Margin = new Thickness(17, 134, 0, 0);
+            serverComboBoxBorder.Margin = new Thickness(16, 132, 45, 0);
+            btnServerSettings.Margin = new Thickness(232, 132, 16, 0);
+            serverComboBox.Visibility = Visibility.Visible;
+            labelEmail.Visibility = Visibility.Hidden;
+            textEmail.Visibility = Visibility.Hidden;
+            labelRemember.Visibility = Visibility.Visible;
+            cbRemember.Visibility = Visibility.Visible;
+        }
+
     }
 
     public class ServerResponse
@@ -43,8 +71,14 @@ public partial class MainWindow : Window
         public string Token { get; set; }
     }
 
-    private void Operation(string Action)
+    private async void Operation(string Action)
     {
+
+        string jsonData;
+
+        btnChangeAction.IsEnabled = false;
+        btnSubmit.IsEnabled = false;
+        
         if ((Action != "create" && Action != "login") || textAccount.Text == "" || textPassword.Text == "")
         {
             MessageBox.Show(
@@ -52,12 +86,15 @@ public partial class MainWindow : Window
                 "Dragon's Dogma Online",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+
+            btnChangeAction.IsEnabled = true;
+            btnSubmit.IsEnabled = true;
+
             return;
+
         }
 
-        string responseBody = string.Empty;
-
-        using (TcpClient client = new TcpClient())
+        using (HttpClient client = new HttpClient())
         {
             var path = "/api/account";
             var requestData = new
@@ -66,139 +103,138 @@ public partial class MainWindow : Window
                 Account = textAccount.Text,
                 Password = textPassword.Text,
                 Email = ""
-                // if (textEmail.Text == ""){Email = ""}
-                // else {Email = textEmail.Text} 
             };
 
-            string jsonData = JsonSerializer.Serialize(requestData);
-            string request = $"POST {path} HTTP/1.1\r\n";
-            request += $"Host: localhost:52099\r\n";
-            request += "Content-Type: application/json\r\n";
-            request += $"Content-Length: {jsonData.Length}\r\n";
-            request += "Connection: close\r\n";
-            request += "\r\n";
-            request += jsonData;
+            jsonData = JsonSerializer.Serialize(requestData);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            client.DefaultRequestVersion = HttpVersion.Version11;
+            HttpResponseMessage response = new HttpResponseMessage();
 
-            client.ReceiveTimeout = 5000;
-            client.SendTimeout = 5000;
-            client.Connect("localhost", 52099);
+            response = await client.PostAsync("http://localhost:52099" + path, content);
 
-            var utf8Encoding = new UTF8Encoding(false);
+            //+ ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort
 
-            using (NetworkStream stream = client.GetStream())
-            using (StreamWriter writer = new StreamWriter(stream, utf8Encoding))
-            using (StreamReader reader = new StreamReader(stream, utf8Encoding))
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            /*jsonData = JsonSerializer.Serialize(requestData);
+            //string request = $"POST {path} HTTP/1.1\r\n";
+            //request += $"Host: localhost:52099\r\n";
+            //request += "Content-Type: application/json\r\n";
+            //request += $"Content-Length: {jsonData.Length}\r\n";
+            //request += "Connection: close\r\n";
+            //request += "\r\n";
+            //request += jsonData;
+
+            //client.ReceiveTimeout = 5000;
+            //client.SendTimeout = 5000;
+            //client.Connect("localhost", 52099);
+
+            //var utf8Encoding = new UTF8Encoding(false);
+
+            //using (NetworkStream stream = client.GetStream())
+            //using (StreamWriter writer = new StreamWriter(stream, utf8Encoding))
+            //using (StreamReader reader = new StreamReader(stream, utf8Encoding))
+            //{
+            //    writer.Write(request);
+            //    writer.Flush();
+
+            //    StringBuilder sb = new StringBuilder();
+            //    string line;
+
+            //    stream.ReadTimeout = 5000;
+
+            //    while ((line = reader.ReadLine()) != null)
+            //    {
+            //        sb.AppendLine(line);
+            //    }
+
+            //    string response = sb.ToString();
+
+            //    var bodyStartIndex = response.IndexOf("\r\n\r\n") + 4;
+            //    responseBody = response.Substring(bodyStartIndex);
+            */
+
+            ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
+
+            var token = string.Empty;
+            try
             {
-                writer.Write(request);
-                writer.Flush();
-
-                StringBuilder sb = new StringBuilder();
-                string line;
-
-                stream.ReadTimeout = 5000;
-
-                while ((line = reader.ReadLine()) != null)
+                if (serverResponse.Message == "Login Success")
                 {
-                    sb.AppendLine(line);
+                    // Login
+                    token = serverResponse.Token;
                 }
-
-                string response = sb.ToString();
-
-                var bodyStartIndex = response.IndexOf("\r\n\r\n") + 4;
-                responseBody = response.Substring(bodyStartIndex);
-                
-                ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
-
-                var token = string.Empty;
-                try
+                else if (serverResponse.Error == null)
                 {
-                    if (serverResponse.Message == "Login Success")
-                    {
-                        // Login
-                        token = serverResponse.Token;
-                    }
-                    else if (serverResponse.Error == null)
-                    {
-                        // Register
-                        MessageBox.Show(
-                            serverResponse.Message,
-                            "Dragon's Dogma Online",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-                        return;
-                    }
-                    else
-                    {
-                        MessageBox.Show(
-                            serverResponse.Error,
-                            "Dragon's Dogma Online",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                        return;
-                    }
-                }
-                catch (JsonException e)
-                {
+                    // Register
                     MessageBox.Show(
-                        "Invalid response from server\n" + 
-                        "Error: " +serverResponse.Error + "\n" +
-                        "Message: " + serverResponse.Message + "\n" +
-                        "Token: " + serverResponse.Token + "\n",
+                        serverResponse.Message,
                         "Dragon's Dogma Online",
                         MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                        MessageBoxImage.Information);
                     return;
                 }
-
-                try
-                {
-                    /* Try to show the admin prompt to launch DDOn
-                    ProcessStartInfo pStartInfo = new ProcessStartInfo
-                    {
-                        FileName = "ddo.exe",
-                        Arguments = (" addr=" +
-                                        ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
-                                        " port=" +
-                                        ServerManager.Servers[ServerManager.SelectedServer].LPort +
-                                        " token=" +
-                                        token +
-                                        " DL=http://" +
-                                        ServerManager.Servers[ServerManager.SelectedServer].DLIP +
-                                        ":" +
-                                        ServerManager.Servers[ServerManager.SelectedServer].DLPort +
-                                        "/win/ LVer=03.04.003.20181115.0 RVer=3040008"),
-
-                        //Verb = "runas",
-                        //UseShellExecute = true
-                    };
-                    Process.Start(pStartInfo);*/
-
-                    Process.Start("ddo.exe",
-                                  " addr=" +
-                                  "localhost" +
-                                  " port=" +
-                                  "52100" +
-                                  " token=" +
-                                  token +
-                                  " DL=http://" +
-                                  "localhost" +
-                                  ":" +
-                                  "52099" +
-                                  "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
-
-                    this.Close();
-                }
-                catch (Win32Exception ex)
+                else
                 {
                     MessageBox.Show(
-                        "DDO.exe not found! Make sure the launcher is located in the game folder \nand you're running the launcher as Admin.",
+                        serverResponse.Error,
                         "Dragon's Dogma Online",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                     return;
                 }
             }
-        }
+            catch (JsonException e)
+            {
+                MessageBox.Show(
+                    "Invalid response from server\n" +
+                    "Error: " + serverResponse.Error + "\n" +
+                    "Message: " + serverResponse.Message + "\n" +
+                    "Token: " + serverResponse.Token + "\n",
+                    "Dragon's Dogma Online",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
 
+                btnChangeAction.IsEnabled = true;
+                btnSubmit.IsEnabled = true;
+
+                return;
+            }
+
+            try
+            {
+                Process.Start("ddo.exe",
+                              " addr=" + "localhost" +
+                              " port=" + "52100" +
+                              " token=" + token +
+                              " DL=http://" + "localhost" +
+                              ":" + "52099" +
+                              "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+
+                btnChangeAction.IsEnabled = true;
+                btnSubmit.IsEnabled = true;
+
+                this.Close();
+            }
+            catch (Win32Exception ex)
+            {
+                MessageBox.Show(
+                    "DDO.exe not found! Make sure the launcher is located in the game folder and you're running the launcher as Admin.",
+                    "Dragon's Dogma Online",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                btnChangeAction.IsEnabled = true;
+                btnSubmit.IsEnabled = true;
+
+                return;
+            }
+        }
+    }
+
+    private void btnServerSettings_Click(object sender, RoutedEventArgs e)
+    {
+        ServerSettingsWindow ssw = new ServerSettingsWindow();
+        ssw.ShowDialog();
     }
 }

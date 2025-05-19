@@ -9,30 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Core\**" />
-    <Compile Remove="MVVM\**" />
-    <Compile Remove="Theme\**" />
-    <EmbeddedResource Remove="Core\**" />
-    <EmbeddedResource Remove="MVVM\**" />
-    <EmbeddedResource Remove="Theme\**" />
-    <None Remove="Core\**" />
-    <None Remove="MVVM\**" />
-    <None Remove="Theme\**" />
-    <Page Remove="Core\**" />
-    <Page Remove="MVVM\**" />
-    <Page Remove="Theme\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Fonts\EBGaramond-Regular.ttf" />
-    <None Remove="Fonts\Jersey25-Regular.ttf" />
-    <None Remove="Images\BtnClose.png" />
-    <None Remove="Images\BtnConfig.png" />
-    <None Remove="Images\BtnMinimize.png" />
-    <None Remove="Images\logo.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Fonts\EBGaramond-Regular.ttf" />
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
     <Resource Include="Images\BtnClose.png" />
