@@ -9,11 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\btnClose.png" />
+    <None Remove="Images\btnClose.svg" />
+    <None Remove="Images\btnGeneralSettings.png" />
+    <None Remove="Images\btnGeneralSettings.svg" />
+    <None Remove="Images\btnMinimize.png" />
+    <None Remove="Images\btnMinimize.svg" />
+    <None Remove="Images\btnServerSettings.png" />
+    <None Remove="Images\btnServerSettings.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Fonts\EBGaramond-Regular.ttf" />
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
-    <Resource Include="Images\BtnClose.png" />
-    <Resource Include="Images\BtnConfig.png" />
-    <Resource Include="Images\BtnMinimize.png" />
+    <Resource Include="Images\btnClose.png" />
+    <Resource Include="Images\btnGeneralSettings.png" />
+    <Resource Include="Images\btnMinimize.png" />
+    <Resource Include="Images\btnServerSettings.png" />
     <Resource Include="Images\logo.png" />
   </ItemGroup>
 

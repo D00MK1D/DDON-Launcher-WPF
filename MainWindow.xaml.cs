@@ -17,7 +17,7 @@ public partial class MainWindow : Window
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
     {
-        switch (btnSubmit.Content)
+        switch ((string)btnSubmit.Content)
         {
             case "Login":
                 Operation("login");
@@ -36,25 +36,22 @@ public partial class MainWindow : Window
         {
             btnSubmit.Content = "Register";
             btnChangeAction.Content = "Login";
-            labelServer.Margin = new Thickness(12, 158, 206, 0);
-            serverComboBox.Margin = new Thickness(17, 184, 0, 0);
-            serverComboBoxBorder.Margin = new Thickness(16, 182, 45, 0);
-            btnServerSettings.Margin = new Thickness(232, 182, 16, 0);
+            labelServer.Margin = new Thickness(0, 143, 10, 0);
+            serverComboBox.Margin = new Thickness(10, 168, 43, 0);
+            btnServerSettings.Margin = new Thickness(218, 168, 10, 77);
             labelEmail.Visibility = Visibility.Visible;
             textEmail.Visibility = Visibility.Visible;
             labelRemember.Visibility = Visibility.Hidden;
             cbRemember.Visibility = Visibility.Hidden;
         }
 
-        else if ((string)btnSubmit.Content == "Register")
+        else //if ((string)btnSubmit.Content == "Register")
         {
-
             btnSubmit.Content = "Login";
             btnChangeAction.Content = "Register";
-            labelServer.Margin = new Thickness(12, 108, 206, 0);
-            serverComboBox.Margin = new Thickness(17, 134, 0, 0);
-            serverComboBoxBorder.Margin = new Thickness(16, 132, 45, 0);
-            btnServerSettings.Margin = new Thickness(232, 132, 16, 0);
+            labelServer.Margin = new Thickness(0, 94, 10, 0);
+            serverComboBox.Margin = new Thickness(10, 119, 43, 0);
+            btnServerSettings.Margin = new Thickness(218, 119, 10, 126);
             serverComboBox.Visibility = Visibility.Visible;
             labelEmail.Visibility = Visibility.Hidden;
             textEmail.Visibility = Visibility.Hidden;
@@ -236,5 +233,20 @@ public partial class MainWindow : Window
     {
         ServerSettingsWindow ssw = new ServerSettingsWindow();
         ssw.ShowDialog();
+    }
+
+    private void btnMinimize_Click(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
+    }
+
+    private void btnClose_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private void btnGeneralSettings_Click(object sender, RoutedEventArgs e)
+    {
+
     }
 }
