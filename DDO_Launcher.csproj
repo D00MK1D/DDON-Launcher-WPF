@@ -22,10 +22,7 @@
   <ItemGroup>
     <Resource Include="Fonts\EBGaramond-Regular.ttf" />
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
-    <Resource Include="Images\btnClose.png" />
     <Resource Include="Images\btnGeneralSettings.png" />
-    <Resource Include="Images\btnMinimize.png" />
-    <Resource Include="Images\btnServerSettings.png" />
     <Resource Include="Images\logo.png" />
   </ItemGroup>
 
