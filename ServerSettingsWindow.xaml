@@ -5,17 +5,79 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DDO_Launcher"
         mc:Ignorable="d"
-        Title="Dragon's Dogma Online Launcher" Height="300" Width="500"
+        Title="Dragon's Dogma Online Launcher" Height="379" Width="500"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True">
-    <Grid>
-        <Border Background="#212121"
+    <Border Background="#212121"
                 BorderBrush="Gray" 
-                BorderThickness="2"
+                BorderThickness="1"
                 CornerRadius="8"
-                IsHitTestVisible="False" Height="300" VerticalAlignment="Center">
-        </Border>
-    </Grid>
+                IsHitTestVisible="False" Height="379" VerticalAlignment="Center">
+        <Grid Margin="0,0,0,0">
+            <Grid Margin="24,24,24,24">
+                             
+                    <Canvas Height="251" Width="450" Grid.Row="1" Grid.Column="1">
+                        <TextBlock TextWrapping="Wrap" Text="Server Management" FontSize="20" FontFamily="EB Garamond" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White"/>
+                        <Canvas HorizontalAlignment="Left" Height="24" Canvas.Left="0" Canvas.Top="60.293" VerticalAlignment="Center" Width="425">
+                            <Grid HorizontalAlignment="Left" Height="24" Canvas.Left="0" Canvas.Top="0" VerticalAlignment="Center" Width="450">
+                                <Label Content="Server" Padding="0,5,5,5" FontSize="14" VerticalAlignment="Top" FontFamily="EB Garamond" Foreground="White" HorizontalAlignment="Left" Margin="0,-29,0,0"/>
+                                <ComboBox Width="418" MinHeight="24" HorizontalAlignment="Left" Background="{x:Null}" VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0,0,0,0"/>
+                                <Button Content="+" MinHeight="10" Click="Button_Click_1" MinWidth="24" MaxHeight="0" Width="25" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="425,0,0,0" BorderBrush="{x:Null}" BorderThickness="0,1,0,0"/>
+                                <Button Content="-" MinHeight="10" Click="Button_Click_1" MinWidth="24" MaxHeight="0" Width="25" VerticalAlignment="Top" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" HorizontalAlignment="Left" Margin="425,14,0,0"/>
+                            </Grid>
+                        </Canvas>
+                        <Grid Height="24" Canvas.Left="0" Canvas.Top="113.5" Width="450" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Label Content="Name" Padding="0,5,5,5" FontSize="14" VerticalAlignment="Top" FontFamily="EB Garamond" Foreground="White" HorizontalAlignment="Left" Margin="0,-29,0,0"/>
+                            <TextBox Width="450" MinHeight="24" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="{x:Null}"/>
+                        </Grid>
+                        <Grid HorizontalAlignment="Left" Canvas.Left="0" Canvas.Top="165" VerticalAlignment="Center" Width="450" Margin="0,3,0,0" Height="0">
+                            <Canvas
+                                Width="212" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                <Label
+                                    VerticalAlignment="Top" Canvas.Top="-28.62" Padding="0,5,5,5" HorizontalAlignment="Center" FontSize="14" Content="Lobby IP" FontFamily="EB Garamond" Foreground="White"/>
+                                <TextBox
+                                    Width="220" VerticalAlignment="Center" MinHeight="24" HorizontalAlignment="Left" BorderBrush="{x:Null}"/>
+                            </Canvas>
+                            <Canvas Height="24" Width="220" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="225,0,0,0">
+                                <Label Content="Port" Canvas.Top="-28.62" Padding="0,5,5,5" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="4.333" FontFamily="EB Garamond" Foreground="White"/>
+                                <TextBox Width="220" MinHeight="24" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="4.333" BorderBrush="{x:Null}"/>
+                            </Canvas>
+                        </Grid>
+                        <Grid Canvas.Left="0" Canvas.Top="221" Width="450" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,2,0,0" Height="0">
+                            <Canvas
+                                Width="212" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                <Label
+                                    VerticalAlignment="Top" Canvas.Top="-28.62" Padding="0,5,5,5" HorizontalAlignment="Center" FontSize="14" Content="Download IP&#xA;" FontFamily="EB Garamond" Foreground="White"/>
+                                <TextBox
+                                    Width="220" VerticalAlignment="Center" MinHeight="24" HorizontalAlignment="Left" BorderBrush="{x:Null}"/>
+                            </Canvas>
+                            <Canvas Height="24" Width="219" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="231,0,0,0">
+                                <Label Content="Port" Canvas.Top="-28.62" Padding="0,5,5,5" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="EB Garamond" Foreground="White"/>
+                                <TextBox Width="220" MinHeight="24" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-2,0,0,0" BorderBrush="{x:Null}"/>
+                            </Canvas>
+                        </Grid>
+                    </Canvas>
+                </Grid>
+            </Grid>
+            <Button Content="Accept" HorizontalAlignment="Left" Margin="24,291,0,0" VerticalAlignment="Top" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFFE089"/>
+                        <GradientStop Color="#FFEFB100" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="Cancel" HorizontalAlignment="Left" Margin="254,291,0,0" VerticalAlignment="Top" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF383838"/>
+                        <GradientStop Color="#FF191919" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
+        </Grid>
+    </Border>
 </Window>
