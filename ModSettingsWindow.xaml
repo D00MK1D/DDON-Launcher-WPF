@@ -1,0 +1,137 @@
+﻿<Window x:Class="DDO_Launcher.ServerSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DDO_Launcher"
+        mc:Ignorable="d"
+        Title="Dragon's Dogma Online Launcher" Height="500" Width="1000"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Border Background="#212121"
+            BorderBrush="Gray" 
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="24" Margin="24,48,24,24">
+
+        <Canvas Margin="-25,-25,-25,-25">
+
+            <StackPanel Canvas.Left="25" Canvas.Top="77" Width="902" HorizontalAlignment="Center" Height="242" VerticalAlignment="Top">
+
+                <Grid Height="64" Width="902" Background="#0CDDDDDD" Margin="0,0,0,6">
+                    <!-- Define 2 columns -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width=".15*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Define 2 rows -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <!-- Row 1 -->
+
+                        <!-- Row 0 -->
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Top left cell -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Title of mod goes here" Padding="12,12,12,6" FontSize="16" FontFamily="EB Garamond" Foreground="White"/>
+
+                    <!-- Bottom left cell -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="/path/to/the/mod/zip/file.zip" Padding="12,0,12,12" FontSize="10" FontFamily="EB Garamond" Foreground="#66FFFFFF" FontStyle="Italic"/>
+
+                    <!-- Right cell that spans both rows -->
+                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Padding="8"/>
+                    <Button Content="Reinstall" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" Height="NaN" VerticalAlignment="Stretch" Padding="12,12,12,12" Margin="12,12,6,12" Foreground="#FBDDDDDD" BorderBrush="#00707070">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF373737"/>
+                                <GradientStop Color="#FF1C1C1C" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="x" HorizontalAlignment="Left" Height="NaN" Margin="0,12,12,0" VerticalAlignment="Top" Width="NaN" Grid.Column="3" MinWidth="20" MinHeight="20" BorderBrush="#00707070" Foreground="#FF707070" VerticalContentAlignment="Top" Padding="1,1,1,1">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF363636"/>
+                                <GradientStop Color="#FF1D1D1D" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </Grid>
+                <Grid Height="64" Width="902" Background="#0CDDDDDD">
+                    <!-- Define 2 columns -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width=".15*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Define 2 rows -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <!-- Row 1 -->
+
+                        <!-- Row 0 -->
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Top left cell -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Title of mod goes here" Padding="12,12,12,6" FontSize="16" FontFamily="EB Garamond" Foreground="White"/>
+
+                    <!-- Bottom left cell -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="/path/to/the/mod/zip/file.zip" Padding="12,0,12,12" FontSize="10" FontFamily="EB Garamond" Foreground="#66FFFFFF" FontStyle="Italic"/>
+
+                    <!-- Right cell that spans both rows -->
+                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Padding="8"/>
+                    <Button Content="Update" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" Height="NaN" VerticalAlignment="Stretch" Padding="12,12,12,12" Margin="12,12,6,12" Foreground="#FF212121" BorderBrush="#00707070">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFFEDE83"/>
+                                <GradientStop Color="#FFF0B305" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Content="x" HorizontalAlignment="Left" Height="NaN" Margin="0,12,12,0" VerticalAlignment="Top" Width="NaN" Grid.Column="3" MinWidth="20" MinHeight="20" BorderBrush="#00707070" Foreground="#FF707070" VerticalContentAlignment="Top" Padding="1,1,1,1">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF363636"/>
+                                <GradientStop Color="#FF1D1D1D" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </Grid>
+            </StackPanel>
+            <Grid Width="902" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Server Management"
+                    FontSize="24"
+                    FontFamily="EB Garamond"
+                    Foreground="White" Padding="24,24,0,0"
+                       />
+
+            </Grid>
+            <Canvas Height="56" Width="451" Canvas.Top="345" VerticalAlignment="Top" Canvas.Left="476" HorizontalAlignment="Left">
+                <Button Content="Add Client Modifications" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" BorderBrush="#00707070">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFFE089"/>
+                            <GradientStop Color="#FFEFB100" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White" HorizontalAlignment="Left" Canvas.Left="230" VerticalAlignment="Center" BorderBrush="#00707070">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF383838"/>
+                            <GradientStop Color="#FF191919" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </Canvas>
+        </Canvas>
+    </Border>
+</Window>
