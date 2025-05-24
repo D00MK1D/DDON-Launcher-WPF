@@ -105,14 +105,14 @@
                     <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0" Width="385" MinHeight="24"/>
-                <Button Grid.Column="1" Content="-" Width="25" Height="24" Margin="5,0,0,0" Click="Button_Click_1"/>
-                <Button Grid.Column="2" Content="+" Width="25" Height="24" Margin="5,0,0,0" Click="Button_Click_1"/>
+                <Button x:Name="btnSmRemove" Grid.Column="1" Content="-" Width="25" Margin="5,0,0,0" Click="btnSmRemove_Click"/>
+                <Button x:Name="btnSmAdd" Grid.Column="2" Content="+" Width="25" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click"/>
             </Grid>
 
             <!-- Name -->
             <StackPanel Grid.Row="2" Margin="0,4">
                 <Label Content="Name" FontSize="14" FontFamily="EB Garamond" Foreground="White"/>
-                <TextBox Width="450" MinHeight="24"/>
+                <TextBox x:Name="textSmServerName" Width="450" MinHeight="24"/>
             </StackPanel>
 
             <!-- Lobby IP + Port -->
@@ -123,11 +123,11 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Lobby IP" FontSize="14" FontFamily="EB Garamond" Foreground="White"/>
-                    <TextBox MinHeight="24"/>
+                    <TextBox x:Name="textSmLobbyIP" MinHeight="24"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port" FontSize="14" FontFamily="EB Garamond" Foreground="White"/>
-                    <TextBox MinHeight="24"/>
+                    <TextBox x:Name="textSmLobbyPort" MinHeight="24"/>
                 </StackPanel>
             </Grid>
 
@@ -139,17 +139,17 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Download IP" FontSize="14" FontFamily="EB Garamond" Foreground="White"/>
-                    <TextBox Style="{DynamicResource TextBoxStyle1}" MinHeight="24"/>
+                    <TextBox x:Name="textSmDownloadIP" Style="{DynamicResource TextBoxStyle1}" MinHeight="24"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port" FontSize="14" FontFamily="EB Garamond" Foreground="White"/>
-                    <TextBox MinHeight="24"/>
+                    <TextBox x:Name="textSmDownloadPort" MinHeight="24"/>
                 </StackPanel>
             </Grid>
 
             <!-- Buttons -->
             <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-                <Button Content="Accept" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Margin="0,0,10,0">
+                <Button x:Name="btnSmAccept" Content="Accept" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Margin="0,0,10,0">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFFFE089"/>
@@ -157,7 +157,7 @@
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
-                <Button Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White">
+                <Button x:Name="btnSmCancel" Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White" Click="btnSmCancel_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF383838"/>

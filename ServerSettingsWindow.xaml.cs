@@ -23,5 +23,20 @@ namespace DDO_Launcher
         {
             InitializeComponent();
         }
+
+        private void btnSmRemove_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSmAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSmCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
