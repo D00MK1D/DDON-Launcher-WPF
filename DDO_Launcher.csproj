@@ -9,17 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\btnClose.png" />
-    <None Remove="Images\btnClose.svg" />
-    <None Remove="Images\btnGeneralSettings.png" />
-    <None Remove="Images\btnGeneralSettings.svg" />
-    <None Remove="Images\btnMinimize.png" />
-    <None Remove="Images\btnMinimize.svg" />
-    <None Remove="Images\btnServerSettings.png" />
-    <None Remove="Images\btnServerSettings.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Include="ModSettingsWindow" />
   </ItemGroup>
 

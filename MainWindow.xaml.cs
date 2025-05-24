@@ -247,6 +247,7 @@ public partial class MainWindow : Window
 
     private void btnGeneralSettings_Click(object sender, RoutedEventArgs e)
     {
-
+        ModSettingsWindow modSettingsWindow = new ModSettingsWindow();
+        modSettingsWindow.ShowDialog();
     }
 }
