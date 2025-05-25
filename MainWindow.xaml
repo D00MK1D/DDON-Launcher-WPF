@@ -73,7 +73,7 @@
                         Height="24" 
                         BorderBrush="{x:Null}" 
                         Foreground="#D3D3D3" 
-                        Margin="10,22,10,0" 
+                        Margin="10,24,10,0" 
                         FontFamily="/Fonts/#EB Garamond" 
                         Text="" FontSize="16" 
                         MaxLength="100" MaxLines="1" 
@@ -105,7 +105,7 @@
                         Height="24" 
                         BorderBrush="{x:Null}" 
                         Foreground="#D3D3D3" 
-                        Margin="10,71,10,0" 
+                        Margin="10,74,10,0" 
                         FontFamily="/Fonts/#EB Garamond" 
                         FontSize="16" 
                         MaxLength="100" 
@@ -160,7 +160,7 @@
                                                     CornerRadius="2"
                                                     BorderThickness="0"
                                                     BorderBrush="Gray">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
@@ -202,36 +202,18 @@
 
                     </Button>
 
-                    <Label x:Name="labelAccount" 
-                       Content="Account Name" 
-                       Margin="6,-3,10,0" 
-                       VerticalAlignment="Top" 
-                       Foreground="#FFB1B1B1" 
-                       FontFamily="EB Garamond" 
-                       FontSize="14" Height="32"/>
+                    <Label x:Name="labelAccount" Content="Account Name" Margin="6,-2,10,266"/>
 
-                    <Label x:Name="labelPassword" 
-                       Content="Password" 
-                       Margin="6,46,10,0" 
-                       VerticalAlignment="Top" 
-                       FontFamily="EB Garamond" 
-                       FontSize="14" Foreground="#FFB1B1B1" Height="32"/>
+                    <Label x:Name="passLabel" Content="Password" Margin="6,44,10,218"/>
 
-                    <Label x:Name="labelServer" 
-                       Content="Server" 
-                       Margin="0,94,10,0" 
-                       FontFamily="EB Garamond" 
-                       FontSize="14" 
-                       Height="32" 
-                       VerticalAlignment="Top" 
-                       Foreground="#FFB1B1B1" HorizontalAlignment="Right" Width="235"/>
+                    <Label x:Name="labelServer" Content="Server" Margin="6,92,10,170"/>
 
                     <ComboBox x:Name="serverComboBox"
                         FontFamily="/Fonts/#EB Garamond"
                         BorderThickness="0"
                         Foreground="#FFB1B1B1"
                         TabIndex="3"
-                        Margin="10,119,43,0"
+                        Margin="10,122,43,0"
                         Height="24"
                         VerticalAlignment="Top">
 
@@ -312,7 +294,7 @@
                     </ComboBox>
 
                     <Button x:Name="btnServerSettings" 
-                    Margin="218,119,10,0" TabIndex="5" 
+                    Margin="218,122,10,0" TabIndex="5" 
                     FontFamily="Noto Serif" 
                     BorderThickness="0,0,0,0" Foreground="LightGray" Click="btnServerSettings_Click" Height="24" VerticalAlignment="Top">
 
@@ -370,7 +352,7 @@
                     </Button>
 
                     <CheckBox x:Name="cbRemember" Content="CheckBox" 
-                          Margin="10,166,225,0" 
+                          Margin="10,164,225,0" 
                           VerticalAlignment="Top" 
                           Foreground="#FFB1B1B1" 
                           BorderBrush="{x:Null}" 
@@ -399,13 +381,8 @@
                         </CheckBox.Background>
                     </CheckBox>
 
-                    <Label x:Name="labelRemember" 
-                        Content="Remember Account &amp; Password" 
-                        Margin="25,160,64,0" 
-                        Foreground="#FFB1B1B1" 
-                        FontFamily="/Fonts/#EB Garamond" Height="24" 
-                        VerticalAlignment="Top" 
-                        Visibility="Visible"/>
+                    <Label x:Name="labelRemember" Content="Remember my login details" Margin="26,156,-10,106" FontSize="14"/>
+
 
                     <Label x:Name="labelEmail" 
                         Content="E-mail" 
@@ -464,7 +441,7 @@
                 Grid.ColumnSpan="2"
                 Background="Transparent"
                 BorderThickness="0" Click="btnClose_Click">
-                
+
                 <Path Fill="#D3D3D3" Stretch="Uniform"
                       Data="M12.75 11.25V5a.75.75 0 0 0-1.5 0v6.25H5a.75.75 0 0 0 0 1.5h6.25V19a.76.76 0 0 0 .75.75a.75.75 0 0 0 .75-.75v-6.25H19a.75.75 0 0 0 .75-.75a.76.76 0 0 0-.75-.75Z" 
                       RenderTransformOrigin="0.495,0.513" Height="16" Width="16">
