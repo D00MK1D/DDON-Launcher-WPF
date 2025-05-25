@@ -46,7 +46,11 @@
 
                     <!-- Right cell that spans both rows -->
                     <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Padding="8"/>
-                    <Button Content="Reinstall" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" Height="NaN" VerticalAlignment="Stretch" Padding="12,12,12,12" Margin="12,12,6,12" Foreground="#FBDDDDDD" BorderBrush="#00707070">
+                    <Button Content="Reinstall" Grid.Column="1" 
+                            Grid.RowSpan="2" HorizontalAlignment="Stretch" 
+                            Height="NaN" VerticalAlignment="Stretch" 
+                            Padding="12,12,12,12" Margin="12,12,6,12" 
+                            Foreground="#FBDDDDDD" BorderBrush="#00707070">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#FF373737"/>
@@ -54,13 +58,32 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Button Content="x" HorizontalAlignment="Left" Height="NaN" Margin="0,12,12,0" VerticalAlignment="Top" Width="NaN" Grid.Column="3" MinWidth="20" MinHeight="20" BorderBrush="#00707070" Foreground="#FF707070" VerticalContentAlignment="Top" Padding="1,1,1,1">
+
+                    <Button HorizontalAlignment="Left" Height="NaN" Margin="0,12,12,0" VerticalAlignment="Top" Width="NaN" Grid.Column="3" MinWidth="20" MinHeight="20" BorderBrush="#00707070" Foreground="#FF707070" VerticalContentAlignment="Top" Padding="1,1,1,1">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#FF363636"/>
                                 <GradientStop Color="#FF1D1D1D" Offset="1"/>
                             </LinearGradientBrush>
                         </Button.Background>
+
+                        <Path Fill="#D3D3D3" 
+                              Stretch="Uniform" 
+                              Data="M12.75 11.25V5a.75.75 0 0 0-1.5 0v6.25H5a.75.75 0 0 0 0 1.5h6.25V19a.76.76 0 0 0 .75.75a.75.75 0 0 0 .75-.75v-6.25H19a.75.75 0 0 0 .75-.75a.76.76 0 0 0-.75-.75Z" 
+                              RenderTransformOrigin="0.495,0.513" 
+                              Height="16" 
+                              Width="10"
+                              >
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-45"/>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+
                     </Button>
                 </Grid>
                 <Grid Height="64" Width="902" Background="#0CDDDDDD">
@@ -96,13 +119,40 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Button Content="x" HorizontalAlignment="Left" Height="NaN" Margin="0,12,12,0" VerticalAlignment="Top" Width="NaN" Grid.Column="3" MinWidth="20" MinHeight="20" BorderBrush="#00707070" Foreground="#FF707070" VerticalContentAlignment="Top" Padding="1,1,1,1">
+                    
+                    <Button HorizontalAlignment="Left" 
+                            Height="NaN" Margin="0,12,12,0" 
+                            VerticalAlignment="Top" Width="NaN" 
+                            Grid.Column="3" MinWidth="20" 
+                            MinHeight="20" BorderBrush="#00707070" 
+                            Foreground="#FF707070" VerticalContentAlignment="Top" 
+                            Padding="1,1,1,1">
+                        
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#FF363636"/>
                                 <GradientStop Color="#FF1D1D1D" Offset="1"/>
                             </LinearGradientBrush>
                         </Button.Background>
+
+
+                        <Path Fill="#D3D3D3" 
+                              Stretch="Uniform" 
+                              Data="M12.75 11.25V5a.75.75 0 0 0-1.5 0v6.25H5a.75.75 0 0 0 0 1.5h6.25V19a.76.76 0 0 0 .75.75a.75.75 0 0 0 .75-.75v-6.25H19a.75.75 0 0 0 .75-.75a.76.76 0 0 0-.75-.75Z" 
+                              RenderTransformOrigin="0.495,0.513" 
+                              Height="16" 
+                              Width="10"
+                              >
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-45"/>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+
                     </Button>
                 </Grid>
             </StackPanel>
@@ -114,23 +164,130 @@
                        />
 
             </Grid>
-            <Canvas Height="56" Width="451" Canvas.Top="345" VerticalAlignment="Top" Canvas.Left="476" HorizontalAlignment="Left">
-                <Button Content="Add Client Modifications" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" BorderBrush="#00707070">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFFE089"/>
-                            <GradientStop Color="#FFEFB100" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
+            <Canvas Height="56" Width="451" 
+                    Canvas.Top="345" 
+                    VerticalAlignment="Top" 
+                    Canvas.Left="476" 
+                    HorizontalAlignment="Left">
+                
+                <Button Content="Add Client Modifications" 
+                        Height="56" Width="220" 
+                        FontFamily="EB Garamond" 
+                        FontSize="14" HorizontalAlignment="Left" 
+                        VerticalAlignment="Center" BorderBrush="#00707070">
+                    
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="3"
+                        BorderThickness="0"
+                        BorderBrush="Gray">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                            <GradientStop Color="#FFFEEBAA"/>
+                                                            <GradientStop Color="#FFF4C600" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                            <GradientStop Color="#FFE0B000"/>
+                                                            <GradientStop Color="#FFB08000" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFFFDF88"/>
+                                        <GradientStop Color="#FFEFB101" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
                 </Button>
-                <Button x:Name="btnMsCancel" Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White" HorizontalAlignment="Left" Canvas.Left="230" VerticalAlignment="Center" BorderBrush="#00707070" Click="btnMsCancel_Click">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF383838"/>
-                            <GradientStop Color="#FF191919" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
+                
+                <Button x:Name="btnMsCancel" 
+                        Content="Cancel" Height="56" 
+                        Width="220" FontFamily="EB Garamond" 
+                        FontSize="14" Foreground="White" 
+                        HorizontalAlignment="Left" Canvas.Left="230" 
+                        VerticalAlignment="Center" BorderBrush="#00707070" 
+                        Click="btnMsCancel_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border"
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="2"
+                                            BorderThickness="0"
+                                            BorderBrush="Gray">
+                                            
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                            <GradientStop Color="#FF5A5A5A"/>
+                                                            <GradientStop Color="#FF3F3F3F" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                            <GradientStop Color="#FF2A2A2A"/>
+                                                            <GradientStop Color="#FF1A1A1A" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF494949"/>
+                                        <GradientStop Color="#FF1A1A1A" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
                 </Button>
+                
             </Canvas>
         </Canvas>
     </Border>

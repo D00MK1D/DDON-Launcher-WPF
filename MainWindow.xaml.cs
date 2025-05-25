@@ -103,12 +103,28 @@ public partial class MainWindow : Window
             };
 
             jsonData = JsonSerializer.Serialize(requestData);
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var content = new StringContent(jsonData, Encoding.Latin1, "application/json");
             client.DefaultRequestVersion = HttpVersion.Version11;
             HttpResponseMessage response = new HttpResponseMessage();
 
-            response = await client.PostAsync("http://localhost:52099" + path, content);
+            try
+            {
+                response = await client.PostAsync("http://localhost:52099" + path, content);
+            }
+            catch (HttpRequestException e)
+            {
+                MessageBox.Show(
+                    "Server not reachable!\n" +
+                    "Error: " + e.Message,
+                    "Dragon's Dogma Online",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
 
+                btnChangeAction.IsEnabled = true;
+                btnSubmit.IsEnabled = true;
+
+                return;
+            } 
             //+ ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort
 
             var responseBody = await response.Content.ReadAsStringAsync();
@@ -150,8 +166,27 @@ public partial class MainWindow : Window
             //    var bodyStartIndex = response.IndexOf("\r\n\r\n") + 4;
             //    responseBody = response.Substring(bodyStartIndex);
             */
+            ServerResponse serverResponse;
+            try
+            {
+                serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
 
-            ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
+            }
+            catch (JsonException e)
+            {
+                MessageBox.Show(
+                    "Invalid response from server\n" +
+                    "Error: " + e.Message + "\n" +
+                    "Message: " + responseBody + "\n",
+                    "Dragon's Dogma Online",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                btnChangeAction.IsEnabled = true;
+                btnSubmit.IsEnabled = true;
+                
+                return;
+            }
 
             var token = string.Empty;
             try

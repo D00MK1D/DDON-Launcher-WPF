@@ -135,59 +135,11 @@
                         Click="btnSubmit_Click" 
                         FontFamily="/Fonts/#EB Garamond" 
                         BorderThickness="0,0,0,0" 
-                        FontSize="24" Height="43" VerticalAlignment="Top">
+                        FontSize="24" Height="43" 
+                        VerticalAlignment="Top"
+                        Style="{StaticResource GoldenButton}"/>
 
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border x:Name="border"
-                                                Background="{TemplateBinding Background}"
-                                                CornerRadius="3"
-                                                BorderThickness="0"
-                                                BorderBrush="Gray">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="border" Property="Background">
-                                                        <Setter.Value>
-                                                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                                                <GradientStop Color="#FFFEEBAA"/>
-                                                                <GradientStop Color="#FFF4C600" Offset="1"/>
-                                                            </LinearGradientBrush>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
 
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter TargetName="border" Property="Background">
-                                                        <Setter.Value>
-                                                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                                                <GradientStop Color="#FFE0B000"/>
-                                                                <GradientStop Color="#FFB08000" Offset="1"/>
-                                                            </LinearGradientBrush>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="#FFFFDF88"/>
-                                            <GradientStop Color="#FFEFB101" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-
-                    </Button>
 
                     <Button x:Name="btnChangeAction" 
                         Content="Register" 
@@ -204,11 +156,11 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
                                             <Border x:Name="border"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="2"
-                            BorderThickness="0"
-                            BorderBrush="Gray">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="2"
+                                                    BorderThickness="0"
+                                                    BorderBrush="Gray">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
