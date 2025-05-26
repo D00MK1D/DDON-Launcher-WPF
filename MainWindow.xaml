@@ -12,8 +12,11 @@
         AllowsTransparency="True">
 
 
-    <Border x:Name="LauncherBorder" Background="#575555"
+    <Border x:Name="LauncherBorder"
             CornerRadius="8">
+        <Border.Background>
+            <ImageBrush ImageSource="/Launcher BG.jpg"/>
+        </Border.Background>
 
         <Grid x:Name="LauncherGrid">
             <Grid.RowDefinitions>
@@ -45,7 +48,7 @@
                 </Image.RenderTransform>
             </Image>
 
-            <Border Background="#FF222222"
+            <Border Background="#E5191A19"
                     Margin="10,48,20,20"
                     CornerRadius="8"
                     Grid.Column="2"
@@ -54,7 +57,7 @@
             </Border>
 
             <Border x:Name="Form"
-                Background="#FF222222"
+                Background="#E5191A19"
                 Margin="20,20,10,20"
                 CornerRadius="8"
                 Grid.Column="0"
@@ -202,11 +205,11 @@
 
                     </Button>
 
-                    <Label x:Name="labelAccount" Content="Account Name" Margin="6,-2,10,266"/>
+                    <Label x:Name="labelAccount" Content="Account Name" Margin="6,-2,14,266"/>
 
-                    <Label x:Name="passLabel" Content="Password" Margin="6,44,10,218"/>
+                    <Label x:Name="passLabel" Content="Password" Margin="6,48,14,216"/>
 
-                    <Label x:Name="labelServer" Content="Server" Margin="6,92,10,170"/>
+                    <Label x:Name="labelServer" Content="Server" Margin="6,96,14,167"/>
 
                     <ComboBox x:Name="serverComboBox"
                         FontFamily="/Fonts/#EB Garamond"
@@ -434,27 +437,36 @@
                 </Grid>
 
             </Border>
-            <Button x:Name="btnClose" Grid.Row="0"
-                Grid.Column="1"
-                Margin="655,10,20,115"
-                RenderTransformOrigin="0.5,0.5" 
-                Grid.ColumnSpan="2"
-                Background="Transparent"
-                BorderThickness="0" Click="btnClose_Click">
 
-                <Path Fill="#D3D3D3" Stretch="Uniform"
-                      Data="M12.75 11.25V5a.75.75 0 0 0-1.5 0v6.25H5a.75.75 0 0 0 0 1.5h6.25V19a.76.76 0 0 0 .75.75a.75.75 0 0 0 .75-.75v-6.25H19a.75.75 0 0 0 .75-.75a.76.76 0 0 0-.75-.75Z" 
-                      RenderTransformOrigin="0.495,0.513" Height="16" Width="16">
+            <Button x:Name="btnClose"
+        Grid.Row="0"
+        Grid.Column="1"
+        Grid.ColumnSpan="2"
+        Margin="655,10,20,115"
+        Style="{StaticResource IconButtonStyle}"
+        Click="btnClose_Click">
+
+                <Button.Resources>
+                    <Style TargetType="Path">
+                        <Setter Property="Fill" Value="#D3D3D3"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                <Setter Property="Fill" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
+
+                <Path Stretch="Uniform"
+          Height="16" Width="16"
+          Data="M12.75 11.25V5a.75.75 0 0 0-1.5 0v6.25H5a.75.75 0 0 0 0 1.5h6.25V19a.76.76 0 0 0 .75.75a.75.75 0 0 0 .75-.75v-6.25H19a.75.75 0 0 0 .75-.75a.76.76 0 0 0-.75-.75Z"
+          RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="-45"/>
-                            <TranslateTransform X="0" Y="0"/>
-                        </TransformGroup>
+                        <RotateTransform Angle="-45"/>
                     </Path.RenderTransform>
                 </Path>
             </Button>
+
 
 
             <Button x:Name="btnGeneralSettings" Grid.Row="0"
@@ -467,20 +479,36 @@
 
                 <Image Source="/Images/btnGeneralSettings.png"/>
             </Button>
-            <Button x:Name="btnMinimize" Grid.Row="0"
-                Grid.Column="1"
-                Margin="625,10,50,115"
-                RenderTransformOrigin="0.5,0.5" 
-                Grid.ColumnSpan="2"
-                Background="Transparent"
-                BorderThickness="0" Click="btnMinimize_Click">
+            <Button x:Name="btnMinimize"
+        Grid.Row="0"
+        Grid.Column="1"
+        Grid.ColumnSpan="2"
+        Margin="625,10,50,115"
+        Style="{StaticResource IconButtonStyle}"
+        Click="btnMinimize_Click">
 
-                <Path Fill="#D3D3D3" Stretch="Uniform"
-                    Data="M20 13H4a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2" 
-                    RenderTransformOrigin="0.495,0.513" Width="14">
+                <Button.Resources>
+                    <Style TargetType="Path">
+                        <Setter Property="Fill" Value="#D3D3D3"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                <Setter Property="Fill" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
 
-                </Path>
+                <Path Stretch="Uniform"
+                  Width="14"
+                  Data="M20 13H4a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2"
+                  RenderTransformOrigin="0.495,0.513"/>
             </Button>
+            
+            <Image Grid.Column="2" HorizontalAlignment="Left" Height="120" Margin="10,48,0,0" VerticalAlignment="Top" Width="100" Grid.RowSpan="2">
+                <Image.OpacityMask>
+                    <ImageBrush ImageSource="/Sidebar-ConvertImage.bmp"/>
+                </Image.OpacityMask>
+            </Image>
 
         </Grid>
     </Border>

@@ -15,7 +15,7 @@
         <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
         <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
     </Window.Resources>
-    <Border Background="#212121"
+    <Border Background="#E5191A19"
             BorderBrush="#FF1F1F1F" 
             BorderThickness="1"
             CornerRadius="8"
@@ -178,8 +178,8 @@
 
             <!-- Buttons -->
             <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-                <Button x:Name="btnSmCancel" Style="{StaticResource DarkButton}" Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White" Margin="0,0,10,0" Click="btnSmCancel_Click"/>
-                <Button Style="{StaticResource GoldenButton}" x:Name="btnSmAccept" Content="Accept" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Margin="0,0,0,0"/>
+                <Button x:Name="btnSmCancel" Style="{StaticResource DarkButton}" Content="Cancel" Height="56" Width="220" FontSize="16" Foreground="White" Margin="0,0,10,0" Click="btnSmCancel_Click"/>
+                <Button Style="{StaticResource GoldenButton}" x:Name="btnSmAccept" Content="Accept" Height="56" Width="220"  FontSize="16" Margin="0,0,0,0"/>
                 
             </StackPanel>
         </Grid>
