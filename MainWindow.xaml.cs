@@ -234,7 +234,7 @@ public partial class MainWindow : Window
 
     private void btnServerSettings_Click(object sender, RoutedEventArgs e)
     {
-        ServerSettingsWindow ssw = new ServerSettingsWindow(ServerManager);
+        ServerSettingsWindow ssw = new ServerSettingsWindow(/*ServerManager*/);
         ssw.ShowDialog();
     }
 
