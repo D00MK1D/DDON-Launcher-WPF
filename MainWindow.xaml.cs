@@ -10,9 +10,15 @@ namespace DDO_Launcher;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
+
+    private readonly ServerManager ServerManager;
+
+    public MainWindow(ServerManager serverManager)
     {
         InitializeComponent();
+
+        ServerManager = serverManager;
+        UpdateServerList();
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -228,7 +234,7 @@ public partial class MainWindow : Window
 
     private void btnServerSettings_Click(object sender, RoutedEventArgs e)
     {
-        ServerSettingsWindow ssw = new ServerSettingsWindow();
+        ServerSettingsWindow ssw = new ServerSettingsWindow(ServerManager);
         ssw.ShowDialog();
     }
 
@@ -246,5 +252,25 @@ public partial class MainWindow : Window
     {
         ModSettingsWindow msw = new ModSettingsWindow();
         msw.ShowDialog();
+    }
+
+    private void UpdateServerList()
+    {
+        //serverComboBox.BeginUpdate();
+        serverComboBox.Items.Clear();
+        foreach (var server in ServerManager.Servers)
+        {
+            int addedItemIndex = serverComboBox.Items.Add(server.Key);
+            if (serverComboBox.SelectedIndex == -1 && server.Key == ServerManager.SelectedServer)
+            {
+                serverComboBox.SelectedIndex = addedItemIndex;
+            }
+        }
+        //serverComboBox.EndUpdate();
+
+        if (serverComboBox.SelectedIndex == -1)
+        {
+            serverComboBox.SelectedIndex = 0;
+        }
     }
 }
