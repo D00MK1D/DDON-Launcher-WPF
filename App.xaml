@@ -4,9 +4,7 @@
              xmlns:local="clr-namespace:DDO_Launcher"
              Startup="Application_Startup">
 
-    <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
-        
         <Style x:Key="DarkButton"  TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
@@ -165,7 +163,6 @@
             <Setter Property="Foreground" Value="#66FFFFFF"/>
             <Setter Property="FontStyle" Value="Italic"/>
         </Style>
-<<<<<<< Updated upstream
 
         <Style x:Key="EventDetailsTextBlockStyle" TargetType="TextBlock">
             <Setter Property="Padding" Value="12,0,12,12"/>
@@ -196,14 +193,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <Style x:Key="tagDateTextBlock" TargetType="{x:Type TextBlock}">
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="TextTrimming" Value="None"/>
             <Setter Property="FontFamily" Value="Jersey 25"/>
-            <Setter Property="MinHeight" Value="12"
-                    />
-            <Setter Property="Height" Value="12"
-                    />
+            <Setter Property="MinHeight" Value="12"/>
+            <Setter Property="Height" Value="12"/>
             <Setter Property="Foreground" Value="#FF9E9F9F"/>
         </Style>
 
