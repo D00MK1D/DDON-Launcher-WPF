@@ -15,6 +15,7 @@
         <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
         <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
     </Window.Resources>
+    
     <Border Background="#E5191A19"
             BorderBrush="#FF1F1F1F" 
             BorderThickness="1"
