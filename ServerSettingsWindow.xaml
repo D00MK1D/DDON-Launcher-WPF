@@ -25,24 +25,16 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- Title -->
                 <RowDefinition Height="Auto"/>
-                <!-- Server Row -->
                 <RowDefinition Height="Auto"/>
-                <!-- Name -->
                 <RowDefinition Height="Auto"/>
-                <!-- Lobby IP + Port -->
                 <RowDefinition Height="Auto"/>
-                <!-- Download IP + Port -->
                 <RowDefinition Height="*" />
-                <!-- Spacer -->
                 <RowDefinition Height="Auto"/>
-                <!-- Buttons -->
             </Grid.RowDefinitions>
-           <TextBlock Style="{StaticResource HeadlineTextBlock}" Text="Server Management" />
-                 
+            <TextBlock Style="{StaticResource HeadlineTextBlock}" Text="Server Management" />
 
-            <!-- Server Row -->
+
             <Grid Grid.Row="1" Margin="0,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -55,7 +47,8 @@
                           Foreground="#FFB1B1B1"
                           TabIndex="3"
                           Height="24"
-                          VerticalAlignment="Center">
+                          VerticalAlignment="Center"
+                          SelectionChanged="serverComboBox_SelectionChanged">
 
                     <ComboBox.Resources>
                         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
@@ -107,18 +100,18 @@
                                        AllowsTransparency="True"
                                        Focusable="False"
                                        PopupAnimation="Slide">
-                                    
+
                                     <Grid x:Name="DropDown"
                                           SnapsToDevicePixels="True"
                                           MinWidth="{TemplateBinding ActualWidth}"
                                           MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                        
+
                                         <Border x:Name="DropDownBorder" Background="#FF1A1A1A"/>
-                                        
+
                                         <ScrollViewer Margin="4" SnapsToDevicePixels="True">
                                             <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
                                         </ScrollViewer>
-                                        
+
                                     </Grid>
                                 </Popup>
                             </Grid>
@@ -135,16 +128,14 @@
                 </ComboBox>
 
                 <Button x:Name="btnSmRemove" Style="{StaticResource DarkButton}" Grid.Column="1" Width="25" Margin="5,0,0,0" Click="btnSmRemove_Click"/>
-                <Button x:Name="btnSmAdd" Style="{StaticResource DarkButton}" Grid.Column="2" Width="25" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click"/>
+                <Button x:Name="btnSmAdd" Style="{StaticResource DarkButton}" Grid.Column="2" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click"/>
             </Grid>
 
-            <!-- Name -->
             <StackPanel Grid.Row="2" Margin="0,4">
                 <Label Content="Name" />
-                <TextBox x:Name="textSmServerName" Width="450" MinHeight="24"/>
+                <TextBox x:Name="textSmServerName" TextChanged="textSmServerName_TextChanged" Width="450" MinHeight="24"/>
             </StackPanel>
 
-            <!-- Lobby IP + Port -->
             <Grid Grid.Row="3" Margin="0,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -152,15 +143,14 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Lobby IP" />
-                    <TextBox x:Name="textSmLobbyIP" MinHeight="24"/>
+                    <TextBox x:Name="textSmLobbyIP" TextChanged="textSmLobbyIP_TextChanged" MinHeight="24"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port"/>
-                    <TextBox x:Name="textSmLobbyPort" MinHeight="24"/>
+                    <TextBox x:Name="textSmLobbyPort" TextChanged="textSmLobbyPort_TextChanged" MinHeight="24"/>
                 </StackPanel>
             </Grid>
 
-            <!-- Download IP + Port -->
             <Grid Grid.Row="4" Margin="0,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -168,19 +158,17 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Download IP"/>
-                    <TextBox x:Name="textSmDownloadIP" MinHeight="24"></TextBox>
+                    <TextBox x:Name="textSmDownloadIP" TextChanged="textSmDownloadIP_TextChanged" MinHeight="24"></TextBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port"/>
-                    <TextBox x:Name="textSmDownloadPort" MinHeight="24"/>
+                    <TextBox x:Name="textSmDownloadPort" TextChanged="textSmDownloadPort_TextChanged" MinHeight="24"/>
                 </StackPanel>
             </Grid>
 
-            <!-- Buttons -->
             <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-                <Button x:Name="btnSmCancel" Style="{StaticResource DarkButton}" Content="Cancel" Height="56" Width="220" FontSize="16" Foreground="White" Margin="0,0,10,0" Click="btnSmCancel_Click"/>
-                <Button Style="{StaticResource GoldenButton}" x:Name="btnSmAccept" Content="Accept" Height="56" Width="220"  FontSize="16" Margin="0,0,0,0"/>
-                
+                <Button x:Name="btnSmCancel" Style="{StaticResource DarkButton}" Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White" Margin="0,0,10,0" Click="btnSmCancel_Click"/>
+                <Button Style="{StaticResource GoldenButton}" x:Name="btnSmAccept" Content="Accept" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Margin="0,0,0,0" Click="btnSmAccept_Click"/>
             </StackPanel>
         </Grid>
     </Border>
