@@ -125,47 +125,9 @@ public partial class MainWindow : Window
 
                 return;
             } 
-            //+ ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            /*jsonData = JsonSerializer.Serialize(requestData);
-            //string request = $"POST {path} HTTP/1.1\r\n";
-            //request += $"Host: localhost:52099\r\n";
-            //request += "Content-Type: application/json\r\n";
-            //request += $"Content-Length: {jsonData.Length}\r\n";
-            //request += "Connection: close\r\n";
-            //request += "\r\n";
-            //request += jsonData;
-
-            //client.ReceiveTimeout = 5000;
-            //client.SendTimeout = 5000;
-            //client.Connect("localhost", 52099);
-
-            //var utf8Encoding = new UTF8Encoding(false);
-
-            //using (NetworkStream stream = client.GetStream())
-            //using (StreamWriter writer = new StreamWriter(stream, utf8Encoding))
-            //using (StreamReader reader = new StreamReader(stream, utf8Encoding))
-            //{
-            //    writer.Write(request);
-            //    writer.Flush();
-
-            //    StringBuilder sb = new StringBuilder();
-            //    string line;
-
-            //    stream.ReadTimeout = 5000;
-
-            //    while ((line = reader.ReadLine()) != null)
-            //    {
-            //        sb.AppendLine(line);
-            //    }
-
-            //    string response = sb.ToString();
-
-            //    var bodyStartIndex = response.IndexOf("\r\n\r\n") + 4;
-            //    responseBody = response.Substring(bodyStartIndex);
-            */
             ServerResponse serverResponse;
             try
             {
