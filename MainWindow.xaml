@@ -15,7 +15,7 @@
     <Border x:Name="LauncherBorder"
             CornerRadius="8">
         <Border.Background>
-            <ImageBrush ImageSource="/Launcher BG.jpg"/>
+            <ImageBrush ImageSource="/DDON_KeySS.jpg" Stretch="UniformToFill" TileMode="None"/>
         </Border.Background>
 
         <Grid x:Name="LauncherGrid">
@@ -31,29 +31,25 @@
             </Grid.ColumnDefinitions>
 
 
+            <Rectangle Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="500" Grid.RowSpan="2" VerticalAlignment="Top" Width="1000" Fill="#B2191A19"/>
 
-            <Image x:Name="imgLogo" 
-                   Source="/Images/logo.png" 
-                   IsHitTestVisible="False" 
-                   RenderTransformOrigin="0.5,0.5"
-                   Grid.Column="0" Margin="0,24,0,4"
-                   >
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Image.RenderTransform>
-            </Image>
+
+
+
 
             <Border Background="#E5191A19"
                     Margin="10,48,20,20"
                     CornerRadius="8"
                     Grid.Column="2"
                     Grid.RowSpan="2">
-
+                <Image x:Name="imgHighlight" 
+                    IsHitTestVisible="False" 
+                    VerticalAlignment="Top" Height="120" Stretch="UniformToFill" Source="/nice.jpg" Margin="2,2,2,0"
+                   >
+                    <Image.Clip>
+                        <RectangleGeometry Rect="0,0,665,130" RadiusX="8" RadiusY="8"/>
+                    </Image.Clip>
+                </Image>
             </Border>
 
             <Border x:Name="Form"
@@ -85,7 +81,7 @@
                         UndoLimit="10">
 
                         <TextBox.Resources>
-                            <Style TargetType="Border">
+                            <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="2"/>
                             </Style>
                         </TextBox.Resources>
@@ -118,7 +114,7 @@
                         UndoLimit="10">
 
                         <TextBox.Resources>
-                            <Style TargetType="Border">
+                            <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="2"/>
                             </Style>
                         </TextBox.Resources>
@@ -154,10 +150,10 @@
 
 
                         <Button.Style>
-                            <Style TargetType="Button">
+                            <Style TargetType="{x:Type Button}">
                                 <Setter Property="Template">
                                     <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
+                                        <ControlTemplate TargetType="{x:Type Button}">
                                             <Border x:Name="border"
                                                     Background="{TemplateBinding Background}"
                                                     CornerRadius="2"
@@ -221,7 +217,7 @@
                         VerticalAlignment="Top">
 
                         <ComboBox.Resources>
-                            <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+                            <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
                                 <Border Background="Transparent"
                                     BorderThickness="0">
                                     <Path x:Name="Arrow"
@@ -236,7 +232,7 @@
                         </ComboBox.Resources>
 
                         <ComboBox.Template>
-                            <ControlTemplate TargetType="ComboBox">
+                            <ControlTemplate TargetType="{x:Type ComboBox}">
                                 <Grid>
 
                                     <Border x:Name="MainBorder"
@@ -248,7 +244,7 @@
                                       Template="{StaticResource ComboBoxToggleButton}"
                                       Grid.Column="2"
                                       Focusable="false"
-                                      IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                      IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                       ClickMode="Press"
                                       HorizontalAlignment="Right"
                                       Width="20"/>
@@ -302,10 +298,10 @@
                     BorderThickness="0,0,0,0" Foreground="LightGray" Click="btnServerSettings_Click" Height="24" VerticalAlignment="Top">
 
                         <Button.Style>
-                            <Style TargetType="Button">
+                            <Style TargetType="{x:Type Button}">
                                 <Setter Property="Template">
                                     <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
+                                        <ControlTemplate TargetType="{x:Type Button}">
                                             <Border x:Name="border"
                                                 Background="{TemplateBinding Background}"
                                                 CornerRadius="2"
@@ -443,19 +439,22 @@
         Grid.Column="1"
         Grid.ColumnSpan="2"
         Margin="655,10,20,115"
-        Style="{StaticResource IconButtonStyle}"
         Click="btnClose_Click">
 
                 <Button.Resources>
-                    <Style TargetType="Path">
+                    <Style TargetType="{x:Type Path}">
                         <Setter Property="Fill" Value="#D3D3D3"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="True">
                                 <Setter Property="Fill" Value="White"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Resources>
+
+                <Button.Style>
+                    <StaticResource ResourceKey="IconButtonStyle"/>
+                </Button.Style>
 
                 <Path Stretch="Uniform"
           Height="16" Width="16"
@@ -484,31 +483,76 @@
         Grid.Column="1"
         Grid.ColumnSpan="2"
         Margin="625,10,50,115"
-        Style="{StaticResource IconButtonStyle}"
         Click="btnMinimize_Click">
 
                 <Button.Resources>
-                    <Style TargetType="Path">
+                    <Style TargetType="{x:Type Path}">
                         <Setter Property="Fill" Value="#D3D3D3"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="True">
                                 <Setter Property="Fill" Value="White"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Resources>
 
+                <Button.Style>
+                    <StaticResource ResourceKey="IconButtonStyle"/>
+                </Button.Style>
+
                 <Path Stretch="Uniform"
                   Width="14"
                   Data="M20 13H4a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2"
                   RenderTransformOrigin="0.495,0.513"/>
             </Button>
-            
-            <Image Grid.Column="2" HorizontalAlignment="Left" Height="120" Margin="10,48,0,0" VerticalAlignment="Top" Width="100" Grid.RowSpan="2">
+            <Image Grid.Column="2" HorizontalAlignment="Left" Height="100" Margin="462,-58,0,0" VerticalAlignment="Top" Width="100">
                 <Image.OpacityMask>
-                    <ImageBrush ImageSource="/Sidebar-ConvertImage.bmp"/>
+                    <ImageBrush ImageSource="/Launcher-BG-2.jpg"/>
                 </Image.OpacityMask>
             </Image>
+            <Grid Grid.Row="1" Grid.Column="1" Margin="34,36,36,10" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,4,0,4.3">
+                    <Border Style="{StaticResource MaintenanceBorderStyle}" Background="#FF275F28">
+                        <TextBlock 
+        Style="{StaticResource MaintenanceTextStyle}"
+        Text="EVENT"/>
+
+                    </Border>
+                    <Border CornerRadius="4" Padding="0,2,6,2">
+                        <TextBlock Style="{DynamicResource tagDateTextBlock}" Text="12/12/2012" />
+                    </Border>
+                </StackPanel>
+
+
+                <TextBlock Grid.Row="1" 
+               Text="Monster Hunter Collaboration has begun!"
+         
+               Margin="0,4,0,4" Style="{DynamicResource HeadlineTextBlock}"/>
+
+                <TextBlock Grid.Row="2"
+               Text="The collaboration evenLorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum purus ex, accumsan et imperdiet nec, sodales vitae est. Praesent consectetur lectus at lorem consectetur, sed fermentum nunc tincidunt. Suspendisse quis mattis nibh. Fusce ut dignissim magna. Ut vel mollis mi, id vestibulum lectus. Aliquam in dignissim risus. Suspendisse tincidunt auctor ante sit amet sodales. Aenean id ante id massa fringilla vestibulum non quis mi. Nam turpis mi, commodo sit amet orci eget, auctor accumsan odio. Cras sodales, massa a molestie condimentum, metus risus blandit velit, non dapibus elit enim eget augue. In hac habitasse platea dictumst.t starts this week! Get ready for exclusive quests and rewards."
+               
+               TextWrapping="Wrap" Style="{DynamicResource EventDetailsTextBlockStyle}" Padding="0,0,12,12"/>
+            </Grid>
+            <Image Source="/Images/logo.png" Margin="20,30,10,342" Grid.RowSpan="2">
+                <Image.OpacityMask>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Image.OpacityMask>
+            </Image>
+
 
         </Grid>
     </Border>

@@ -164,6 +164,13 @@
             <Setter Property="FontStyle" Value="Italic"/>
         </Style>
 
+        <Style x:Key="EventDetailsTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Padding" Value="12,0,12,12"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Fonts/#EB Garamond"/>
+            <Setter Property="Foreground" Value="#66FFFFFF"/>
+            
+        </Style>
 
         <Style x:Key="IconButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -186,8 +193,30 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="tagDateTextBlock" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="FontFamily" Value="Jersey 25"/>
+            <Setter Property="MinHeight" Value="12"
+                    />
+            <Setter Property="Height" Value="12"
+                    />
+            <Setter Property="Foreground" Value="#FF9E9F9F"/>
+        </Style>
 
+        <Style x:Key="MaintenanceTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Jersey 25"/>
+        </Style>
 
+        <Style x:Key="MaintenanceBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="Red"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+        </Style>
 
     </Application.Resources>
 </Application>
