@@ -38,12 +38,11 @@ public partial class MainWindow : Window
 
     private void btnChangeAction_Click(object sender, RoutedEventArgs e)
     {
-
         if ((string)btnSubmit.Content == "Login")
         {
             btnSubmit.Content = "Register";
             btnChangeAction.Content = "Login";
-            labelServer.Margin = new Thickness(0, 143, 10, 0);
+            labelServer.Margin = new Thickness(6, 143, 10, 0);
             serverComboBox.Margin = new Thickness(10, 168, 43, 0);
             btnServerSettings.Margin = new Thickness(218, 168, 10, 77);
             labelEmail.Visibility = Visibility.Visible;
@@ -56,7 +55,7 @@ public partial class MainWindow : Window
         {
             btnSubmit.Content = "Login";
             btnChangeAction.Content = "Register";
-            labelServer.Margin = new Thickness(0, 94, 10, 0);
+            labelServer.Margin = new Thickness(6, 94, 10, 0);
             serverComboBox.Margin = new Thickness(10, 119, 43, 0);
             btnServerSettings.Margin = new Thickness(218, 119, 10, 126);
             serverComboBox.Visibility = Visibility.Visible;
@@ -65,7 +64,6 @@ public partial class MainWindow : Window
             labelRemember.Visibility = Visibility.Visible;
             cbRemember.Visibility = Visibility.Visible;
         }
-
     }
 
     public class ServerResponse

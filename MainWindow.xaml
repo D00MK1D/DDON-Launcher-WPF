@@ -205,7 +205,7 @@
 
                     <Label x:Name="passLabel" Content="Password" Margin="6,48,14,216"/>
 
-                    <Label x:Name="labelServer" Content="Server" Margin="6,96,14,167"/>
+                    <Label x:Name="labelServer" Content="Server" Margin="6,96,14,0" Height="28" VerticalAlignment="Top"/>
 
                     <ComboBox x:Name="serverComboBox"
                         FontFamily="/Fonts/#EB Garamond"
