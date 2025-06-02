@@ -134,7 +134,7 @@
 
             <StackPanel Grid.Row="2" Margin="0,4">
                 <Label Content="Name" />
-                <TextBox x:Name="textSmServerName" TextChanged="textSmServerName_TextChanged" Width="450" MinHeight="24"/>
+                <TextBox x:Name="textSmServerName" LostFocus="textSmServerName_LostFocus" Width="450" MinHeight="24"/>
             </StackPanel>
 
             <Grid Grid.Row="3" Margin="0,4">

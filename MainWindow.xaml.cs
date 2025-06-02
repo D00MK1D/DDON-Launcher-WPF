@@ -16,6 +16,7 @@ public partial class MainWindow : Window
     public MainWindow(ServerManager serverManager)
     {
         InitializeComponent();
+        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
         ServerManager = serverManager;
         UpdateServerList();
@@ -216,7 +217,7 @@ public partial class MainWindow : Window
 
                 this.Close();
             }
-            catch (Win32Exception ex)
+            catch (Win32Exception)
             {
                 MessageBox.Show(
                     "DDO.exe not found! Make sure the launcher is located in the game folder and you're running the launcher as Admin.",
@@ -234,8 +235,11 @@ public partial class MainWindow : Window
 
     private void btnServerSettings_Click(object sender, RoutedEventArgs e)
     {
-        ServerSettingsWindow ssw = new ServerSettingsWindow(/*ServerManager*/);
+        ServerSettingsWindow ssw = new ServerSettingsWindow(ServerManager);
         ssw.ShowDialog();
+
+        UpdateServerList();
+
     }
 
     private void btnMinimize_Click(object sender, RoutedEventArgs e)
@@ -256,7 +260,6 @@ public partial class MainWindow : Window
 
     private void UpdateServerList()
     {
-        //serverComboBox.BeginUpdate();
         serverComboBox.Items.Clear();
         foreach (var server in ServerManager.Servers)
         {
@@ -266,7 +269,6 @@ public partial class MainWindow : Window
                 serverComboBox.SelectedIndex = addedItemIndex;
             }
         }
-        //serverComboBox.EndUpdate();
 
         if (serverComboBox.SelectedIndex == -1)
         {
