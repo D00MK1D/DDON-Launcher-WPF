@@ -1,0 +1,85 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Corpse-Eating White Demon",
+  "quest_id": 20075005,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 146,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1980
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 8733,
+          "num": 1
+        },
+        {
+          "item_id": 9398,
+          "num": 3
+        },
+        {
+          "item_id": 7554,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 302
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "enemy_id": "0x015505",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 6824,
+          "is_boss": true,
+          "index": 4
+        },
+        {
+          "enemy_id": "0x015505",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 6824,
+          "is_boss": true,
+          "index": 2
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

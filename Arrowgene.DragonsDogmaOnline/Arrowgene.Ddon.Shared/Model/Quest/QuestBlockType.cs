@@ -1,0 +1,42 @@
+namespace Arrowgene.Ddon.Shared.Model.Quest
+{
+    public enum QuestBlockType : uint
+    {
+        None = 0,
+        NpcTalkAndOrder,
+        NpcTouchAndOrder,
+        QuestNpcTalkAndOrder,
+        PartyGather,
+        IsGatherPartyInStage,
+        DiscoverEnemy,
+        KillGroup,
+        SpawnGroup,
+        WeakenGroup,
+        DestroyGroup,
+        TalkToNpc,
+        NewTalkToNpc,
+        NewNpcTalkAndOrder,
+        TouchNpc,
+        DeliverItems,
+        NewDeliverItems,
+        SeekOutEnemiesAtMarkedLocation,
+        CollectItem,
+        OmInteractEvent,
+        MyQstFlags,
+        IsStageNo,
+        IsQuestOrdered,
+        IsQuestClear,
+        PlayEvent,
+        StageJump,
+        KillTargetEnemies,
+        ExtendTime,
+        DeliverItemsLight,
+        ReturnCheckpoint,
+        SceHitIn,
+        SceHitOut,
+        Raw,
+        DummyBlock,
+        DummyBlockNoProgress,
+        End
+    }
+}

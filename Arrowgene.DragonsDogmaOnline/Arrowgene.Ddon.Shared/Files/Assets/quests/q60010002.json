@@ -1,0 +1,177 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Hidell Plains Trial: The Cause of Calamity (AR10)",
+    "quest_id": 60010002,
+    "next_quest": 0,
+    "base_level": 30,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 25
+    },
+    "area_id": "HidellPlains",
+    "adventure_guide_category": "AreaTrialOrMission",
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 350
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 239,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Menvili the Undead Priest",
+                    "enemy_id": "0x015600",
+                    "level": 30,
+                    "is_boss": true,
+                    "named_enemy_params_id": 310,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Knight)",
+                    "enemy_id": "0x010301",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Knight)",
+                    "enemy_id": "0x010301",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Knight)",
+                    "enemy_id": "0x010301",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Mage)",
+                    "enemy_id": "0x010308",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Mage)",
+                    "enemy_id": "0x010308",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Knight, Pop)",
+                    "enemy_id": "0x010301",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "is_manual_set": true,
+                    "start_think_tbl_no": 8,
+                    "is_required": false,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Mage, Pop)",
+                    "enemy_id": "0x010308",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "is_manual_set": true,
+                    "start_think_tbl_no": 8,
+                    "is_required": false,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Mage, Pop)",
+                    "enemy_id": "0x010308",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "is_manual_set": true,
+                    "start_think_tbl_no": 8,
+                    "is_required": false,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Plague Apostle (Knight, Pop)",
+                    "enemy_id": "0x010301",
+                    "level": 30,
+                    "named_enemy_params_id": 311,
+                    "is_manual_set": true,
+                    "start_think_tbl_no": 8,
+                    "is_required": false,
+                    "exp_scheme": "automatic"
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 1,
+                    "Param2": 9
+                }
+            ]
+        },
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 25
+            },
+            "npc_id": "Alfred",
+            "message_id": 14415
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "type": "QstTalkChg",
+                    "Param1": 1313,
+                    "Param2": 14417
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 25
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Alfred",
+            "message_id": 14416
+        }
+    ]
+}

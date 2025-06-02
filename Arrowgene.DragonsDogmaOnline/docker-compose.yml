@@ -1,0 +1,40 @@
+volumes:
+  ddon-server-sqlite-volume:
+
+networks:
+  ddon-network:
+
+services:
+  app:
+    container_name: ddon-server
+    build: 
+      context: .
+      args:
+        - RUNTIME=${RUNTIME:-linux-x64}
+    restart: no
+    ports:
+      # Database
+      - '3306:3306'
+      # Game server
+      - "52000:52000"
+      # Web server
+      - "52099:52099"
+      # Login server
+      - "52100:52100"
+    environment:
+      - DB_TYPE=sqlite
+      - DB_DATABASE=Ddon
+      - DB_FOLDER=/var/ddon/server/Files/Database
+      - DB_PORT=3306
+      - DB_WIPE_ON_STARTUP=false
+      - DB_BUFFER_SIZE=32768
+      - DB_ENABLE_TRACING=true
+      - DB_ENABLE_POOLING=true
+    volumes:
+      - ddon-server-sqlite-volume:/var/ddon/server/Files/Database
+      - ./Arrowgene.Ddon.config.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
+      - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets
+      - ./Arrowgene.Ddon.Scripts/scripts:/var/ddon/server/Files/Assets/scripts
+    networks:
+      - ddon-network
+    command: /var/ddon/server/Arrowgene.Ddon.Cli server --server start

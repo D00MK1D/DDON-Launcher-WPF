@@ -1,0 +1,116 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Northern Betland Plains Trial: What Lurks in Wastewater (Northern Betland Plains AR15)",
+    "quest_id": 60209001,
+    "next_quest": 0,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 53
+    },
+    "area_id": "NorthernBetlandPlains",
+    "adventure_guide_category": "AreaTrialOrMission",
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1970
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1072
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 137
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 334,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "comment": "Strange Beast of the Abandoned Water (Manticore)",
+                    "enemy_id": "0x015210",
+                    "level": 65,
+                    "is_boss": true,
+                    "named_enemy_params_id": 912,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 65,
+                    "exp_scheme": "automatic"
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 65,
+                    "exp_scheme": "automatic"
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 9,
+                    "Param2": 14
+                }
+            ]
+        },
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 53
+            },
+            "npc_id": "Sunny",
+            "message_id": 17747
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Sunny idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1701,
+                    "Param2": 17748
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 53
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Sunny",
+            "message_id": 17749
+        }
+    ]
+}
