@@ -205,11 +205,11 @@ public partial class MainWindow : Window
             try
             {
                 Process.Start("ddo.exe",
-                              " addr=" + "localhost" +
-                              " port=" + "52100" +
+                              " addr=" + ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                              " port=" + ServerManager.Servers[ServerManager.SelectedServer].LPort +
                               " token=" + token +
-                              " DL=http://" + "localhost" +
-                              ":" + "52099" +
+                              " DL=http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                              ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort +
                               "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
 
                 btnChangeAction.IsEnabled = true;
