@@ -113,6 +113,7 @@ namespace DDO_Launcher
                                  server.Value.DLPort == ushort.Parse(data[SELECTED_SERVER_SECTION][DOWNLOAD_PORT_KEY]))
                 .Select(server => server.Key)
                 .SingleOrDefault();
+                .FirstOrDefault();
 
             if (SelectedServer == null)
             {
