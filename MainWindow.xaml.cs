@@ -42,9 +42,9 @@ public partial class MainWindow : Window
         {
             btnSubmit.Content = "Register";
             btnChangeAction.Content = "Login";
-            labelServer.Margin = new Thickness(6, 143, 10, 0);
-            serverComboBox.Margin = new Thickness(10, 168, 43, 0);
-            btnServerSettings.Margin = new Thickness(218, 168, 10, 77);
+            labelServer.Margin = new Thickness(6, 147, 10, 0);
+            serverComboBox.Margin = new Thickness(10, 172, 43, 0);
+            btnServerSettings.Margin = new Thickness(218, 172, 10, 77);
             labelEmail.Visibility = Visibility.Visible;
             textEmail.Visibility = Visibility.Visible;
             labelRemember.Visibility = Visibility.Hidden;
@@ -55,9 +55,9 @@ public partial class MainWindow : Window
         {
             btnSubmit.Content = "Login";
             btnChangeAction.Content = "Register";
-            labelServer.Margin = new Thickness(6, 94, 10, 0);
-            serverComboBox.Margin = new Thickness(10, 119, 43, 0);
-            btnServerSettings.Margin = new Thickness(218, 119, 10, 126);
+            labelServer.Margin = new Thickness(6, 98, 14, 0);
+            serverComboBox.Margin = new Thickness(10, 124, 43, 0);
+            btnServerSettings.Margin = new Thickness(218, 124, 10, 0);
             serverComboBox.Visibility = Visibility.Visible;
             labelEmail.Visibility = Visibility.Hidden;
             textEmail.Visibility = Visibility.Hidden;

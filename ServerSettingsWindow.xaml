@@ -35,7 +35,6 @@
             </Grid.RowDefinitions>
             <TextBlock Style="{StaticResource HeadlineTextBlock}" Text="Server Management" />
 
-
             <Grid Grid.Row="1" Margin="0,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -50,85 +49,9 @@
                           Height="24"
                           VerticalAlignment="Center"
                           SelectionChanged="serverComboBox_SelectionChanged">
-
-                    <ComboBox.Resources>
-                        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
-                            <Border Background="Transparent"
-                                    BorderThickness="0">
-                                <Path x:Name="Arrow"
-                                      Fill="#FFB1B1B1"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      Data="M2.146 4.646a.5.5 0 0 1 .708 0L6 7.793l3.146-3.147a.5.5 0 1 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 0 1 0-.708"
-                                      Width="9"
-                                      Height="5" Stretch="Fill"/>
-                            </Border>
-                        </ControlTemplate>
-                    </ComboBox.Resources>
-
-                    <ComboBox.Template>
-                        <ControlTemplate TargetType="ComboBox">
-                            <Grid>
-
-                                <Border x:Name="MainBorder"
-                                        Background="{TemplateBinding Background}"
-                                        CornerRadius="3"
-                                        SnapsToDevicePixels="True">
-                                    <Grid>
-                                        <ToggleButton x:Name="ToggleButton"
-                                                      Template="{StaticResource ComboBoxToggleButton}"
-                                                      Grid.Column="2"
-                                                      Focusable="false"
-                                                      IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                                                      ClickMode="Press"
-                                                      HorizontalAlignment="Right"
-                                                      Width="20"/>
-
-                                        <ContentPresenter x:Name="ContentSite"
-                                                          IsHitTestVisible="False"
-                                                          Content="{TemplateBinding SelectionBoxItem}"
-                                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                          Margin="6,0,25,0"
-                                                          VerticalAlignment="Center"
-                                                          HorizontalAlignment="Left"/>
-                                    </Grid>
-                                </Border>
-
-                                <Popup x:Name="PART_Popup"
-                                       Placement="Bottom"
-                                       IsOpen="{TemplateBinding IsDropDownOpen}"
-                                       AllowsTransparency="True"
-                                       Focusable="False"
-                                       PopupAnimation="Slide">
-
-                                    <Grid x:Name="DropDown"
-                                          SnapsToDevicePixels="True"
-                                          MinWidth="{TemplateBinding ActualWidth}"
-                                          MaxHeight="{TemplateBinding MaxDropDownHeight}">
-
-                                        <Border x:Name="DropDownBorder" Background="#FF1A1A1A"/>
-
-                                        <ScrollViewer Margin="4" SnapsToDevicePixels="True">
-                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
-                                        </ScrollViewer>
-
-                                    </Grid>
-                                </Popup>
-                            </Grid>
-                        </ControlTemplate>
-                    </ComboBox.Template>
-
-                    <ComboBox.Background>
-                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                            <GradientStop Color="#FF494949"/>
-                            <GradientStop Color="#FF1A1A1A" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ComboBox.Background>
-
                 </ComboBox>
 
-                <Button x:Name="btnSmRemove" Style="{StaticResource DarkButton}" Grid.Column="1" Width="25" Margin="5,0,0,0" Click="btnSmRemove_Click"/>
+                <Button x:Name="btnSmRemove" Style="{StaticResource DarkButton}" Grid.Column="1" Height="24" Margin="5,0,0,0" Click="btnSmRemove_Click"/>
                 <Button x:Name="btnSmAdd" Style="{StaticResource DarkButton}" Grid.Column="2" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click"/>
             </Grid>
 

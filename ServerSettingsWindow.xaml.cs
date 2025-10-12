@@ -129,7 +129,6 @@ namespace DDO_Launcher
                     btnSmRemove.IsEnabled = true;
                 }
             }
-            
         }
 
         private void btnSmAccept_Click(object sender, RoutedEventArgs e)
@@ -218,6 +217,5 @@ namespace DDO_Launcher
         {
             AddNewServer();
         }
-
     }
 }
