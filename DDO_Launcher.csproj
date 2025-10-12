@@ -35,18 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="DDON_KeySS.jpg" />
-    <Resource Include="DragonsDogmaOnline-dragon.jpg" />
     <Resource Include="Fonts\EBGaramond-Regular.ttf" />
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
     <Resource Include="Images\btnGeneralSettings.png" />
     <Resource Include="Images\logo.png" />
-    <Resource Include="InstallerIcon256.png" />
-    <Resource Include="Launcher BG.jpg" />
-    <Resource Include="Launcher-BG-2.jpg" />
-    <Resource Include="nice.jpg" />
-    <Resource Include="Sidebar-ConvertImage.bmp" />
-    <Resource Include="Sidebar.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,5 +55,4 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-
 </Project>

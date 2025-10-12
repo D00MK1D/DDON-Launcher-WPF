@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
 
-            <Rectangle Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="500" Grid.RowSpan="2" VerticalAlignment="Top" Width="1000" Fill="#B2191A19"/>
+            <Border Grid.ColumnSpan="3" CornerRadius="8" HorizontalAlignment="Left" Height="500" Grid.RowSpan="2" VerticalAlignment="Top" Width="1000" Background="#B2191A19"/>
 
 
 
@@ -44,7 +44,7 @@
                     Grid.RowSpan="2">
                 <Image x:Name="imgHighlight" 
                     IsHitTestVisible="False" 
-                    VerticalAlignment="Top" Height="120" Stretch="UniformToFill" Source="/nice.jpg" Margin="2,2,2,0"
+                    VerticalAlignment="Top" Height="120" Stretch="UniformToFill" Source="./Images/nice.jpg" Margin="2,2,2,0"
                    >
                     <Image.Clip>
                         <RectangleGeometry Rect="0,0,665,130" RadiusX="8" RadiusY="8"/>
