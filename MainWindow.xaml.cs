@@ -81,7 +81,7 @@ public partial class MainWindow : Window
         btnChangeAction.IsEnabled = false;
         btnSubmit.IsEnabled = false;
         
-        if ((Action != "create" && Action != "login") || textAccount.Text == "" || textPassword.Text == "")
+        if ((Action != "create" && Action != "login") || textAccount.Text == "" || textPassword.Password == "")
         {
             MessageBox.Show(
                 "Account or Password must not be empty!",
@@ -103,7 +103,7 @@ public partial class MainWindow : Window
             {
                 Action = Action,
                 Account = textAccount.Text,
-                Password = textPassword.Text,
+                Password = textPassword.Password,
                 Email = ""
             };
 

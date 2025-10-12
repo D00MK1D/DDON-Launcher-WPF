@@ -94,39 +94,37 @@
                         </TextBox.Background>
                     </TextBox>
 
-                    <TextBox x:Name="textPassword" 
+                    <PasswordBox x:Name="textPassword" 
                         TabIndex="2" 
                         AllowDrop="False" 
                         VerticalAlignment="Top" 
-                        TextWrapping="NoWrap" 
                         VerticalContentAlignment="Center"
-                        AcceptsReturn="False"
                         Height="24" 
                         BorderBrush="{x:Null}" 
+                        PasswordChar="•"
                         Foreground="#D3D3D3" 
                         Margin="10,74,10,0" 
                         FontFamily="/Fonts/#EB Garamond" 
                         FontSize="16" 
                         MaxLength="100" 
-                        MaxLines="1" 
+                        
                         BorderThickness="0,0,0,0" 
-                        VerticalScrollBarVisibility="Disabled" 
-                        UndoLimit="10">
+                        >
 
-                        <TextBox.Resources>
+                        <PasswordBox.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="2"/>
                             </Style>
-                        </TextBox.Resources>
+                        </PasswordBox.Resources>
 
-                        <TextBox.Background>
+                        <PasswordBox.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#494949"/>
                                 <GradientStop Color="#1A1A1A" Offset="1"/>
                             </LinearGradientBrush>
-                        </TextBox.Background>
+                        </PasswordBox.Background>
 
-                    </TextBox>
+                    </PasswordBox>
 
                     <Button x:Name="btnSubmit" 
                         Content="Login" 
