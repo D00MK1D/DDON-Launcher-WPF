@@ -15,7 +15,7 @@
     <Border x:Name="LauncherBorder"
             CornerRadius="8">
         <Border.Background>
-            <ImageBrush ImageSource="/DDON_KeySS.jpg" Stretch="UniformToFill" TileMode="None"/>
+            <ImageBrush ImageSource="{Binding CustomBackground}" Stretch="UniformToFill" TileMode="None"/>
         </Border.Background>
 
         <Grid x:Name="LauncherGrid">
@@ -30,12 +30,7 @@
                 <ColumnDefinition Width="699*"/>
             </Grid.ColumnDefinitions>
 
-
             <Border Grid.ColumnSpan="3" CornerRadius="8" HorizontalAlignment="Left" Height="500" Grid.RowSpan="2" VerticalAlignment="Top" Width="1000" Background="#B2191A19"/>
-
-
-
-
 
             <Border Background="#E5191A19"
                     Margin="10,48,20,20"
@@ -44,7 +39,7 @@
                     Grid.RowSpan="2">
                 <Image x:Name="imgHighlight" 
                     IsHitTestVisible="False" 
-                    VerticalAlignment="Top" Height="120" Stretch="UniformToFill" Source="./Images/nice.jpg" Margin="2,2,2,0"
+                    VerticalAlignment="Top" Height="120" Stretch="UniformToFill" Source="/Images/newsbanner.jpg" Margin="2,2,2,0"
                    >
                     <Image.Clip>
                         <RectangleGeometry Rect="0,0,665,130" RadiusX="8" RadiusY="8"/>
@@ -413,11 +408,6 @@
                   Data="M20 13H4a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2"
                   RenderTransformOrigin="0.495,0.513"/>
             </Button>
-            <Image Grid.Column="2" HorizontalAlignment="Left" Height="100" Margin="462,-58,0,0" VerticalAlignment="Top" Width="100">
-                <Image.OpacityMask>
-                    <ImageBrush ImageSource="/Launcher-BG-2.jpg"/>
-                </Image.OpacityMask>
-            </Image>
             <Grid Grid.Row="1" Grid.Column="1" Margin="34,36,36,10" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -452,13 +442,13 @@
                
                TextWrapping="Wrap" Style="{DynamicResource EventDetailsTextBlockStyle}" Padding="0,0,12,12"/>
             </Grid>
-            <Image Source="/Images/logo.png" Margin="20,30,10,342" Grid.RowSpan="2">
-                <Image.OpacityMask>
+            <Image Source="{Binding CustomLogo}" Margin="20,30,10,0">
+                <!--Image.OpacityMask>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black"/>
                         <GradientStop Color="White" Offset="1"/>
                     </LinearGradientBrush>
-                </Image.OpacityMask>
+                </Image.OpacityMask-->
             </Image>
 
 

@@ -1,17 +1,57 @@
-﻿using System.ComponentModel;
+﻿using Arrowgene.Logging;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace DDO_Launcher;
 
-public partial class MainWindow : Window
+public partial class MainWindow : Window, INotifyPropertyChanged
 {
-
     private readonly ServerManager ServerManager;
+
+    private string _logo;
+    private string _background;
+
+    private BitmapImage _customBackground;
+    private BitmapImage _customLogo;
+
+    public BitmapImage CustomBackground
+    {
+        get => _customBackground;
+        set
+        {
+            if (_customBackground != value)
+            {
+                _customBackground = value;
+                OnPropertyChanged(nameof(CustomBackground));
+            }
+        }
+    }
+
+    public BitmapImage CustomLogo
+    {
+        get => _customLogo;
+        set
+        {
+            if (_customLogo != value)
+            {
+                _customLogo = value;
+                OnPropertyChanged(nameof(CustomLogo));
+            }
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged(string propertyName) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
 
     public MainWindow(ServerManager serverManager)
     {
@@ -20,6 +60,34 @@ public partial class MainWindow : Window
 
         ServerManager = serverManager;
         UpdateServerList();
+        DataContext = this;
+
+        CustomBackground = new BitmapImage(new Uri("pack://application:,,,/Images/background.jpg"));
+        CustomLogo = new BitmapImage(new Uri("pack://application:,,,/Images/logo.png"));
+
+        Dispatcher.BeginInvoke(new Action(async () =>
+        {
+            _logo = await GetCustomImagesAsync("logo.png");
+            _background = await GetCustomImagesAsync("background.jpg");
+
+            try
+            {
+                CustomBackground = new BitmapImage(new Uri(_background));
+            }
+            catch
+            {
+                //CustomBackground = new BitmapImage(new Uri("pack://application:,,,/Images/background.jpg"));
+            }
+
+            try
+            {
+                CustomLogo = new BitmapImage(new Uri(_logo));
+            }
+            catch
+            {
+                //CustomLogo = new BitmapImage(new Uri("pack://application:,,,/Images/logo.png"));
+            }
+        }), System.Windows.Threading.DispatcherPriority.Background);
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -80,7 +148,7 @@ public partial class MainWindow : Window
 
         btnChangeAction.IsEnabled = false;
         btnSubmit.IsEnabled = false;
-        
+
         if ((Action != "create" && Action != "login") || textAccount.Text == "" || textPassword.Password == "")
         {
             MessageBox.Show(
@@ -104,11 +172,11 @@ public partial class MainWindow : Window
                 Action = Action,
                 Account = textAccount.Text,
                 Password = textPassword.Password,
-                Email = ""
+                Email = textEmail.Text
             };
 
             jsonData = JsonSerializer.Serialize(requestData);
-            var content = new StringContent(jsonData, Encoding.Latin1, "application/json");
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             client.DefaultRequestVersion = HttpVersion.Version11;
             HttpResponseMessage response = new HttpResponseMessage();
 
@@ -129,7 +197,7 @@ public partial class MainWindow : Window
                 btnSubmit.IsEnabled = true;
 
                 return;
-            } 
+            }
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -151,7 +219,7 @@ public partial class MainWindow : Window
 
                 btnChangeAction.IsEnabled = true;
                 btnSubmit.IsEnabled = true;
-                
+
                 return;
             }
 
@@ -273,4 +341,30 @@ public partial class MainWindow : Window
             serverComboBox.SelectedIndex = 0;
         }
     }
+
+    private async Task<string> GetCustomImagesAsync(string img)
+    {
+        string imageUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/launcher/{img}";
+
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(5);
+
+                var request = new HttpRequestMessage(HttpMethod.Get, imageUrl);
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                    return imageUrl;
+                else
+                    return $"pack://application:,,,/Images/{img}";
+            }
+        }
+        catch
+        {
+            return $"pack://application:,,,/Images/{img}";
+        }
+    }
+
 }

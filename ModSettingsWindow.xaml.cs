@@ -11,6 +11,7 @@ namespace DDO_Launcher
         public ModSettingsWindow()
         {
             InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
         private void btnMsCancel_Click(object sender, RoutedEventArgs e)
