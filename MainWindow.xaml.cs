@@ -225,22 +225,59 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 return;
             }
 
-            var token = string.Empty;
             try
             {
-                if (serverResponse.Message == "Login Success")
+                if (!string.IsNullOrEmpty(serverResponse.Token))
                 {
-                    // Login
-                    token = serverResponse.Token;
+                    try
+                    {
+                        Process.Start("ddo.exe",
+                                      " addr=" + ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                                      " port=" + ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                                      " token=" + serverResponse.Token +
+                                      " DL=http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                                      ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort +
+                                      "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+
+                        btnChangeAction.IsEnabled = true;
+                        btnSubmit.IsEnabled = true;
+
+                        this.Close();
+                    }
+                    catch (Win32Exception e)
+                    {
+                        if (e.NativeErrorCode == 2)
+                        {
+                            MessageBox.Show(
+                                "Launcher couldn't find DDO.exe!\nMake sure the launcher is located in the game folder",
+                                "Dragon's Dogma Online",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                        }
+                        else if(e.NativeErrorCode == 740)
+                        {
+                            MessageBox.Show(
+                                "Launcher couldn't run DDO.exe!\nMake sure the launcher is running as Admin.",
+                                "Dragon's Dogma Online",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                        }
+
+                        btnChangeAction.IsEnabled = true;
+                        btnSubmit.IsEnabled = true;
+                        return;
+                    }
                 }
                 else if (serverResponse.Error == null)
                 {
-                    // Register
                     MessageBox.Show(
                         serverResponse.Message,
                         "Dragon's Dogma Online",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
+
+                    btnChangeAction.IsEnabled = true;
+                    btnSubmit.IsEnabled = true;
                     return;
                 }
                 else
@@ -250,6 +287,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                         "Dragon's Dogma Online",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
+
+                    btnChangeAction.IsEnabled = true;
+                    btnSubmit.IsEnabled = true;
                     return;
                 }
             }
@@ -259,43 +299,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     "Invalid response from server\n" +
                     "Error: " + serverResponse.Error + "\n" +
                     "Message: " + serverResponse.Message + "\n" +
-                    "Token: " + serverResponse.Token + "\n",
+                    "Message: " + client.ToString() + "\n",
                     "Dragon's Dogma Online",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
 
                 btnChangeAction.IsEnabled = true;
                 btnSubmit.IsEnabled = true;
-
-                return;
-            }
-
-            try
-            {
-                Process.Start("ddo.exe",
-                              " addr=" + ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
-                              " port=" + ServerManager.Servers[ServerManager.SelectedServer].LPort +
-                              " token=" + token +
-                              " DL=http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
-                              ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort +
-                              "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
-
-                btnChangeAction.IsEnabled = true;
-                btnSubmit.IsEnabled = true;
-
-                this.Close();
-            }
-            catch (Win32Exception)
-            {
-                MessageBox.Show(
-                    "DDO.exe not found! Make sure the launcher is located in the game folder and you're running the launcher as Admin.",
-                    "Dragon's Dogma Online",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                btnChangeAction.IsEnabled = true;
-                btnSubmit.IsEnabled = true;
-
                 return;
             }
         }
@@ -377,6 +387,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             {
                 ServerManager.SelectServer((string)serverComboBox.SelectedItem);
 
+                _background = await GetCustomImagesAsync("background.jpg");
+                _logo = await GetCustomImagesAsync("logo.png");
+
                 CustomBackground = new BitmapImage(new Uri(_background));
                 CustomLogo = new BitmapImage(new Uri(_logo));
             }
@@ -395,8 +408,5 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             return;
         }
-
-        //_background = await GetCustomImagesAsync("background.jpg");
-        //_logo = await GetCustomImagesAsync("logo.png");
     }
 }
