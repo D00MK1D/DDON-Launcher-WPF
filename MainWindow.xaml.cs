@@ -182,7 +182,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             try
             {
-                response = await client.PostAsync("http://localhost:52099" + path, content);
+                //response = await client.PostAsync("http://localhost:52099" + path, content);
+                response = await client.PostAsync("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                              ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + path, content);
             }
             catch (HttpRequestException e)
             {
@@ -367,4 +369,34 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
+    private async void serverComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (serverComboBox.SelectedItem != null)
+        {
+            try
+            {
+                ServerManager.SelectServer((string)serverComboBox.SelectedItem);
+
+                CustomBackground = new BitmapImage(new Uri(_background));
+                CustomLogo = new BitmapImage(new Uri(_logo));
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show(
+                    "Selected server not found!",
+                    "Dragon's Dogma Online",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                UpdateServerList();
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
+
+        //_background = await GetCustomImagesAsync("background.jpg");
+        //_logo = await GetCustomImagesAsync("logo.png");
+    }
 }

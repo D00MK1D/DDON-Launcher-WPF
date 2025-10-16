@@ -26,7 +26,6 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="301*"/>
-                <ColumnDefinition Width="0*"/>
                 <ColumnDefinition Width="699*"/>
             </Grid.ColumnDefinitions>
 
@@ -207,7 +206,11 @@
                         TabIndex="3"
                         Margin="10,124,43,0"
                         Height="24"
-                        VerticalAlignment="Top">
+                        VerticalAlignment="Top"
+                        ItemsSource="{Binding ServerManager.Servers.Keys}"
+                        SelectedItem="{Binding ServerManager.SelectedServer, Mode=TwoWay}"
+                        SelectionChanged="serverComboBox_SelectionChanged">
+
                         
                     </ComboBox>
 
