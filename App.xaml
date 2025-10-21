@@ -263,7 +263,7 @@
 
         <Style x:Key="ModEntryTitle" TargetType="TextBlock">
             <Setter Property="Padding" Value="12,12,12,6"/>
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="24"/>
             <Setter Property="FontFamily" Value="Fonts/#EB Garamond"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
