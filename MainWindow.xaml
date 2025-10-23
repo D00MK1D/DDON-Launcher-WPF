@@ -376,12 +376,11 @@
                 </Path>
             </Button>
 
-            <Button x:Name="btnGeneralSettings" Grid.Row="0"
+            <Button x:Name="btnInstallations" Grid.Row="0"
                     Grid.Column="1"
-                    Margin="569,10,105,115"
-                    RenderTransformOrigin="0.5,0.5"
+                    Margin="581,10,94,115"
                     Background="Transparent"
-                    BorderThickness="0" Click="btnGeneralSettings_Click">
+                    BorderThickness="0" Click="btnInstallations_Click">
 
                 <Button.Resources>
                     <Style TargetType="{x:Type Path}">

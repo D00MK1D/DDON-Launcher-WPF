@@ -50,8 +50,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     protected void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-
-
     public MainWindow(ServerManager serverManager)
     {
         InitializeComponent();
@@ -75,7 +73,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
             catch
             {
-                //CustomBackground = new BitmapImage(new Uri("pack://application:,,,/Images/background.jpg"));
+                //Do nothing
             }
 
             try
@@ -84,7 +82,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
             catch
             {
-                //CustomLogo = new BitmapImage(new Uri("pack://application:,,,/Images/logo.png"));
+                //Do nothing
             }
         }), System.Windows.Threading.DispatcherPriority.Background);
     }
@@ -329,7 +327,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         this.Close();
     }
 
-    private void btnGeneralSettings_Click(object sender, RoutedEventArgs e)
+    private void btnInstallations_Click(object sender, RoutedEventArgs e)
     {
         ModSettingsWindow msw = new ModSettingsWindow();
         msw.ShowDialog();

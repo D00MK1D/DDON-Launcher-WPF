@@ -39,7 +39,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ModEntryTitle}" Margin="0,0,0,2" ><Run Language="pt-br" Text="Translation Install"/></TextBlock>
 
                     <TextBlock Grid.Row="0" Grid.Column="1" Padding="8"/>
-                    <Button Content="Install" Grid.Column="1" Height="NaN" Padding="12,12,12,12" Margin="9,10,9,10" Foreground="#FF212121" BorderBrush="#00707070" Style="{StaticResource GoldenButton}">
+                    <Button x:Name="btnInstallTranslation" Content="Install" Grid.Column="1" Height="NaN" Padding="12,12,12,12" Margin="9,10,9,10" Foreground="#FF212121" BorderBrush="#00707070" Style="{StaticResource GoldenButton}" Click="btnInstallTranslation_Click">
                     </Button>
                 </Grid>
                 <Grid Height="64" Width="377" Background="#0CDDDDDD">

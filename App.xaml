@@ -186,7 +186,7 @@
                                     <ToggleButton x:Name="ToggleButton"
                                                   Focusable="False"
                                                   ClickMode="Press"
-                                                  Width="20"
+                                                  Width="2000"
                                                   HorizontalAlignment="Right"
                                                   IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <ToggleButton.Template>
@@ -195,12 +195,12 @@
                                                         BorderThickness="0">
                                                     <Path x:Name="Arrow"
                                                           Fill="#FFB1B1B1"
-                                                          HorizontalAlignment="Center"
+                                                          HorizontalAlignment="Right"
                                                           VerticalAlignment="Center"
                                                           Data="M2.146 4.646a.5.5 0 0 1 .708 0L6 7.793l3.146-3.147a.5.5 0 1 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 0 1 0-.708"
-                                                          Width="9"
+                                                          Width="10"
                                                           Height="5"
-                                                          Stretch="Fill"/>
+                                                          Stretch="UniformToFill"/>
                                                 </Border>
                                             </ControlTemplate>
                                         </ToggleButton.Template>

@@ -20,24 +20,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Arrowgene.Ddon.Client">
-      <HintPath>.\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Release\net9.0\Arrowgene.Ddon.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Arrowgene.Ddon.Shared">
-      <HintPath>.\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Release\net9.0\Arrowgene.Ddon.Shared.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Arrowgene.DragonsDogmaOnline\**" />
     <EmbeddedResource Remove="Arrowgene.DragonsDogmaOnline\**" />
     <None Remove="Arrowgene.DragonsDogmaOnline\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Arrowgene.Ddon.Client">
+      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Debug\net9.0\Arrowgene.Ddon.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Arrowgene.Ddon.Shared">
+      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Debug\net9.0\Arrowgene.Ddon.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Fonts\EBGaramond-Regular.ttf" />
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
-    <Resource Include="Images\btnGeneralSettings.png" />
     <Resource Include="Images\logo.png" />
     <Resource Include="Images\background.jpg" />
     <Resource Include="Images\newsbanner.jpg" />
