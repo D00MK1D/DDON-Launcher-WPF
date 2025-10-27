@@ -56,7 +56,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" Padding="12,12,12,6" Style="{StaticResource ModEntryTitle}" Margin="0,0,0,-3"><Run Language="pt-br" Text="Mod Install"/></TextBlock>
 
                     <TextBlock Grid.Row="0" Grid.Column="1" Padding="8"/>
-                    <Button Content="Search file..." Grid.Column="1" Height="NaN" Padding="12,12,12,12" Margin="9,9,9,6" Foreground="#FF212121" BorderBrush="#00707070" Style="{StaticResource GoldenButton}">
+                    <Button x:Name="buttonInstallMod" Content="Search file..." Grid.Column="1" Height="NaN" Padding="12,12,12,12" Margin="9,9,9,6" Foreground="#FF212121" BorderBrush="#00707070" Style="{StaticResource GoldenButton}" Click="buttonInstallMod_Click">
                     </Button>
                 </Grid>
             </StackPanel>

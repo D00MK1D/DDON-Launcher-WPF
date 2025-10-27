@@ -1,5 +1,7 @@
 ﻿using Arrowgene.Ddon.Client;
 using Arrowgene.Ddon.Shared.Csv;
+using DDO_Launcher.Mods;
+using Microsoft.Win32;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
@@ -11,6 +13,9 @@ namespace DDO_Launcher
 {
     public partial class ModSettingsWindow : Window
     {
+
+        private readonly ModManager ModManager;
+
         public ModSettingsWindow()
         {
             InitializeComponent();
@@ -278,5 +283,88 @@ namespace DDO_Launcher
             return result == true;
         }
 
+        private async void buttonInstallMod_Click(object sender, RoutedEventArgs e)
+        {
+            var messageLabel = new TextBlock
+            {
+                Text = "Preparing...",
+                Margin = new Thickness(0, 0, 0, 10)
+            };
+
+            var progressBar = new ProgressBar
+            {
+                Height = 20,
+                Minimum = 0,
+                Maximum = 100
+            };
+
+            var waitWindow = new Window
+            {
+                Title = "Mod Installation",
+                Width = 400,
+                Height = 150,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ResizeMode = ResizeMode.NoResize,
+                WindowStyle = WindowStyle.ToolWindow,
+                Content = new StackPanel
+                {
+                    Margin = new Thickness(15),
+                    Children = { messageLabel, progressBar }
+                }
+            };
+
+            try
+            {
+                var selectModFileDialog = new OpenFileDialog
+                {
+                    InitialDirectory = System.IO.Directory.GetCurrentDirectory(),
+                    Filter = "DDOn Mod Zip Files (*.zip)|*.zip",
+                    FilterIndex = 0,
+                    RestoreDirectory = true
+                };
+
+                var dialogResult = selectModFileDialog.ShowDialog(this);
+                if (dialogResult != true)
+                    return;
+
+                waitWindow.Show();
+                progressBar.IsIndeterminate = false;
+                progressBar.Value = 0;
+
+                string name = "", author = "";
+                var _modManager = new ModManager();
+
+                await _modManager.InstallMod(
+                    selectModFileDialog.FileName,
+                    new Progress<ModInstallProgress>(progressReport =>
+                    {
+                        name = progressReport.Name;
+                        author = progressReport.Author;
+
+                        messageLabel.Text = $"Installing \"{name}\"\nAuthor: {author}";
+                        progressBar.Maximum = progressReport.TotalActionCount;
+                        progressBar.Value = progressReport.ProcessedTotalActions;
+                    })
+                );
+
+                waitWindow.Close();
+                Properties.Settings.Default.Save();
+
+                MessageBox.Show(
+                    $"Successfully installed {name} (Author {author})",
+                    "Mod installed",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                waitWindow.Close();
+                MessageBox.Show(ex.Message, 
+                    "Error", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
+            }
+        }
     }
 }
