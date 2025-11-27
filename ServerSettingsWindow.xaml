@@ -48,11 +48,25 @@
                           TabIndex="3"
                           Height="24"
                           VerticalAlignment="Center"
-                          SelectionChanged="serverComboBox_SelectionChanged">
+                          SelectionChanged="serverComboBox_SelectionChanged"
+                          Style="{StaticResource ServerCB}">
                 </ComboBox>
 
-                <Button x:Name="btnSmRemove" Style="{StaticResource DarkButton}" Grid.Column="1" Height="24" Margin="5,0,0,0" Click="btnSmRemove_Click"/>
-                <Button x:Name="btnSmAdd" Style="{StaticResource DarkButton}" Grid.Column="2" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click"/>
+                <Button x:Name="btnSmRemove" Style="{StaticResource DarkButton}" Grid.Column="1" Height="24" Margin="5,0,0,0" Click="btnSmRemove_Click">
+                    <Path Stretch="Uniform"
+                          Fill="White"
+                          Width="12"
+                          Data="M20 13H4a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2"
+                          RenderTransformOrigin="0.495,0.513"/>
+                </Button>
+                
+                <Button x:Name="btnSmAdd" Style="{StaticResource DarkButton}" Grid.Column="2" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click">
+                    <Path Stretch="Uniform"
+                          Fill="White"
+                      Height="12" Width="12"
+                      Data="M12.75 11.25V5a.75.75 0 0 0-1.5 0v6.25H5a.75.75 0 0 0 0 1.5h6.25V19a.76.76 0 0 0 .75.75a.75.75 0 0 0 .75-.75v-6.25H19a.75.75 0 0 0 .75-.75a.76.76 0 0 0-.75-.75Z"
+                      RenderTransformOrigin="0.5,0.5"/>
+                </Button>
             </Grid>
 
             <StackPanel Grid.Row="2" Margin="0,4">

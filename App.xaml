@@ -169,7 +169,7 @@
             <Setter Property="Foreground" Value="#FFB1B1B1"/>
         </Style>
 
-        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Style x:Key="MainCB" TargetType="ComboBox">
 
             <!-- Template customizado -->
             <Setter Property="Template">
@@ -178,61 +178,153 @@
                         <Grid>
 
                             <Border x:Name="MainBorder"
-                                    Background="{TemplateBinding Background}"
-                                    CornerRadius="3"
-                                    SnapsToDevicePixels="True">
+                             Background="{TemplateBinding Background}"
+                             CornerRadius="3"
+                             SnapsToDevicePixels="True">
 
                                 <Grid>
                                     <ToggleButton x:Name="ToggleButton"
-                                                  Focusable="False"
-                                                  ClickMode="Press"
-                                                  Width="2000"
-                                                  HorizontalAlignment="Right"
-                                                  IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                           Focusable="False"
+                                           ClickMode="Press"
+                                           Width="194"
+                                           HorizontalAlignment="Left"
+                                           IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <ToggleButton.Template>
                                             <ControlTemplate TargetType="{x:Type ToggleButton}">
                                                 <Border Background="Transparent"
-                                                        BorderThickness="0">
+                                                 BorderThickness="0">
                                                     <Path x:Name="Arrow"
-                                                          Fill="#FFB1B1B1"
-                                                          HorizontalAlignment="Right"
-                                                          VerticalAlignment="Center"
-                                                          Data="M2.146 4.646a.5.5 0 0 1 .708 0L6 7.793l3.146-3.147a.5.5 0 1 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 0 1 0-.708"
-                                                          Width="10"
-                                                          Height="5"
-                                                          Stretch="UniformToFill"/>
+                                                   Fill="#FFB1B1B1"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center"
+                                                   Data="M2.146 4.646a.5.5 0 0 1 .708 0L6 7.793l3.146-3.147a.5.5 0 1 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 0 1 0-.708"
+                                                   Width="10"
+                                                   Height="5"
+                                                   Stretch="UniformToFill"/>
                                                 </Border>
                                             </ControlTemplate>
                                         </ToggleButton.Template>
                                     </ToggleButton>
 
                                     <ContentPresenter x:Name="ContentSite"
-                                                      IsHitTestVisible="False"
-                                                      Content="{TemplateBinding SelectionBoxItem}"
-                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                      Margin="6,0,25,0"
-                                                      VerticalAlignment="Center"
-                                                      HorizontalAlignment="Left"/>
+                                               IsHitTestVisible="False"
+                                               Content="{TemplateBinding SelectionBoxItem}"
+                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                               Margin="6,0,25,0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"/>
                                 </Grid>
                             </Border>
 
                             <Popup x:Name="PART_Popup"
-                                   Placement="Bottom"
-                                   IsOpen="{TemplateBinding IsDropDownOpen}"
-                                   AllowsTransparency="True"
-                                   Focusable="False"
-                                   PopupAnimation="Slide">
+                            Placement="Bottom"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            PopupAnimation="Slide">
                                 <Grid x:Name="DropDown"
-                                      SnapsToDevicePixels="True"
-                                      MinWidth="{TemplateBinding ActualWidth}"
-                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                               SnapsToDevicePixels="True"
+                               MinWidth="{TemplateBinding ActualWidth}"
+                               MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                     <Border x:Name="DropDownBorder"
-                                            Background="#FF1A1A1A"/>
+                                     Background="#FF1A1A1A"/>
                                     <ScrollViewer Margin="4"
-                                                  SnapsToDevicePixels="True">
+                                           SnapsToDevicePixels="True">
                                         <StackPanel IsItemsHost="True"
-                                                    KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                             KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <!-- Fundo padrão -->
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="#FF494949"/>
+                        <GradientStop Color="#FF1A1A1A" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+
+            <!-- Cor do texto -->
+            <Setter Property="Foreground" Value="White"/>
+
+            <!-- Padding e Margem padrão -->
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="Margin" Value="2"/>
+
+        </Style>
+        
+        <Style x:Key="ServerCB" TargetType="ComboBox">
+
+            <!-- Template customizado -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid>
+
+                            <Border x:Name="MainBorder"
+                             Background="{TemplateBinding Background}"
+                             CornerRadius="3"
+                             SnapsToDevicePixels="True">
+
+                                <Grid>
+                                    <ToggleButton x:Name="ToggleButton"
+                                           Focusable="False"
+                                           ClickMode="Press"
+                                           Width="382"
+                                           HorizontalAlignment="Left"
+                                           IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                <Border Background="Transparent"
+                                                 BorderThickness="0">
+                                                    <Path x:Name="Arrow"
+                                                   Fill="#FFB1B1B1"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center"
+                                                   Data="M2.146 4.646a.5.5 0 0 1 .708 0L6 7.793l3.146-3.147a.5.5 0 1 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 0 1 0-.708"
+                                                   Width="10"
+                                                   Height="5"
+                                                   Stretch="UniformToFill"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+
+                                    <ContentPresenter x:Name="ContentSite"
+                                               IsHitTestVisible="False"
+                                               Content="{TemplateBinding SelectionBoxItem}"
+                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                               Margin="6,0,25,0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"/>
+                                </Grid>
+                            </Border>
+
+                            <Popup x:Name="PART_Popup"
+                            Placement="Bottom"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            PopupAnimation="Slide">
+                                <Grid x:Name="DropDown"
+                               SnapsToDevicePixels="True"
+                               MinWidth="{TemplateBinding ActualWidth}"
+                               MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                     Background="#FF1A1A1A"/>
+                                    <ScrollViewer Margin="4"
+                                           SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                             KeyboardNavigation.DirectionalNavigation="Contained"/>
                                     </ScrollViewer>
                                 </Grid>
                             </Popup>
@@ -341,14 +433,14 @@
 
                             <Border x:Name="CheckBoxBorder"
                                 Grid.Column="0"
-                                Width="14" Height="14"
-                                BorderBrush="#FF494949" BorderThickness="1"
-                                Background="White"
-                                VerticalAlignment="Center">
+                                Width="20" Height="20"
+                                HorizontalAlignment="Center">
                                 <Path x:Name="CheckMark"
                                   Data="M0 5L5 10L15 0"
-                                  Stroke="Gray" StrokeThickness="2"
-                                  Visibility="Collapsed"/>
+                                  Stroke="White" StrokeThickness="3"
+                                  Visibility="Collapsed"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
                             </Border>
                         </Grid>
                         
