@@ -378,11 +378,12 @@
                 </Path>
             </Button>
 
-            <Button x:Name="btnInstallations" Grid.Row="0"
+            <Button x:Name="btnModinstall" Grid.Row="0"
                     Grid.Column="1"
+                    ToolTip="Mod Install"
                     Margin="581,10,94,115"
                     Background="Transparent"
-                    BorderThickness="0" Click="btnInstallations_Click">
+                    BorderThickness="0" Click="btnInstallMod_Click" Cursor="Hand">
 
                 <Button.Resources>
                     <Style TargetType="{x:Type Path}">
@@ -452,11 +453,12 @@
                            TextWrapping="Wrap" Style="{DynamicResource EventDetailsTextBlockStyle}" Padding="0,0,12,12"/>
             </Grid>
             <Image Source="{Binding CustomLogo}" Margin="20,30,10,0" />
-            <Button x:Name="btnInstallations_Copiar" Grid.Row="0"
+            <Button x:Name="btnTranslation" Grid.Row="0"
                 Grid.Column="1"
+                ToolTip="Install Translation"
                 Margin="547,10,128,115"
                 Background="Transparent"
-                BorderThickness="0" Click="btnInstallations_Click">
+                BorderThickness="0" Click="btnInstallTranslation_Click">
 
                 <Button.Resources>
                     <Style TargetType="{x:Type Path}">
