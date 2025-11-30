@@ -71,7 +71,7 @@
 
             <StackPanel Grid.Row="2" Margin="0,4">
                 <Label Content="Name" />
-                <TextBox x:Name="textSmServerName" LostFocus="textSmServerName_LostFocus" Width="450" MinHeight="24"/>
+                <TextBox x:Name="textSmServerName" LostFocus="textSmServerName_LostFocus" Width="450" MinHeight="24" Style="{StaticResource StylshTextBox}" />
             </StackPanel>
 
             <Grid Grid.Row="3" Margin="0,4">
@@ -81,11 +81,11 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Lobby IP" />
-                    <TextBox x:Name="textSmLobbyIP" TextChanged="textSmLobbyIP_TextChanged" MinHeight="24"/>
+                    <TextBox x:Name="textSmLobbyIP" TextChanged="textSmLobbyIP_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port"/>
-                    <TextBox x:Name="textSmLobbyPort" TextChanged="textSmLobbyPort_TextChanged" MinHeight="24"/>
+                    <TextBox x:Name="textSmLobbyPort" TextChanged="textSmLobbyPort_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
                 </StackPanel>
             </Grid>
 
@@ -96,11 +96,11 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Download IP"/>
-                    <TextBox x:Name="textSmDownloadIP" TextChanged="textSmDownloadIP_TextChanged" MinHeight="24"></TextBox>
+                    <TextBox x:Name="textSmDownloadIP" TextChanged="textSmDownloadIP_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"></TextBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port"/>
-                    <TextBox x:Name="textSmDownloadPort" TextChanged="textSmDownloadPort_TextChanged" MinHeight="24"/>
+                    <TextBox x:Name="textSmDownloadPort" TextChanged="textSmDownloadPort_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
                 </StackPanel>
             </Grid>
 

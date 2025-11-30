@@ -105,7 +105,7 @@
             <Setter Property="FontSize" Value="18"/>
         </Style>
 
-        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Style x:Key="StylshTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
 
             <Setter Property="AllowDrop" Value="False"/>
             <Setter Property="TextWrapping" Value="NoWrap"/>
@@ -145,8 +145,7 @@
                             </Trigger>
 
                             <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="Border" Property="BorderBrush" Value="#FFB1B1B1"/>
-                                <Setter TargetName="Border" Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="0"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

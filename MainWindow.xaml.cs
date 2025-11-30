@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using static Arrowgene.Ddon.Client.GmdActions;
 
@@ -747,6 +748,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 "Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+        }
+    }
+
+    private void DragWindow_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ButtonState == MouseButtonState.Pressed)
+        {
+            this.DragMove();
         }
     }
 }
