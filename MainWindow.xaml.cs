@@ -8,11 +8,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static Arrowgene.Ddon.Client.GmdActions;
 
@@ -93,6 +96,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 //Do nothing
             }
         }), System.Windows.Threading.DispatcherPriority.Background);
+        _ = LoadNews();
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -384,10 +388,31 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             try
             {
+                await LoadNews();
                 ServerManager.SelectServer((string)serverComboBox.SelectedItem);
 
                 _background = await GetCustomImagesAsync("background.jpg");
                 _logo = await GetCustomImagesAsync("logo.png");
+                try
+                {
+                    using HttpClient client = new();
+                    using HttpRequestMessage request = new(HttpMethod.Head, $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/sp_ingame/campaign/bnr/banner@2x.bmp");
+                    using HttpResponseMessage response = await client.SendAsync(request);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        imgNewsBanner.Source = new BitmapImage(new Uri($"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/sp_ingame/campaign/bnr/banner@2x.bmp"));
+                    }
+                    else
+                    {
+                        imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/newsbanner.png"));
+                    }
+                }
+                catch 
+                {
+                    imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/newsbanner.png"));
+                }
+
 
                 CustomBackground = new BitmapImage(new Uri(_background));
                 CustomLogo = new BitmapImage(new Uri(_logo));
@@ -756,6 +781,80 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (e.ButtonState == MouseButtonState.Pressed)
         {
             this.DragMove();
+        }
+    }
+
+    private async Task LoadNews()
+    {
+        string html;
+        string url = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
+        try {
+
+            html = await new HttpClient().GetStringAsync(url);
+
+
+            textAnnoucementTitle.Text = WebUtility.HtmlDecode(
+                Regex.Replace(Regex.Match(html, "<title[^>]*>([\\s\\S]*?)</title>").Groups[1].Value, "<.*?>", "")
+                .Trim()
+            );
+            
+            textAnnouncementType.Text = WebUtility.HtmlDecode(
+                Regex.Replace(Regex.Match(html, "<type[^>]*>([\\s\\S]*?)</type>").Groups[1].Value, "<.*?>", "")
+                .Trim()
+            );
+
+            switch (textAnnouncementType.Text?.Trim().ToUpper())
+            {
+                case "UNAVAILABILITY":
+                    colorAnnouncementTypeBg.Background =
+                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1224A"));
+                    break;
+
+                case "MAINTENANCE":
+                    colorAnnouncementTypeBg.Background =
+                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#845E14"));
+                    break;
+
+                case "UPDATE":
+                    colorAnnouncementTypeBg.Background =
+                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#615D9F"));
+                    break;
+
+                case "INFORMATION":
+                    colorAnnouncementTypeBg.Background =
+                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#247CAA"));
+                    break;
+
+                case "EVENT":
+                    colorAnnouncementTypeBg.Background =
+                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
+                    break;
+
+                default:
+                    textAnnouncementType.Text = "NO EVENT?";
+                    colorAnnouncementTypeBg.Background =
+                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
+                    break;
+            }
+
+            textAnnouncementDate.Text = WebUtility.HtmlDecode(
+                Regex.Replace(Regex.Match(html, "<date[^>]*>([\\s\\S]*?)</date>").Groups[1].Value, "<.*?>", "")
+                .Trim()
+            );
+            
+            textAnnoucementContent.Text = WebUtility.HtmlDecode(
+                Regex.Replace(Regex.Match(html, "<content[^>]*>([\\s\\S]*?)</content>").Groups[1].Value, "<.*?>", "")
+                .Trim()
+            );
+        }
+        catch
+        {
+            textAnnoucementTitle.Text = "No Title?";
+            colorAnnouncementTypeBg.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
+            textAnnouncementType.Text = "NO EVENT?";
+            textAnnouncementDate.Text = "No Date?";
+            textAnnoucementContent.Text = "No Description?";
+            return;
         }
     }
 }

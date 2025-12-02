@@ -43,15 +43,14 @@
                     CornerRadius="8"
                     Grid.Column="1"
                     Grid.RowSpan="2" Grid.Row="1">
-                <Image x:Name="imgHighlight" 
+                <Image x:Name="imgNewsBanner" 
                        IsHitTestVisible="False" 
                        VerticalAlignment="Top" 
-                       Height="120" 
-                       Stretch="UniformToFill" 
-                       Source="/Images/newsbanner.jpg" 
-                       Margin="2,2,2,0">
+                       Stretch="Fill"
+                       Source="/Images/newsbanner.png"
+                       Margin="2,2,2,235">
                     <Image.Clip>
-                        <RectangleGeometry Rect="0,0,665,130" RadiusX="8" RadiusY="8"/>
+                        <RectangleGeometry Rect="0,0,665,250" RadiusX="8" RadiusY="8"/>
                     </Image.Clip>
                 </Image>
             </Border>
@@ -63,7 +62,7 @@
                     Grid.Column="0"
                     Grid.Row="2">
 
-                <Grid Margin="10,10,10,10">
+                <Grid Margin="10,10,10,10" >
 
                     <TextBox x:Name="textAccount" 
                              VerticalAlignment="Top" 
@@ -350,33 +349,62 @@
             </Border>
 
 
-            <Grid Grid.Row="2" Grid.Column="1" Margin="34,36,36,10">
+            <Grid Grid.Row="2" Grid.Column="1" Margin="34,101,36,10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" MinHeight="27.4"/>
+                    <RowDefinition Height="Auto" MinHeight="44.54"/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
-
-
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,4,0,4.3">
-                    <Border Style="{StaticResource MaintenanceBorderStyle}" Background="#FF275F28">
-                        <TextBlock Style="{StaticResource MaintenanceTextStyle}" Text="EVENT"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,4,0,5">
+                    <Border 
+                        x:Name="colorAnnouncementTypeBg" 
+                        Style="{StaticResource MaintenanceBorderStyle}" 
+                        Background="#FF275F28">
+                        
+                        <TextBlock 
+                            x:Name="textAnnouncementType" 
+                            Style="{StaticResource MaintenanceTextStyle}" 
+                            Text="NO EVENT?"/>
                     </Border>
+                    
                     <Border CornerRadius="4" Padding="0,2,6,2">
-                        <TextBlock Style="{DynamicResource tagDateTextBlock}" Text="12/12/2012" />
+                        <TextBlock 
+                            x:Name="textAnnouncementDate" 
+                            Style="{DynamicResource tagDateTextBlock}" 
+                            Text="No Date?" />
                     </Border>
                 </StackPanel>
 
-                <TextBlock Grid.Row="1" 
-                           Text="Monster Hunter Collaboration has begun!"
-                           Margin="0,4,0,4" Style="{DynamicResource HeadlineTextBlock}"/>
-                <TextBlock Grid.Row="2"
-                           Text="The collaboration evenLorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum purus ex, accumsan et imperdiet nec, sodales vitae est. Praesent consectetur lectus at lorem consectetur, sed fermentum nunc tincidunt. Suspendisse quis mattis nibh. Fusce ut dignissim magna. Ut vel mollis mi, id vestibulum lectus. Aliquam in dignissim risus. Suspendisse tincidunt auctor ante sit amet sodales. Aenean id ante id massa fringilla vestibulum non quis mi. Nam turpis mi, commodo sit amet orci eget, auctor accumsan odio. Cras sodales, massa a molestie condimentum, metus risus blandit velit, non dapibus elit enim eget augue. In hac habitasse platea dictumst.t starts this week! Get ready for exclusive quests and rewards."
-                           TextWrapping="Wrap" Style="{DynamicResource EventDetailsTextBlockStyle}" Padding="0,0,12,12"/>
+                <TextBlock 
+                    Grid.Row="1" x:Name="textAnnoucementTitle"
+                    Text="No Title?"
+                    Margin="0,4,0,4" Style="{DynamicResource HeadlineTextBlock}"/>
+                
+                <ScrollViewer 
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Disabled"
+                    Margin="0,50,0,30">
+
+                    <TextBlock 
+                        Grid.Row="1" 
+                        x:Name="textAnnoucementContent" 
+                        ScrollViewer.CanContentScroll="True" 
+                        Text="No description?" TextWrapping="Wrap" 
+                        Style="{DynamicResource EventDetailsTextBlockStyle}" 
+                        Padding="0,0,0,0" Grid.RowSpan="2"/>
+
+                </ScrollViewer>
             </Grid>
-            <Image Source="{Binding CustomLogo}" Margin="20,0,20,0" Grid.Row="1" IsHitTestVisible="False"/>
             
+            <Image 
+                Source="{Binding CustomLogo}" 
+                Margin="20,0,20,0" 
+                Grid.Row="1" 
+                IsHitTestVisible="False"/>
+
             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -385,11 +413,12 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="btnClose"
-            Grid.Row="0"
-            Grid.Column="1"
-            Margin="655,10,20,11"
-            Click="btnClose_Click">
+                <Button 
+                    x:Name="btnClose"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="655,10,20,11"
+                    Click="btnClose_Click">
 
                     <Button.Resources>
                         <Style TargetType="{x:Type Path}">

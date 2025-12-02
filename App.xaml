@@ -369,9 +369,10 @@
 
         <Style x:Key="EventDetailsTextBlockStyle" TargetType="TextBlock">
             <Setter Property="Padding" Value="12,0,12,12"/>
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Fonts/#EB Garamond"/>
             <Setter Property="Foreground" Value="#66FFFFFF"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
             
         </Style>
 
