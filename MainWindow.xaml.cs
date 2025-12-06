@@ -3,11 +3,13 @@ using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Logging;
 using DDO_Launcher.Mods;
 using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
@@ -97,6 +99,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
         }), System.Windows.Threading.DispatcherPriority.Background);
         _ = LoadNews();
+        _ = TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -472,13 +475,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             
             (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First().Text = "Checking for translation patch updates...";
 
-            var request = new HttpRequestMessage(HttpMethod.Head, Properties.Settings.Default.translationPatchUrl);
-            request.Headers.Add("If-None-Match", Properties.Settings.Default.installedTranslationPatchETag);
+            var update = await TranslationUpdateVerify(url);
 
-            var response = await client.SendAsync(request);
             waitWindow.Hide();
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
+            if (update == true)
             {
                 var confirmation = MessageBox.Show(
                     "Translation patch is already up to date.\nDo you want to reinstall it?",
@@ -523,6 +524,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
 
             waitWindow.Close();
+
+            //Properties.Settings.Default.launcherUpdateHash = Properties.Settings.Default.installedTranslationPatchETag;
+            btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D3D3D3"));
             Properties.Settings.Default.firstInstalledTranslation = true;
             Properties.Settings.Default.Save();
 
@@ -856,5 +860,27 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             textAnnoucementContent.Text = "No Description?";
             return;
         }
+    }
+
+    private async Task<bool> TranslationUpdateVerify(string url)
+    {
+        if (Properties.Settings.Default.firstInstalledTranslation == false)
+            return false;
+
+        using var http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
+
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.IfNoneMatch.Add(new EntityTagHeaderValue(Properties.Settings.Default.installedTranslationPatchETag));
+
+        var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+        if (response.StatusCode == HttpStatusCode.NotModified)
+        {
+            return true;
+        }
+        
+        btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
+        return false;
     }
 }
