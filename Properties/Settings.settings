@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="accountText" Type="System.String" Scope="User">
-      <Value Profile="(Default)">textAccount.Text</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="passwordText" Type="System.String" Scope="User">
-      <Value Profile="(Default)">textPassword.Text</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="rememberMe" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -22,6 +22,9 @@
     </Setting>
     <Setting Name="lastServerSelected" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="launcherUpdateHash" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

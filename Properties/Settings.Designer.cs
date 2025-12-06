@@ -25,7 +25,7 @@ namespace DDO_Launcher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("textAccount.Text")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string accountText {
             get {
                 return ((string)(this["accountText"]));
@@ -37,7 +37,7 @@ namespace DDO_Launcher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("textPassword.Text")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string passwordText {
             get {
                 return ((string)(this["passwordText"]));
@@ -105,6 +105,18 @@ namespace DDO_Launcher.Properties {
             }
             set {
                 this["lastServerSelected"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string launcherUpdateHash {
+            get {
+                return ((string)(this["launcherUpdateHash"]));
+            }
+            set {
+                this["launcherUpdateHash"] = value;
             }
         }
     }

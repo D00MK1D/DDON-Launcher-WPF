@@ -360,7 +360,7 @@
                     <Border 
                         x:Name="colorAnnouncementTypeBg" 
                         Style="{StaticResource MaintenanceBorderStyle}" 
-                        Background="#FF275F28">
+                        Background="#348B3A">
                         
                         <TextBlock 
                             x:Name="textAnnouncementType" 
@@ -392,7 +392,7 @@
                         Grid.Row="1" 
                         x:Name="textAnnoucementContent" 
                         ScrollViewer.CanContentScroll="True" 
-                        Text="No description?" TextWrapping="Wrap" 
+                        Text="No Description?" TextWrapping="Wrap" 
                         Style="{DynamicResource EventDetailsTextBlockStyle}" 
                         Padding="0,0,0,0" Grid.RowSpan="2"/>
 

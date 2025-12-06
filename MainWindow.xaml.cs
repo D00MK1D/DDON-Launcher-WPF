@@ -790,12 +790,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private async Task LoadNews()
     {
+        serverComboBox.IsEnabled = false;
         string html;
         string url = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
         try {
 
             html = await new HttpClient().GetStringAsync(url);
-
 
             textAnnoucementTitle.Text = WebUtility.HtmlDecode(
                 Regex.Replace(Regex.Match(html, "<title[^>]*>([\\s\\S]*?)</title>").Groups[1].Value, "<.*?>", "")
@@ -850,6 +850,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 Regex.Replace(Regex.Match(html, "<content[^>]*>([\\s\\S]*?)</content>").Groups[1].Value, "<.*?>", "")
                 .Trim()
             );
+            serverComboBox.IsEnabled = true;
+
         }
         catch
         {
@@ -858,6 +860,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             textAnnouncementType.Text = "NO EVENT?";
             textAnnouncementDate.Text = "No Date?";
             textAnnoucementContent.Text = "No Description?";
+            serverComboBox.IsEnabled = true;
             return;
         }
     }

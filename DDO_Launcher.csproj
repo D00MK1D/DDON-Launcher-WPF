@@ -12,6 +12,7 @@
     <FileVersion>2.0.0.0</FileVersion>
     <Company>White Dragon Temple</Company>
     <Product>DDO_Launcher</Product>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   
   <ItemGroup>
@@ -28,6 +29,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Arrowgene.Ddon.Client">
       <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Debug\net9.0\Arrowgene.Ddon.Client.dll</HintPath>
     </Reference>
@@ -39,6 +48,7 @@
   <ItemGroup>
     <Resource Include="Fonts\EBGaramond-Regular.ttf" />
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
+    <Resource Include="icon.ico" />
     <Resource Include="Images\logo.png" />
     <Resource Include="Images\background.jpg" />
     <Resource Include="Images\newsbanner.png" />
