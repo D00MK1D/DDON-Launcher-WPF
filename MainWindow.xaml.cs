@@ -399,6 +399,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
                 _background = await GetCustomImagesAsync("background.jpg");
                 _logo = await GetCustomImagesAsync("logo.png");
+
+                CustomBackground = new BitmapImage(new Uri(_background));
+                CustomLogo = new BitmapImage(new Uri(_logo));
+
                 try
                 {
                     using HttpClient client = new();
@@ -414,18 +418,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                         imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/newsbanner.png"));
                     }
                 }
-                catch 
+                catch
                 {
                     imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/newsbanner.png"));
                 }
 
-
-                CustomBackground = new BitmapImage(new Uri(_background));
-                CustomLogo = new BitmapImage(new Uri(_logo));
-
                 try
                 {
-
                     html = await new HttpClient().GetStringAsync(newsUrl);
 
                     textAnnoucementTitle.Text = WebUtility.HtmlDecode(
@@ -482,7 +481,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                         .Trim()
                     );
                     serverComboBox.IsEnabled = true;
-
                 }
                 catch
                 {
