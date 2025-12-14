@@ -1,16 +1,14 @@
 ﻿using Arrowgene.Ddon.Client;
 using Arrowgene.Ddon.Shared.Csv;
-using Arrowgene.Logging;
 using DDO_Launcher.Mods;
 using Microsoft.Win32;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Policy;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -98,7 +96,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 //Do nothing
             }
         }), System.Windows.Threading.DispatcherPriority.Background);
-        _ = LoadNews();
         _ = TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
     }
 
@@ -391,7 +388,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             try
             {
-                await LoadNews();
+                serverComboBox.IsEnabled = false;
+
+                string html;
+                string newsUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
+                string newsBannerUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/newsbanner.jpg";
+
                 ServerManager.SelectServer((string)serverComboBox.SelectedItem);
 
                 _background = await GetCustomImagesAsync("background.jpg");
@@ -399,12 +401,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 try
                 {
                     using HttpClient client = new();
-                    using HttpRequestMessage request = new(HttpMethod.Head, $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/sp_ingame/campaign/bnr/banner@2x.bmp");
+                    using HttpRequestMessage request = new(HttpMethod.Head, newsBannerUrl);
                     using HttpResponseMessage response = await client.SendAsync(request);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        imgNewsBanner.Source = new BitmapImage(new Uri($"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/sp_ingame/campaign/bnr/banner@2x.bmp"));
+                        imgNewsBanner.Source = new BitmapImage(new Uri(newsBannerUrl));
                     }
                     else
                     {
@@ -419,6 +421,78 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
                 CustomBackground = new BitmapImage(new Uri(_background));
                 CustomLogo = new BitmapImage(new Uri(_logo));
+
+                try
+                {
+
+                    html = await new HttpClient().GetStringAsync(newsUrl);
+
+                    textAnnoucementTitle.Text = WebUtility.HtmlDecode(
+                        Regex.Replace(Regex.Match(html, "<title[^>]*>([\\s\\S]*?)</title>").Groups[1].Value, "<.*?>", "")
+                        .Trim()
+                    );
+
+                    textAnnouncementType.Text = WebUtility.HtmlDecode(
+                        Regex.Replace(Regex.Match(html, "<type[^>]*>([\\s\\S]*?)</type>").Groups[1].Value, "<.*?>", "")
+                        .Trim()
+                    );
+
+                    switch (textAnnouncementType.Text?.Trim().ToUpper())
+                    {
+                        case "UNAVAILABILITY":
+                            colorAnnouncementTypeBg.Background =
+                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1224A"));
+                            break;
+
+                        case "MAINTENANCE":
+                            colorAnnouncementTypeBg.Background =
+                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#845E14"));
+                            break;
+
+                        case "UPDATE":
+                            colorAnnouncementTypeBg.Background =
+                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#615D9F"));
+                            break;
+
+                        case "INFORMATION":
+                            colorAnnouncementTypeBg.Background =
+                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#247CAA"));
+                            break;
+
+                        case "EVENT":
+                            colorAnnouncementTypeBg.Background =
+                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
+                            break;
+
+                        default:
+                            textAnnouncementType.Text = "NO EVENT?";
+                            colorAnnouncementTypeBg.Background =
+                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
+                            break;
+                    }
+
+                    textAnnouncementDate.Text = WebUtility.HtmlDecode(
+                        Regex.Replace(Regex.Match(html, "<date[^>]*>([\\s\\S]*?)</date>").Groups[1].Value, "<.*?>", "")
+                        .Trim()
+                    );
+
+                    textAnnoucementContent.Text = WebUtility.HtmlDecode(
+                        Regex.Replace(Regex.Match(html, "<content[^>]*>([\\s\\S]*?)</content>").Groups[1].Value, "<.*?>", "")
+                        .Trim()
+                    );
+                    serverComboBox.IsEnabled = true;
+
+                }
+                catch
+                {
+                    textAnnoucementTitle.Text = "No Title?";
+                    colorAnnouncementTypeBg.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
+                    textAnnouncementType.Text = "NO EVENT?";
+                    textAnnouncementDate.Text = "No Date?";
+                    textAnnoucementContent.Text = "No Description?";
+                    serverComboBox.IsEnabled = true;
+                    return;
+                }
             }
             catch (ArgumentException)
             {
@@ -428,6 +502,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 UpdateServerList();
+                serverComboBox.IsEnabled = true;
                 return;
             }
         }
@@ -785,83 +860,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (e.ButtonState == MouseButtonState.Pressed)
         {
             this.DragMove();
-        }
-    }
-
-    private async Task LoadNews()
-    {
-        serverComboBox.IsEnabled = false;
-        string html;
-        string url = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
-        try {
-
-            html = await new HttpClient().GetStringAsync(url);
-
-            textAnnoucementTitle.Text = WebUtility.HtmlDecode(
-                Regex.Replace(Regex.Match(html, "<title[^>]*>([\\s\\S]*?)</title>").Groups[1].Value, "<.*?>", "")
-                .Trim()
-            );
-            
-            textAnnouncementType.Text = WebUtility.HtmlDecode(
-                Regex.Replace(Regex.Match(html, "<type[^>]*>([\\s\\S]*?)</type>").Groups[1].Value, "<.*?>", "")
-                .Trim()
-            );
-
-            switch (textAnnouncementType.Text?.Trim().ToUpper())
-            {
-                case "UNAVAILABILITY":
-                    colorAnnouncementTypeBg.Background =
-                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1224A"));
-                    break;
-
-                case "MAINTENANCE":
-                    colorAnnouncementTypeBg.Background =
-                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#845E14"));
-                    break;
-
-                case "UPDATE":
-                    colorAnnouncementTypeBg.Background =
-                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#615D9F"));
-                    break;
-
-                case "INFORMATION":
-                    colorAnnouncementTypeBg.Background =
-                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#247CAA"));
-                    break;
-
-                case "EVENT":
-                    colorAnnouncementTypeBg.Background =
-                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
-                    break;
-
-                default:
-                    textAnnouncementType.Text = "NO EVENT?";
-                    colorAnnouncementTypeBg.Background =
-                        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
-                    break;
-            }
-
-            textAnnouncementDate.Text = WebUtility.HtmlDecode(
-                Regex.Replace(Regex.Match(html, "<date[^>]*>([\\s\\S]*?)</date>").Groups[1].Value, "<.*?>", "")
-                .Trim()
-            );
-            
-            textAnnoucementContent.Text = WebUtility.HtmlDecode(
-                Regex.Replace(Regex.Match(html, "<content[^>]*>([\\s\\S]*?)</content>").Groups[1].Value, "<.*?>", "")
-                .Trim()
-            );
-            serverComboBox.IsEnabled = true;
-
-        }
-        catch
-        {
-            textAnnoucementTitle.Text = "No Title?";
-            colorAnnouncementTypeBg.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
-            textAnnouncementType.Text = "NO EVENT?";
-            textAnnouncementDate.Text = "No Date?";
-            textAnnoucementContent.Text = "No Description?";
-            serverComboBox.IsEnabled = true;
-            return;
         }
     }
 
