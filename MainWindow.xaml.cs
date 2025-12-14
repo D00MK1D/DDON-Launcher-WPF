@@ -97,7 +97,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
         }), System.Windows.Threading.DispatcherPriority.Background);
         _ = TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
-        _ = UpdateLauncher();
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -883,31 +882,4 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
         return false;
     }
-
-    private async Task<bool> UpdateLauncher()
-    {
-        const string url = "https://api.github.com/repos/D00MK1D/DDON-Launcher-WPF/releases/latest";
-
-        using var http = new HttpClient();
-        http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
-
-        var json = await http.GetStringAsync(url);
-
-        using var doc = JsonDocument.Parse(json);
-
-        string tag = doc.RootElement.GetProperty("tag_name").GetString();
-
-        tag = tag.TrimStart('v');
-
-        string[] parts = tag.Split('.');
-        while (parts.Length < 4) { tag += ".0"; parts = tag.Split('.'); }
-
-        Version remoteVersion = new Version(tag);
-
-        Version localVersion = new Version(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion
-        );
-
-        return remoteVersion > localVersion;
-    }
-
 }
