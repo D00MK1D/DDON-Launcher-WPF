@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <None Remove="icon.ico" />
+    <None Remove="Update\update_launcher.bat" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,10 +39,10 @@
 
   <ItemGroup>
     <Reference Include="Arrowgene.Ddon.Client">
-      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Debug\net9.0\Arrowgene.Ddon.Client.dll</HintPath>
+      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Release\net9.0\Arrowgene.Ddon.Client.dll</HintPath>
     </Reference>
     <Reference Include="Arrowgene.Ddon.Shared">
-      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Debug\net9.0\Arrowgene.Ddon.Shared.dll</HintPath>
+      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Release\net9.0\Arrowgene.Ddon.Shared.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -52,6 +53,7 @@
     <Resource Include="Images\logo.png" />
     <Resource Include="Images\background.jpg" />
     <Resource Include="Images\newsbanner.png" />
+    <Resource Include="Update\update_launcher.bat" />
   </ItemGroup>
 
   <ItemGroup>
