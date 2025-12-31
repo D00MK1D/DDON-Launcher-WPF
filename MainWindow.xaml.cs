@@ -105,6 +105,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
         await UpdateLauncher();
         await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
+
+        if (Properties.Settings.Default.rememberMe)
+        {
+            textAccount.Text = Properties.Settings.Default.accountText;
+            textPassword.Password = Properties.Settings.Default.passwordText;
+            cbRemember.IsChecked = Properties.Settings.Default.rememberMe;
+            serverComboBox.SelectedIndex = Properties.Settings.Default.lastServerSelected;
+        }
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -248,13 +256,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 {
                     try
                     {
-                        Process.Start("ddo.exe",
-                                      " addr=" + ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
-                                      " port=" + ServerManager.Servers[ServerManager.SelectedServer].LPort +
-                                      " token=" + serverResponse.Token +
-                                      " DL=http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
-                                      ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort +
-                                      "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+                        if (cbRemember.IsChecked == true)
+                        {
+                            Properties.Settings.Default.accountText = textAccount.Text;
+                            Properties.Settings.Default.passwordText = textPassword.Password;
+                            Properties.Settings.Default.rememberMe = true;
+                            Properties.Settings.Default.lastServerSelected = serverComboBox.SelectedIndex;
+
+                            Properties.Settings.Default.Save();
+                        }
+
+                            Process.Start("ddo.exe",
+                                          " addr=" + ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                                          " port=" + ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                                          " token=" + serverResponse.Token +
+                                          " DL=http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                                          ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort +
+                                          "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
 
                         btnChangeAction.IsEnabled = true;
                         btnSubmit.IsEnabled = true;
@@ -961,6 +979,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         catch
         {
             MessageBox.Show("Error while updating.", "Update", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void cbRemember_Click(object sender, RoutedEventArgs e)
+    {
+        if (cbRemember.IsChecked != true)
+        {
+            Properties.Settings.Default.accountText = "";
+            Properties.Settings.Default.passwordText = "";
+            Properties.Settings.Default.rememberMe = false;
+            Properties.Settings.Default.lastServerSelected = 0;
+
+            Properties.Settings.Default.Save();
         }
     }
 }
