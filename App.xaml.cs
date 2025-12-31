@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using System.Windows;
 
 namespace DDO_Launcher;

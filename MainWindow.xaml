@@ -522,7 +522,7 @@
                 
                 <Button x:Name="btnUpdate" Grid.Row="0"
                     Grid.Column="1"
-                    ToolTip="Install Translation"
+                    ToolTip="Update launcher"
                     Margin="513,10,162,11"
                     Background="Transparent"
                     BorderThickness="0" Click="btnUpdate_Click"
