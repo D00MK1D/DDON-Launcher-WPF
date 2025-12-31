@@ -296,7 +296,7 @@
                               IsTabStop="False" 
                               Focusable="False" 
                               RenderTransformOrigin="0.5,0.5" 
-                              Visibility="Visible"/>
+                              Visibility="Visible" Click="cbRemember_Click"/>
 
                     <Label x:Name="labelRemember" 
                            Content="Remember my login details" 

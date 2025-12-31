@@ -102,7 +102,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
         await UpdateLauncher();
         await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
 
@@ -276,8 +275,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
                         btnChangeAction.IsEnabled = true;
                         btnSubmit.IsEnabled = true;
-
-                        this.Close();
+                        
+                        Application.Current.Shutdown();
                     }
                     catch (Win32Exception e)
                     {
@@ -408,7 +407,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private async void serverComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private async void serverComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (serverComboBox.SelectedItem != null)
         {
