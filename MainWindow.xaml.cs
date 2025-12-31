@@ -914,7 +914,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         try
         {
-            const string url = "https://api.github.com/repos/D00MK1D/DDON-Launcher/releases/latest";
+            const string url = "https://api.github.com/repos/D00MK1D/DDON-Launcher-WPF/releases/latest";
             using var http = new HttpClient();
             http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
 

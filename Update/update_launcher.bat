@@ -3,7 +3,7 @@ setlocal ENABLEDELAYEDEXPANSION
 
 :: -------- CONFIG --------
 set REPO_OWNER=D00MK1D
-set REPO_NAME=DDON-Launcher
+set REPO_NAME=DDON-Launcher-WPF
 set ASSET_NAME=DDO_Launcher.exe
 set OUTPUT_EXE=DDO_Launcher.exe
 :: ------------------------
