@@ -104,6 +104,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
         await UpdateLauncher();
+        await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -910,16 +911,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             while (parts.Length < 4) { tag += ".0"; parts = tag.Split('.'); }
 
             Version remoteVersion = new Version(tag);
-            Version localVersion = new Version(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
+            var localVersion = Assembly.GetExecutingAssembly().GetName().Version!;
 
             if (remoteVersion > localVersion)
             {
                 btnUpdate.Visibility = Visibility.Visible;
             }
         }
-        catch
+        catch (Exception ex)
         {
-            //Do nothing
+            MessageBox.Show(
+                "Error while checking for updates:\n\n" + ex.Message,
+                "Update Check",
+                MessageBoxButton.OK);
         }
     }
 
