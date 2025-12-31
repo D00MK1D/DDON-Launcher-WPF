@@ -16,20 +16,17 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="ini-parser" Version="2.5.2" />
-    <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
-    <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
-    <PackageReference Include="SharpZipLib" Version="1.4.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Arrowgene.DragonsDogmaOnline\**" />
     <EmbeddedResource Remove="Arrowgene.DragonsDogmaOnline\**" />
     <None Remove="Arrowgene.DragonsDogmaOnline\**" />
+    <Page Remove="Arrowgene.DragonsDogmaOnline\**" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <None Remove="icon.ico" />
+    <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
+    <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
+    <PackageReference Include="ini-parser" Version="2.5.2" />
+    <PackageReference Include="SharpZipLib" Version="1.4.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +49,9 @@
     <Resource Include="Images\logo.png" />
     <Resource Include="Images\background.jpg" />
     <Resource Include="Images\newsbanner.png" />
+    <Resource Include="Update\update_launcher.bat">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

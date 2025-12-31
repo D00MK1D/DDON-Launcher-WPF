@@ -96,7 +96,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 //Do nothing
             }
         }), System.Windows.Threading.DispatcherPriority.Background);
-        _ = TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
+
+        Loaded += MainWindow_Loaded;
+    }
+
+    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
+        await UpdateLauncher();
     }
 
     private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -388,8 +395,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             try
             {
-                serverComboBox.IsEnabled = false;
-
                 string html;
                 string newsUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
                 string newsBannerUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/newsbanner.jpg";
@@ -479,7 +484,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                         Regex.Replace(Regex.Match(html, "<content[^>]*>([\\s\\S]*?)</content>").Groups[1].Value, "<.*?>", "")
                         .Trim()
                     );
-                    serverComboBox.IsEnabled = true;
                 }
                 catch
                 {
@@ -488,7 +492,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     textAnnouncementType.Text = "NO EVENT?";
                     textAnnouncementDate.Text = "No Date?";
                     textAnnoucementContent.Text = "No Description?";
-                    serverComboBox.IsEnabled = true;
                     return;
                 }
             }
@@ -500,7 +503,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 UpdateServerList();
-                serverComboBox.IsEnabled = true;
                 return;
             }
         }
@@ -598,7 +600,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             waitWindow.Close();
 
-            //Properties.Settings.Default.launcherUpdateHash = Properties.Settings.Default.installedTranslationPatchETag;
             btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D3D3D3"));
             Properties.Settings.Default.firstInstalledTranslation = true;
             Properties.Settings.Default.Save();
@@ -863,23 +864,99 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private async Task<bool> TranslationUpdateVerify(string url)
     {
-        if (Properties.Settings.Default.firstInstalledTranslation == false)
-            return false;
-
-        using var http = new HttpClient();
-        http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
-
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.IfNoneMatch.Add(new EntityTagHeaderValue(Properties.Settings.Default.installedTranslationPatchETag));
-
-        var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-
-        if (response.StatusCode == HttpStatusCode.NotModified)
+        try
         {
-            return true;
+            if (Properties.Settings.Default.firstInstalledTranslation != true)
+                return false;
+
+            using var http = new HttpClient();
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.IfNoneMatch.Add(new EntityTagHeaderValue(Properties.Settings.Default.installedTranslationPatchETag));
+
+            var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+            if (response.StatusCode == HttpStatusCode.NotModified)
+            {
+                return true;
+            }
+
+            btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
+            return false;
+        }
+        catch
+        {
+            return false;
         }
         
-        btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
-        return false;
+    }
+
+    private async Task UpdateLauncher()
+    {
+        try
+        {
+            const string url = "https://api.github.com/repos/D00MK1D/DDON-Launcher/releases/latest";
+            using var http = new HttpClient();
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
+
+            var json = await http.GetStringAsync(url);
+            using var doc = JsonDocument.Parse(json);
+            string tag = doc.RootElement.GetProperty("tag_name").GetString();
+
+            tag = tag.TrimStart('v');
+
+            string[] parts = tag.Split('.');
+            while (parts.Length < 4) { tag += ".0"; parts = tag.Split('.'); }
+
+            Version remoteVersion = new Version(tag);
+            Version localVersion = new Version(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
+
+            if (remoteVersion > localVersion)
+            {
+                btnUpdate.Visibility = Visibility.Visible;
+            }
+        }
+        catch
+        {
+            //Do nothing
+        }
+    }
+
+    private async void btnUpdate_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var uri = new Uri(
+                "pack://application:,,,/Update/update_launcher.bat",
+                UriKind.Absolute
+            );
+
+            using var stream = Application.GetResourceStream(uri)?.Stream;
+            if (stream == null)
+            {
+                MessageBox.Show("Updater not found.");
+                return;
+            }
+
+            string batPath = Path.Combine(AppContext.BaseDirectory, "update_launcher.bat");
+
+            using (var file = File.Create(batPath))
+                await stream.CopyToAsync(file);
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = batPath,
+                WorkingDirectory = AppContext.BaseDirectory,
+                UseShellExecute = true
+            });
+
+            await Task.Delay(300);
+            Application.Current.Shutdown();
+        }
+        catch
+        {
+            MessageBox.Show("Error while updating.", "Update", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }
