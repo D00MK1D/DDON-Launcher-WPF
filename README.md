@@ -21,7 +21,8 @@ https://www.steamgriddb.com/logo/96344
 <br /><br />
 
 - Place the images you want inside it and name them `background.png` and `logo.png` (Background and logo must be PNG)
-<img width="433" height="231" alt="image" src="https://github.com/user-attachments/assets/21c4e61d-35d0-48df-978f-0b7c70a5cd67" />
+<img width="360" height="236" alt="image" src="https://github.com/user-attachments/assets/ba9c5da4-3be6-4302-940b-a08edbdab779" />
+
 
 <br /><br />
 
@@ -42,7 +43,7 @@ This panel actually supports one new at time.<br />
 
 - Place the image banner you want inside it and name it `newsbanner.png` (Must be PNG - 665x200)
 - Create a `news.html` too
-<img width="624" height="188" alt="image" src="https://github.com/user-attachments/assets/eef27891-6699-4058-bb8b-81e0b947efcb" />
+<img width="629" height="177" alt="image" src="https://github.com/user-attachments/assets/5f5d0837-9fe9-42c6-b585-b3798f57bcd6" />
 
 <br /><br />
 
