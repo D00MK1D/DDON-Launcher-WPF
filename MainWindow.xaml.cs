@@ -70,13 +70,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         UpdateServerList();
         DataContext = this;
 
-        CustomBackground = new BitmapImage(new Uri("pack://application:,,,/Images/background.jpg"));
+        CustomBackground = new BitmapImage(new Uri("pack://application:,,,/Images/background.png"));
         CustomLogo = new BitmapImage(new Uri("pack://application:,,,/Images/logo.png"));
 
         Dispatcher.BeginInvoke(new Action(async () =>
         {
             _logo = await GetCustomImagesAsync("logo.png");
-            _background = await GetCustomImagesAsync("background.jpg");
+            _background = await GetCustomImagesAsync("background.png");
 
             try
             {
@@ -415,11 +415,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             {
                 string html;
                 string newsUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
-                string newsBannerUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/newsbanner.jpg";
+                string newsBannerUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/newsbanner.png";
 
                 ServerManager.SelectServer((string)serverComboBox.SelectedItem);
 
-                _background = await GetCustomImagesAsync("background.jpg");
+                _background = await GetCustomImagesAsync("background.png");
                 _logo = await GetCustomImagesAsync("logo.png");
 
                 CustomBackground = new BitmapImage(new Uri(_background));

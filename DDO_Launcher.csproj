@@ -47,7 +47,7 @@
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
     <Resource Include="icon.ico" />
     <Resource Include="Images\logo.png" />
-    <Resource Include="Images\background.jpg" />
+    <Resource Include="Images\background.png" />
     <Resource Include="Images\newsbanner.png" />
     <Resource Include="Update\update_launcher.bat">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
