@@ -241,7 +241,6 @@
                 </Setter.Value>
             </Setter>
 
-            <!-- Fundo padrão -->
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -251,18 +250,20 @@
                 </Setter.Value>
             </Setter>
 
-            <!-- Cor do texto -->
             <Setter Property="Foreground" Value="White"/>
-
-            <!-- Padding e Margem padrão -->
             <Setter Property="Padding" Value="4,2"/>
             <Setter Property="Margin" Value="2"/>
 
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#444444"/>
+                    <Setter Property="Foreground" Value="#888888"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         
         <Style x:Key="ServerCB" TargetType="ComboBox">
 
-            <!-- Template customizado -->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -333,7 +334,6 @@
                 </Setter.Value>
             </Setter>
 
-            <!-- Fundo padrão -->
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -343,10 +343,8 @@
                 </Setter.Value>
             </Setter>
 
-            <!-- Cor do texto -->
             <Setter Property="Foreground" Value="White"/>
 
-            <!-- Padding e Margem padrão -->
             <Setter Property="Padding" Value="4,2"/>
             <Setter Property="Margin" Value="2"/>
 

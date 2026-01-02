@@ -480,12 +480,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private static async Task<bool> IsHostAlive(string url)
     {
-        using var cts = new CancellationTokenSource(1000);
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromMilliseconds(1000)
-        };
+        using var cts = new CancellationTokenSource(2000);
+        using var client = new HttpClient { Timeout = TimeSpan.FromMilliseconds(2000) };
 
         try
         {
@@ -543,7 +539,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         ServerManager.SelectServer(serverName);
 
         string baseAddress = $"{server.DLIP}:{server.DLPort}";
-        
+
+        serverComboBox.IsEnabled = false;
         try
         {
             if (await IsHostAlive($"http://{server.DLIP}:{server.DLPort}"))
@@ -565,6 +562,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 //token.ThrowIfCancellationRequested();
 
                 await UpdateNewsAsync(token);
+
+                serverComboBox.IsEnabled = true;
             }
             else
             {
@@ -573,15 +572,18 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/news/newsbanner.png"));
                 ApplyDefaultNews();
 
+                serverComboBox.IsEnabled = true;
             }
 
         }
         catch (OperationCanceledException)
         {
-            // Do nothing
+            serverComboBox.IsEnabled = true;
         }
         catch (Exception ex)
         {
+            serverComboBox.IsEnabled = true;
+
             MessageBox.Show(
                 ex.Message,
                 "Dragon's Dogma Online",
