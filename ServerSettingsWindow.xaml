@@ -45,22 +45,23 @@
                           FontFamily="/Fonts/#EB Garamond"
                           BorderThickness="0"
                           Foreground="#FFB1B1B1"
-                          TabIndex="3"
+                          TabIndex="0"
                           Height="24"
                           VerticalAlignment="Center"
                           SelectionChanged="serverComboBox_SelectionChanged"
                           Style="{StaticResource ServerCB}">
                 </ComboBox>
 
-                <Button x:Name="btnSmRemove" Style="{StaticResource DarkButton}" Grid.Column="1" Height="24" Margin="5,0,0,0" Click="btnSmRemove_Click">
+
+                <Button x:Name="btnSmRemove" Style="{StaticResource DarkButton}" Grid.Column="1" TabIndex="0" Height="24" Margin="5,0,0,0" Click="btnSmRemove_Click">
                     <Path Stretch="Uniform"
                           Fill="White"
                           Width="12"
                           Data="M20 13H4a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2"
                           RenderTransformOrigin="0.495,0.513"/>
                 </Button>
-                
-                <Button x:Name="btnSmAdd" Style="{StaticResource DarkButton}" Grid.Column="2" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click">
+
+                <Button x:Name="btnSmAdd" Style="{StaticResource DarkButton}" Grid.Column="2" TabIndex="0" Height="24" Margin="5,0,0,0" Click="btnSmAdd_Click">
                     <Path Stretch="Uniform"
                           Fill="White"
                       Height="12" Width="12"
@@ -71,7 +72,7 @@
 
             <StackPanel Grid.Row="2" Margin="0,4">
                 <Label Content="Name" />
-                <TextBox x:Name="textSmServerName" LostFocus="textSmServerName_LostFocus" Width="450" MinHeight="24" Style="{StaticResource StylshTextBox}" />
+                <TextBox x:Name="textSmServerName" LostFocus="textSmServerName_LostFocus" GotFocus="SelectAllText" TabIndex="1" Width="450" MinHeight="24" Style="{StaticResource StylshTextBox}" />
             </StackPanel>
 
             <Grid Grid.Row="3" Margin="0,4">
@@ -81,11 +82,11 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Lobby IP" />
-                    <TextBox x:Name="textSmLobbyIP" TextChanged="textSmLobbyIP_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
+                    <TextBox x:Name="textSmLobbyIP" TextChanged="textSmLobbyIP_TextChanged" GotFocus="SelectAllText" TabIndex="2" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port"/>
-                    <TextBox x:Name="textSmLobbyPort" TextChanged="textSmLobbyPort_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
+                    <TextBox x:Name="textSmLobbyPort" TextChanged="textSmLobbyPort_TextChanged" GotFocus="SelectAllText" TabIndex="4" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
                 </StackPanel>
             </Grid>
 
@@ -96,17 +97,17 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Download IP"/>
-                    <TextBox x:Name="textSmDownloadIP" TextChanged="textSmDownloadIP_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"></TextBox>
+                    <TextBox x:Name="textSmDownloadIP" TextChanged="textSmDownloadIP_TextChanged" GotFocus="SelectAllText" TabIndex="3" MinHeight="24" Style="{StaticResource StylshTextBox}"></TextBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                     <Label Content="Port"/>
-                    <TextBox x:Name="textSmDownloadPort" TextChanged="textSmDownloadPort_TextChanged" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
+                    <TextBox x:Name="textSmDownloadPort" TextChanged="textSmDownloadPort_TextChanged" GotFocus="SelectAllText" TabIndex="5" MinHeight="24" Style="{StaticResource StylshTextBox}"/>
                 </StackPanel>
             </Grid>
 
             <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-                <Button x:Name="btnSmCancel" Style="{StaticResource DarkButton}" Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Foreground="White" Margin="0,0,10,0" Click="btnSmCancel_Click"/>
-                <Button Style="{StaticResource GoldenButton}" x:Name="btnSmAccept" Content="Accept" Height="56" Width="220" FontFamily="EB Garamond" FontSize="14" Margin="0,0,0,0" Click="btnSmAccept_Click"/>
+                <Button x:Name="btnSmCancel" Style="{StaticResource DarkButton}" TabIndex="0" Content="Cancel" Height="56" Width="220" FontFamily="EB Garamond" FontSize="22" Foreground="White" Margin="0,0,10,0" Click="btnSmCancel_Click"/>
+                <Button x:Name="btnSmAccept" Style="{StaticResource GoldenButton}" TabIndex="0" Content="Accept" Height="56" Width="220" FontFamily="EB Garamond" FontSize="22" Margin="0,0,0,0" Click="btnSmAccept_Click"/>
             </StackPanel>
         </Grid>
     </Border>

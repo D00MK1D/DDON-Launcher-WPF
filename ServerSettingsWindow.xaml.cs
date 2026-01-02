@@ -2,6 +2,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace DDO_Launcher
 {
@@ -182,6 +183,14 @@ namespace DDO_Launcher
         {
             _serverManager.LoadServers();
             Close();
+        }
+
+        private void SelectAllText(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                textBox.SelectAll();
+            }
         }
     }
 }
