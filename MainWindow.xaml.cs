@@ -2,16 +2,19 @@
 using Arrowgene.Ddon.Shared.Csv;
 using DDO_Launcher.Mods;
 using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,43 +26,10 @@ namespace DDO_Launcher;
 
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
+    #region Not UI
+    private CancellationTokenSource _serverChangeCts = new CancellationTokenSource();
+
     private readonly ServerManager ServerManager;
-
-    private string _logo;
-    private string _background;
-
-    private BitmapImage _customBackground;
-    private BitmapImage _customLogo;
-
-    public BitmapImage CustomBackground
-    {
-        get => _customBackground;
-        set
-        {
-            if (_customBackground != value)
-            {
-                _customBackground = value;
-                OnPropertyChanged(nameof(CustomBackground));
-            }
-        }
-    }
-
-    public BitmapImage CustomLogo
-    {
-        get => _customLogo;
-        set
-        {
-            if (_customLogo != value)
-            {
-                _customLogo = value;
-                OnPropertyChanged(nameof(CustomLogo));
-            }
-        }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public MainWindow(ServerManager serverManager)
     {
@@ -70,40 +40,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         UpdateServerList();
         DataContext = this;
 
-        CustomBackground = new BitmapImage(new Uri("pack://application:,,,/Images/background.png"));
-        CustomLogo = new BitmapImage(new Uri("pack://application:,,,/Images/logo.png"));
-
-        Dispatcher.BeginInvoke(new Action(async () =>
-        {
-            _logo = await GetCustomImagesAsync("logo.png");
-            _background = await GetCustomImagesAsync("background.png");
-
-            try
-            {
-                CustomBackground = new BitmapImage(new Uri(_background));
-            }
-            catch
-            {
-                //Do nothing
-            }
-
-            try
-            {
-                CustomLogo = new BitmapImage(new Uri(_logo));
-            }
-            catch
-            {
-                //Do nothing
-            }
-        }), System.Windows.Threading.DispatcherPriority.Background);
-
         Loaded += MainWindow_Loaded;
     }
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        await UpdateLauncher();
-        await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
 
         if (Properties.Settings.Default.rememberMe)
         {
@@ -111,50 +52,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             textPassword.Password = Properties.Settings.Default.passwordText;
             cbRemember.IsChecked = Properties.Settings.Default.rememberMe;
             serverComboBox.SelectedIndex = Properties.Settings.Default.lastServerSelected;
-        }
-    }
-
-    private void btnSubmit_Click(object sender, RoutedEventArgs e)
-    {
-        switch ((string)btnSubmit.Content)
-        {
-            case "Login":
-                Operation("login");
-                break;
-
-            case "Register":
-                Operation("create");
-                break;
-        }
-    }
-
-    private void btnChangeAction_Click(object sender, RoutedEventArgs e)
-    {
-        if ((string)btnSubmit.Content == "Login")
-        {
-            btnSubmit.Content = "Register";
-            btnChangeAction.Content = "Login";
-            labelServer.Margin = new Thickness(6, 147, 10, 0);
-            serverComboBox.Margin = new Thickness(10, 172, 43, 0);
-            btnServerSettings.Margin = new Thickness(218, 172, 10, 77);
-            labelEmail.Visibility = Visibility.Visible;
-            textEmail.Visibility = Visibility.Visible;
-            labelRemember.Visibility = Visibility.Hidden;
-            cbRemember.Visibility = Visibility.Hidden;
-        }
-
-        else //if ((string)btnSubmit.Content == "Register")
-        {
-            btnSubmit.Content = "Login";
-            btnChangeAction.Content = "Register";
-            labelServer.Margin = new Thickness(6, 98, 14, 0);
-            serverComboBox.Margin = new Thickness(10, 124, 43, 0);
-            btnServerSettings.Margin = new Thickness(218, 124, 10, 0);
-            serverComboBox.Visibility = Visibility.Visible;
-            labelEmail.Visibility = Visibility.Hidden;
-            textEmail.Visibility = Visibility.Hidden;
-            labelRemember.Visibility = Visibility.Visible;
-            cbRemember.Visibility = Visibility.Visible;
         }
     }
 
@@ -345,25 +242,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private void btnServerSettings_Click(object sender, RoutedEventArgs e)
-    {
-        ServerSettingsWindow ssw = new ServerSettingsWindow(ServerManager);
-        ssw.ShowDialog();
-
-        UpdateServerList();
-
-    }
-
-    private void btnMinimize_Click(object sender, RoutedEventArgs e)
-    {
-        this.WindowState = WindowState.Minimized;
-    }
-
-    private void btnClose_Click(object sender, RoutedEventArgs e)
-    {
-        Application.Current.Shutdown();
-    }
-
     private void UpdateServerList()
     {
         serverComboBox.Items.Clear();
@@ -382,270 +260,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private async Task<string> GetCustomImagesAsync(string img)
-    {
-        string imageUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/launcher/{img}";
-
-        try
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.Timeout = TimeSpan.FromSeconds(5);
-
-                var request = new HttpRequestMessage(HttpMethod.Get, imageUrl);
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                    return imageUrl;
-                else
-                    return $"pack://application:,,,/Images/{img}";
-            }
-        }
-        catch
-        {
-            return $"pack://application:,,,/Images/{img}";
-        }
-    }
-
-    private async void serverComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (serverComboBox.SelectedItem != null)
-        {
-            try
-            {
-                string html;
-                string newsUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
-                string newsBannerUrl = $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/newsbanner.png";
-
-                ServerManager.SelectServer((string)serverComboBox.SelectedItem);
-
-                _background = await GetCustomImagesAsync("background.png");
-                _logo = await GetCustomImagesAsync("logo.png");
-
-                CustomBackground = new BitmapImage(new Uri(_background));
-                CustomLogo = new BitmapImage(new Uri(_logo));
-
-                try
-                {
-                    using HttpClient client = new();
-                    using HttpRequestMessage request = new(HttpMethod.Head, newsBannerUrl);
-                    using HttpResponseMessage response = await client.SendAsync(request);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        imgNewsBanner.Source = new BitmapImage(new Uri(newsBannerUrl));
-                    }
-                    else
-                    {
-                        imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/newsbanner.png"));
-                    }
-                }
-                catch
-                {
-                    imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/newsbanner.png"));
-                }
-
-                try
-                {
-                    html = await new HttpClient().GetStringAsync(newsUrl);
-
-                    textAnnoucementTitle.Text = WebUtility.HtmlDecode(
-                        Regex.Replace(Regex.Match(html, "<title[^>]*>([\\s\\S]*?)</title>").Groups[1].Value, "<.*?>", "")
-                        .Trim()
-                    );
-
-                    textAnnouncementType.Text = WebUtility.HtmlDecode(
-                        Regex.Replace(Regex.Match(html, "<type[^>]*>([\\s\\S]*?)</type>").Groups[1].Value, "<.*?>", "")
-                        .Trim()
-                    );
-
-                    switch (textAnnouncementType.Text?.Trim().ToUpper())
-                    {
-                        case "UNAVAILABILITY":
-                            colorAnnouncementTypeBg.Background =
-                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1224A"));
-                            break;
-
-                        case "MAINTENANCE":
-                            colorAnnouncementTypeBg.Background =
-                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#845E14"));
-                            break;
-
-                        case "UPDATE":
-                            colorAnnouncementTypeBg.Background =
-                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#615D9F"));
-                            break;
-
-                        case "INFORMATION":
-                            colorAnnouncementTypeBg.Background =
-                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#247CAA"));
-                            break;
-
-                        case "EVENT":
-                            colorAnnouncementTypeBg.Background =
-                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
-                            break;
-
-                        default:
-                            textAnnouncementType.Text = "NO EVENT?";
-                            colorAnnouncementTypeBg.Background =
-                                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
-                            break;
-                    }
-
-                    textAnnouncementDate.Text = WebUtility.HtmlDecode(
-                        Regex.Replace(Regex.Match(html, "<date[^>]*>([\\s\\S]*?)</date>").Groups[1].Value, "<.*?>", "")
-                        .Trim()
-                    );
-
-                    textAnnoucementContent.Text = WebUtility.HtmlDecode(
-                        Regex.Replace(Regex.Match(html, "<content[^>]*>([\\s\\S]*?)</content>").Groups[1].Value, "<.*?>", "")
-                        .Trim()
-                    );
-                }
-                catch
-                {
-                    textAnnoucementTitle.Text = "No Title?";
-                    colorAnnouncementTypeBg.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
-                    textAnnouncementType.Text = "NO EVENT?";
-                    textAnnouncementDate.Text = "No Date?";
-                    textAnnoucementContent.Text = "No Description?";
-                    return;
-                }
-            }
-            catch (ArgumentException)
-            {
-                MessageBox.Show(
-                    "Selected server not found!",
-                    "Dragon's Dogma Online",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                UpdateServerList();
-                return;
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    private async void btnInstallTranslation_Click(object sender, RoutedEventArgs e)
-    {
-        var client = new HttpClient();
-        var waitWindow = new Window
-        {
-            Title = "Translation Patch",
-            Width = 400,
-            Height = 150,
-            WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            Content = new StackPanel
-            {
-                Margin = new Thickness(15),
-                Children =
-            {
-                new TextBlock { Name = "MessageLabel", Text = "Preparing...", Margin = new Thickness(0, 0, 0, 10) },
-                new ProgressBar { Name = "ProgressBar", Height = 20, Minimum = 0, Maximum = 100 }
-            }
-            }
-        };
-
-        try
-        {
-            string[] labels = { "Translated texts", "Original texts" };
-            string[] languages = { "English", "Japanese" };
-            int selectedLanguageIndex = ShowDropdownDialog("Select language", "Translation Patch", labels);
-            if (selectedLanguageIndex == -1)
-                return;
-
-            var result = ShowInputDialog("Install translation patch?", "Translation Patch", out string url, Properties.Settings.Default.translationPatchUrl);
-            Properties.Settings.Default.translationPatchUrl = url;
-            if (!result)
-                return;
-
-            waitWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            waitWindow.Show();
-            
-            (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First().Text = "Checking for translation patch updates...";
-
-            var update = await TranslationUpdateVerify(url);
-
-            waitWindow.Hide();
-
-            if (update == true)
-            {
-                var confirmation = MessageBox.Show(
-                    "Translation patch is already up to date.\nDo you want to reinstall it?",
-                    "Translation Patch",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
-
-                if (confirmation == MessageBoxResult.No)
-                    return;
-            }
-
-            waitWindow.Show(); 
-            (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First().Text = "Downloading translation patch...";
-
-            var patchDownload = await client.GetAsync(Properties.Settings.Default.translationPatchUrl);
-            Properties.Settings.Default.installedTranslationPatchETag = patchDownload.Headers.ETag?.ToString();
-
-            Stream stream = await patchDownload.Content.ReadAsStreamAsync();
-
-            GmdCsv gmdCsvReader = new GmdCsv();
-            List<GmdCsv.Entry> gmdCsvEntries = gmdCsvReader.Read(stream);
-
-            var progressBar = (waitWindow.Content as StackPanel)!.Children.OfType<ProgressBar>().First();
-            var messageLabel = (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First();
-            messageLabel.Text = "Patching client...";
-            progressBar.Value = 0;
-
-            var progress = new Progress<PackProgressReport>(progressReport =>
-            {
-                progressBar.Maximum = progressReport.Total;
-                progressBar.Value = progressReport.Current;
-            });
-
-            try
-            {
-                await Task.Run(() =>
-                    GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[selectedLanguageIndex], progress));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to patch GMD files\n\n" + ex.Message);
-            }
-
-            waitWindow.Close();
-
-            btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D3D3D3"));
-            Properties.Settings.Default.firstInstalledTranslation = true;
-            Properties.Settings.Default.Save();
-
-            MessageBox.Show(
-                "Translation patch applied successfully",
-                "Translation applied",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
-        }
-        catch (Exception ex)
-        {
-            waitWindow.Close();
-            MessageBox.Show(
-                "Error: " + ex.Message,
-                "Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-    }
-
     public static int ShowDropdownDialog(string message, string title, string[] options)
     {
         var dialog = new Window
         {
             Title = title,
             Width = 400,
-            Height = 200,
+            Height = 180,
             WindowStartupLocation = WindowStartupLocation.CenterScreen,
             ResizeMode = ResizeMode.NoResize,
             WindowStyle = WindowStyle.ToolWindow,
@@ -681,8 +302,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             HorizontalAlignment = HorizontalAlignment.Right
         };
 
-        var okButton = new Button { Content = "OK", Width = 80, Margin = new Thickness(5) };
-        var cancelButton = new Button { Content = "Cancel", Width = 80, Margin = new Thickness(5) };
+        var cancelButton = new Button { Content = "Cancel", Width = 60,  Margin = new Thickness(5) };
+        var okButton = new Button { Content = "OK", Width = 60, Margin = new Thickness(5) };
+
 
         buttonsPanel.Children.Add(cancelButton);
         buttonsPanel.Children.Add(okButton);
@@ -788,6 +410,235 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         return result == true;
     }
 
+    public async Task<bool> TranslationUpdateVerify(string url)
+    {
+        try
+        {
+            if (Properties.Settings.Default.firstInstalledTranslation != true)
+            {
+                btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
+                btnTranslation.ToolTip = "Translation update needed.";
+                return false;
+            }
+
+            using var http = new HttpClient();
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.IfNoneMatch.Add(new EntityTagHeaderValue(Properties.Settings.Default.installedTranslationPatchETag));
+
+            var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+            if (response.StatusCode == HttpStatusCode.NotModified)
+            {
+                return true;
+            }
+
+            btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+        
+    }
+
+    public async Task UpdateLauncher()
+    {
+        try
+        {
+            const string url = "https://api.github.com/repos/D00MK1D/DDON-Launcher-WPF/releases/latest";
+            using var http = new HttpClient();
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
+
+            var json = await http.GetStringAsync(url);
+            using var doc = JsonDocument.Parse(json);
+            string tag = doc.RootElement.GetProperty("tag_name").GetString();
+
+            tag = tag.TrimStart('v');
+
+            string[] parts = tag.Split('.');
+            while (parts.Length < 4) { tag += ".0"; parts = tag.Split('.'); }
+
+            Version remoteVersion = new Version(tag);
+            var localVersion = Assembly.GetExecutingAssembly().GetName().Version!;
+
+            if (remoteVersion > localVersion)
+            {
+                btnUpdate.Visibility = Visibility.Visible;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                "Error while checking for updates:\n\n" + ex.Message,
+                "Update Check",
+                MessageBoxButton.OK);
+        }
+    }
+
+    private static async Task<bool> IsHostAlive(string url)
+    {
+        using var cts = new CancellationTokenSource(1000);
+
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromMilliseconds(1000)
+        };
+
+        try
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            using var response = await client.SendAsync(
+                request,
+                HttpCompletionOption.ResponseHeadersRead,
+                cts.Token
+            );
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    #endregion
+
+    #region UI Content
+
+    private void btnSubmit_Click(object sender, RoutedEventArgs e)
+    {
+        switch ((string)btnSubmit.Content)
+        {
+            case "Login":
+                Operation("login");
+                break;
+
+            case "Register":
+                Operation("create");
+                break;
+        }
+    }
+
+    private async void serverComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        _serverChangeCts?.Cancel();
+        _serverChangeCts?.Dispose();
+        _serverChangeCts = new CancellationTokenSource();
+
+        var token = _serverChangeCts.Token;
+
+        if (serverComboBox.SelectedItem is not string serverName)
+            return;
+
+        if (!ServerManager.Servers.TryGetValue(serverName, out var server))
+            return;
+
+        ServerManager.SelectServer(serverName);
+
+        string baseAddress = $"{server.DLIP}:{server.DLPort}";
+        
+        try
+        {
+            if (await IsHostAlive($"http://{server.DLIP}:{server.DLPort}"))
+            {
+                //Directly setted
+                //imgBackground.ImageSource = new BitmapImage(new Uri($"http://{server.DLIP}:{server.DLPort}/launcher/background.png"));
+                //imgLogo.Source = new BitmapImage(new Uri($"http://{server.DLIP}:{server.DLPort}/launcher/logo.png"));
+                //imgNewsBanner.Source = new BitmapImage(new Uri($"http://{server.DLIP}:{server.DLPort}/news/newsbanner.png"));
+
+
+                //Securelly setted
+                imgBackground.ImageSource = await GetCustomImageAsync(server, "launcher/background.png", token);
+                //token.ThrowIfCancellationRequested();
+
+                imgLogo.Source = await GetCustomImageAsync(server, "launcher/logo.png", token);
+                //token.ThrowIfCancellationRequested();
+
+                imgNewsBanner.Source = await GetCustomImageAsync(server, "news/newsbanner.png", token);
+                //token.ThrowIfCancellationRequested();
+
+                await UpdateNewsAsync(token);
+            }
+            else
+            {
+                imgBackground.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Images/launcher/background.png"));
+                imgLogo.Source = new BitmapImage(new Uri("pack://application:,,,/Images/launcher/logo.png"));
+                imgNewsBanner.Source = new BitmapImage(new Uri("pack://application:,,,/Images/news/newsbanner.png"));
+                ApplyDefaultNews();
+
+            }
+
+        }
+        catch (OperationCanceledException)
+        {
+            // Do nothing
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                ex.Message,
+                "Dragon's Dogma Online",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+    }
+
+    private void btnChangeAction_Click(object sender, RoutedEventArgs e)
+    {
+        if ((string)btnSubmit.Content == "Login")
+        {
+            btnSubmit.Content = "Register";
+            btnChangeAction.Content = "Login";
+            labelServer.Margin = new Thickness(6, 147, 10, 0);
+            serverComboBox.Margin = new Thickness(10, 172, 43, 0);
+            btnServerSettings.Margin = new Thickness(218, 172, 10, 77);
+            labelEmail.Visibility = Visibility.Visible;
+            textEmail.Visibility = Visibility.Visible;
+            labelRemember.Visibility = Visibility.Hidden;
+            cbRemember.Visibility = Visibility.Hidden;
+        }
+
+        else //if ((string)btnSubmit.Content == "Register")
+        {
+            btnSubmit.Content = "Login";
+            btnChangeAction.Content = "Register";
+            labelServer.Margin = new Thickness(6, 98, 14, 0);
+            serverComboBox.Margin = new Thickness(10, 124, 43, 0);
+            btnServerSettings.Margin = new Thickness(218, 124, 10, 0);
+            serverComboBox.Visibility = Visibility.Visible;
+            labelEmail.Visibility = Visibility.Hidden;
+            textEmail.Visibility = Visibility.Hidden;
+            labelRemember.Visibility = Visibility.Visible;
+            cbRemember.Visibility = Visibility.Visible;
+        }
+    }
+
+    private void btnServerSettings_Click(object sender, RoutedEventArgs e)
+    {
+        ServerSettingsWindow ssw = new ServerSettingsWindow(ServerManager);
+        ssw.ShowDialog();
+
+        UpdateServerList();
+
+    }
+
+    private void btnMinimize_Click(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
+    }
+
+    private void btnClose_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
+
     private async void btnInstallMod_Click(object sender, RoutedEventArgs e)
     {
         var messageLabel = new TextBlock
@@ -872,75 +723,120 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
+    private async void btnInstallTranslation_Click(object sender, RoutedEventArgs e)
+    {
+        var client = new HttpClient();
+        var waitWindow = new Window
+        {
+            Title = "Translation Patch",
+            Width = 400,
+            Height = 150,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Content = new StackPanel
+            {
+                Margin = new Thickness(15),
+                Children =
+                {
+                new TextBlock { Name = "MessageLabel", Text = "Preparing...", Margin = new Thickness(0, 0, 0, 10) },
+                new ProgressBar { Name = "ProgressBar", Height = 20, Minimum = 0, Maximum = 100 }
+                }
+            }
+        };
+
+        try
+        {
+            string[] labels = { "Translated texts", "Original texts" };
+            string[] languages = { "English", "Japanese" };
+            int selectedLanguageIndex = ShowDropdownDialog("Select language", "Translation Patch", labels);
+            if (selectedLanguageIndex == -1)
+                return;
+
+            var result = ShowInputDialog("Install translation patch?", "Translation Patch", out string url, Properties.Settings.Default.translationPatchUrl);
+            Properties.Settings.Default.translationPatchUrl = url;
+            if (!result)
+                return;
+
+            waitWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            waitWindow.Show();
+            
+            (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First().Text = "Checking for translation patch updates...";
+
+            var update = await TranslationUpdateVerify(url);
+
+            waitWindow.Hide();
+
+            if (update == true)
+            {
+                var confirmation = MessageBox.Show(
+                    "Translation patch is already up to date.\nDo you want to reinstall it?",
+                    "Translation Patch",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (confirmation == MessageBoxResult.No)
+                    return;
+            }
+
+            waitWindow.Show(); 
+            (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First().Text = "Downloading translation patch...";
+
+            var patchDownload = await client.GetAsync(Properties.Settings.Default.translationPatchUrl);
+            Properties.Settings.Default.installedTranslationPatchETag = patchDownload.Headers.ETag?.ToString();
+
+            Stream stream = await patchDownload.Content.ReadAsStreamAsync();
+
+            GmdCsv gmdCsvReader = new GmdCsv();
+            List<GmdCsv.Entry> gmdCsvEntries = gmdCsvReader.Read(stream);
+
+            var progressBar = (waitWindow.Content as StackPanel)!.Children.OfType<ProgressBar>().First();
+            var messageLabel = (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First();
+            messageLabel.Text = "Patching client...";
+            progressBar.Value = 0;
+
+            var progress = new Progress<PackProgressReport>(progressReport =>
+            {
+                progressBar.Maximum = progressReport.Total;
+                progressBar.Value = progressReport.Current;
+            });
+
+            try
+            {
+                await Task.Run(() =>
+                    GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[selectedLanguageIndex], progress));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to patch GMD files\n\n" + ex.Message);
+            }
+
+            waitWindow.Close();
+
+            btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D3D3D3"));
+            Properties.Settings.Default.firstInstalledTranslation = true;
+            Properties.Settings.Default.Save();
+
+            MessageBox.Show(
+                "Translation patch applied successfully",
+                "Translation applied",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            waitWindow.Close();
+            MessageBox.Show(
+                "Error: " + ex.Message,
+                "Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+    }
+
     private void DragWindow_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ButtonState == MouseButtonState.Pressed)
         {
             this.DragMove();
-        }
-    }
-
-    private async Task<bool> TranslationUpdateVerify(string url)
-    {
-        try
-        {
-            if (Properties.Settings.Default.firstInstalledTranslation != true)
-                return false;
-
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
-
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.IfNoneMatch.Add(new EntityTagHeaderValue(Properties.Settings.Default.installedTranslationPatchETag));
-
-            var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-
-            if (response.StatusCode == HttpStatusCode.NotModified)
-            {
-                return true;
-            }
-
-            btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
-            return false;
-        }
-        catch
-        {
-            return false;
-        }
-        
-    }
-
-    private async Task UpdateLauncher()
-    {
-        try
-        {
-            const string url = "https://api.github.com/repos/D00MK1D/DDON-Launcher-WPF/releases/latest";
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.UserAgent.ParseAdd("DDO_Launcher");
-
-            var json = await http.GetStringAsync(url);
-            using var doc = JsonDocument.Parse(json);
-            string tag = doc.RootElement.GetProperty("tag_name").GetString();
-
-            tag = tag.TrimStart('v');
-
-            string[] parts = tag.Split('.');
-            while (parts.Length < 4) { tag += ".0"; parts = tag.Split('.'); }
-
-            Version remoteVersion = new Version(tag);
-            var localVersion = Assembly.GetExecutingAssembly().GetName().Version!;
-
-            if (remoteVersion > localVersion)
-            {
-                btnUpdate.Visibility = Visibility.Visible;
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                "Error while checking for updates:\n\n" + ex.Message,
-                "Update Check",
-                MessageBoxButton.OK);
         }
     }
 
@@ -993,4 +889,95 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             Properties.Settings.Default.Save();
         }
     }
+
+    #endregion
+
+    #region UI Helpers
+
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private async Task UpdateNewsAsync(CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();
+
+        string newsUrl =
+            $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:" +
+            $"{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/news/news.html";
+
+        try
+        {
+            string raw = await new HttpClient().GetStringAsync(newsUrl);
+
+            string wrappedXml = $"<news>{raw}</news>";
+
+            var doc = System.Xml.Linq.XDocument.Parse(wrappedXml);
+
+            string type = doc.Root.Element("type")?.Value.TrimEnd().TrimStart() ?? "NO EVENT";
+            string date = doc.Root.Element("date")?.Value.TrimEnd().TrimStart() ?? "No Date";
+            string title = doc.Root.Element("title")?.Value.TrimEnd().TrimStart() ?? "No Title";
+            string content = doc.Root.Element("content")?.Value.TrimEnd().TrimStart() ?? "No Description";
+
+            textAnnouncementType.Text = type;
+            textAnnouncementDate.Text = date;
+            textAnnoucementTitle.Text = title;
+            textAnnoucementContent.Text = content.Trim();
+
+            colorAnnouncementTypeBg.Background =
+                new SolidColorBrush(GetAnnouncementColor(type));
+        }
+        catch
+        {
+            ApplyDefaultNews();
+        }
+    }
+
+    private static Color GetAnnouncementColor(string type)
+    {
+        return type?.Trim().ToUpperInvariant() switch
+        {
+            "UNAVAILABILITY" => (Color)ColorConverter.ConvertFromString("#B1224A"),
+            "MAINTENANCE" => (Color)ColorConverter.ConvertFromString("#845E14"),
+            "UPDATE" => (Color)ColorConverter.ConvertFromString("#615D9F"),
+            "INFORMATION" => (Color)ColorConverter.ConvertFromString("#247CAA"),
+            "EVENT" => (Color)ColorConverter.ConvertFromString("#348B3A"),
+            _ => (Color)ColorConverter.ConvertFromString("#348B3A"),
+        };
+    }
+
+    private void ApplyDefaultNews()
+    {
+        textAnnoucementTitle.Text = "No Title";
+        textAnnouncementType.Text = "NO EVENT";
+        textAnnouncementDate.Text = "No Date";
+        textAnnoucementContent.Text = "No Description";
+
+        colorAnnouncementTypeBg.Background =
+            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
+    }
+
+    private async Task<BitmapImage> GetCustomImageAsync(Server server, string imageName, CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();
+
+        string imageUrl = $"http://{server.DLIP}:{server.DLPort}/{imageName}";
+
+        using HttpClient client = new();
+        using HttpRequestMessage request = new(HttpMethod.Head, imageUrl);
+        using HttpResponseMessage response = await client.SendAsync(request);
+
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            return new BitmapImage(new Uri($"pack://application:,,,/Images/{imageName}"));
+        }
+
+        return new BitmapImage(new Uri(imageUrl));
+    }
+
+    #endregion
 }

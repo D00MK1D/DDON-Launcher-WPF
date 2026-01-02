@@ -15,7 +15,7 @@
     <Border x:Name="LauncherBorder" IsHitTestVisible="True"
             CornerRadius="8">
         <Border.Background>
-            <ImageBrush ImageSource="{Binding CustomBackground}" Stretch="UniformToFill" TileMode="None"/>
+            <ImageBrush x:Name="imgBackground" ImageSource="/Images/launcher/background.png" Stretch="UniformToFill" TileMode="None"/>
         </Border.Background>
 
         <Grid x:Name="LauncherGrid">
@@ -47,7 +47,7 @@
                        IsHitTestVisible="False" 
                        VerticalAlignment="Top" 
                        Stretch="Fill"
-                       Source="/Images/newsbanner.png"
+                       Source="/Images/news/newsbanner.png"
                        Margin="2,2,2,235">
                     <Image.Clip>
                         <RectangleGeometry Rect="0,0,665,250" RadiusX="8" RadiusY="8"/>
@@ -399,8 +399,8 @@
                 </ScrollViewer>
             </Grid>
 
-            <Image 
-                Source="{Binding CustomLogo}" 
+            <Image x:Name="imgLogo"
+                Source="/Images/launcher/logo.png" 
                 Margin="20,16,10,0" 
                 IsHitTestVisible="False" Grid.RowSpan="2"/>
 
@@ -521,7 +521,7 @@
 
                 <Button x:Name="btnUpdate" Grid.Row="0"
                     Grid.Column="1"
-                    ToolTip="Update launcher"
+                    ToolTip="New launcher update"
                     Margin="513,10,162,11"
                     Background="Transparent"
                     BorderThickness="0" Click="btnUpdate_Click"

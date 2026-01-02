@@ -1,146 +1,98 @@
-﻿using System.Windows;
+﻿#nullable enable
+
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DDO_Launcher
 {
     public partial class ServerSettingsWindow : Window
     {
-        private readonly ServerManager ServerManager;
+        private readonly ServerManager _serverManager;
 
         public ServerSettingsWindow(ServerManager serverManager)
         {
             InitializeComponent();
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            ServerManager = serverManager;
+            _serverManager = serverManager;
 
-            if (ServerManager.Servers.Count == 0)
-            {
+            if (_serverManager.Servers.Count == 0)
                 AddNewServer();
-            }
             else
-            {
                 UpdateServerList();
-            }
         }
 
         private void AddNewServer()
         {
-            string newServerName;
             int i = 1;
+            string newServerName;
+
             do
             {
-                newServerName = "Server #" + (ServerManager.Servers.Count + i);
+                newServerName = $"Server #{_serverManager.Servers.Count + i}";
                 i++;
-            } while (ServerManager.Servers.ContainsKey(newServerName));
+            }
+            while (_serverManager.Servers.ContainsKey(newServerName));
 
-            ServerManager.AddServer(newServerName, new Server());
+            var server = new Server("localhost", 52100, "localhost", 52099);
+            _serverManager.AddServer(newServerName, server);
+
             UpdateServerList();
-            serverComboBox.SelectedIndex = serverComboBox.Items.Count - 1;
+            serverComboBox.SelectedItem = newServerName;
         }
 
         private void UpdateServerList()
         {
-            int oldSelectionIndex = serverComboBox.SelectedIndex;
+            var selected = serverComboBox.SelectedItem as string;
 
             serverComboBox.Items.Clear();
-            foreach (var server in ServerManager.Servers)
-            {
-                serverComboBox.Items.Add(server.Key);
-            }
+            foreach (var name in _serverManager.Servers.Keys)
+                serverComboBox.Items.Add(name);
 
-            if (oldSelectionIndex == -1 && serverComboBox.Items.Count > 0)
-            {
+            if (selected != null && _serverManager.Servers.ContainsKey(selected))
+                serverComboBox.SelectedItem = selected;
+            else if (serverComboBox.Items.Count > 0)
                 serverComboBox.SelectedIndex = 0;
-            }
-            else if (oldSelectionIndex < serverComboBox.Items.Count)
-            {
-                serverComboBox.SelectedIndex = oldSelectionIndex;
-            }
 
             UpdateServerFields();
         }
 
         private void UpdateServerFields()
         {
-            try
+            if (serverComboBox.SelectedItem is not string serverName ||
+                !_serverManager.Servers.TryGetValue(serverName, out var server))
             {
-                if (!ServerManager.Servers.ContainsKey((string)serverComboBox.SelectedItem))
-                {
-                    textSmServerName.Text = "";
-                    textSmServerName.IsEnabled = false;
-                    textSmLobbyIP.Text = "";
-                    textSmLobbyIP.IsEnabled = false;
-                    textSmLobbyPort.Text = "";
-                    textSmLobbyPort.IsEnabled = false;
-                    textSmDownloadIP.Text = "";
-                    textSmDownloadIP.IsEnabled = false;
-                    textSmDownloadPort.Text = "";
-                    textSmDownloadPort.IsEnabled = false;
-                    btnSmRemove.IsEnabled = false;
-                }
-                else
-                {
-                    var serverName = (string)serverComboBox.SelectedItem;
-                    Server server = ServerManager.Servers[serverName];
-                    textSmServerName.Text = serverName;
-                    textSmServerName.IsEnabled = true;
-                    textSmLobbyIP.Text = server.LobbyIP;
-                    textSmLobbyIP.IsEnabled = true;
-                    textSmLobbyPort.Text = server.LPort.ToString();
-                    textSmLobbyPort.IsEnabled = true;
-                    textSmDownloadIP.Text = server.DLIP;
-                    textSmDownloadIP.IsEnabled = true;
-                    textSmDownloadPort.Text = server.DLPort.ToString();
-                    textSmDownloadPort.IsEnabled = true;
-                    btnSmRemove.IsEnabled = true;
-                }
+                SetFieldsEnabled(false);
+                ClearFields();
+                return;
             }
-            catch
-            {
-                if (!ServerManager.Servers.ContainsKey((string)serverComboBox.SelectionBoxItem))
-                {
-                    textSmServerName.Text = "";
-                    textSmServerName.IsEnabled = false;
-                    textSmLobbyIP.Text = "";
-                    textSmLobbyIP.IsEnabled = false;
-                    textSmLobbyPort.Text = "";
-                    textSmLobbyPort.IsEnabled = false;
-                    textSmDownloadIP.Text = "";
-                    textSmDownloadIP.IsEnabled = false;
-                    textSmDownloadPort.Text = "";
-                    textSmDownloadPort.IsEnabled = false;
-                    btnSmRemove.IsEnabled = false;
-                }
-                else
-                {
-                    var serverName = (string)serverComboBox.SelectionBoxItem;
-                    Server server = ServerManager.Servers[serverName];
-                    textSmServerName.Text = serverName;
-                    textSmServerName.IsEnabled = true;
-                    textSmLobbyIP.Text = server.LobbyIP;
-                    textSmLobbyIP.IsEnabled = true;
-                    textSmLobbyPort.Text = server.LPort.ToString();
-                    textSmLobbyPort.IsEnabled = true;
-                    textSmDownloadIP.Text = server.DLIP;
-                    textSmDownloadIP.IsEnabled = true;
-                    textSmDownloadPort.Text = server.DLPort.ToString();
-                    textSmDownloadPort.IsEnabled = true;
-                    btnSmRemove.IsEnabled = true;
-                }
-            }
+
+            SetFieldsEnabled(true);
+
+            textSmServerName.Text = serverName;
+            textSmLobbyIP.Text = server.LobbyIP;
+            textSmLobbyPort.Text = server.LPort.ToString();
+            textSmDownloadIP.Text = server.DLIP;
+            textSmDownloadPort.Text = server.DLPort.ToString();
         }
 
-        private void btnSmAccept_Click(object sender, RoutedEventArgs e)
+        private void SetFieldsEnabled(bool enabled)
         {
-            ServerManager.SaveServers();
-            this.Close();
+            textSmServerName.IsEnabled = enabled;
+            textSmLobbyIP.IsEnabled = enabled;
+            textSmLobbyPort.IsEnabled = enabled;
+            textSmDownloadIP.IsEnabled = enabled;
+            textSmDownloadPort.IsEnabled = enabled;
+            btnSmRemove.IsEnabled = enabled;
         }
 
-        private void btnSmCancel_Click(object sender, RoutedEventArgs e)
+        private void ClearFields()
         {
-            ServerManager.LoadServers();
-            this.Close();
+            textSmServerName.Text = "";
+            textSmLobbyIP.Text = "";
+            textSmLobbyPort.Text = "";
+            textSmDownloadIP.Text = "";
+            textSmDownloadPort.Text = "";
         }
 
         private void serverComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -150,65 +102,67 @@ namespace DDO_Launcher
 
         private void textSmServerName_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (serverComboBox.SelectedItem is string oldName && !string.IsNullOrWhiteSpace(textSmServerName.Text))
+            if (serverComboBox.SelectedItem is string oldName &&
+                !string.IsNullOrWhiteSpace(textSmServerName.Text))
             {
-                string newName = textSmServerName.Text;
-                if (oldName != newName)
+                var newName = textSmServerName.Text;
+
+                if (oldName != newName &&
+                    _serverManager.RenameServer(oldName, newName))
                 {
-                    ServerManager.RenameServer(oldName, newName);
                     UpdateServerList();
                     serverComboBox.SelectedItem = newName;
                 }
             }
         }
 
+        private void UpdateCurrentServer(System.Func<Server, Server> updater)
+        {
+            if (serverComboBox.SelectedItem is not string name)
+                return;
+
+            if (!_serverManager.Servers.TryGetValue(name, out var oldServer))
+                return;
+
+            var newServer = updater(oldServer);
+            _serverManager.Servers[name] = newServer;
+        }
+
         private void textSmLobbyIP_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (serverComboBox.SelectedItem is string serverName)
-            {
-                Server server = ServerManager.Servers[serverName];
-                server.LobbyIP = textSmLobbyIP.Text;
-            }
+            UpdateCurrentServer(s =>
+                new Server(textSmLobbyIP.Text, s.LPort, s.DLIP, s.DLPort));
         }
 
         private void textSmLobbyPort_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (serverComboBox.SelectedItem is string serverName)
-            {
-                Server server = ServerManager.Servers[serverName];
-                if (ushort.TryParse(textSmLobbyPort.Text, out ushort port))
-                {
-                    server.LPort = port;
-                }
-            }
+            if (!ushort.TryParse(textSmLobbyPort.Text, out var port))
+                return;
+
+            UpdateCurrentServer(s =>
+                new Server(s.LobbyIP, port, s.DLIP, s.DLPort));
         }
 
         private void textSmDownloadIP_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (serverComboBox.SelectedItem is string serverName)
-            {
-                Server server = ServerManager.Servers[serverName];
-                server.DLIP = textSmDownloadIP.Text;
-            }
+            UpdateCurrentServer(s =>
+                new Server(s.LobbyIP, s.LPort, textSmDownloadIP.Text, s.DLPort));
         }
 
         private void textSmDownloadPort_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (serverComboBox.SelectedItem is string serverName)
-            {
-                Server server = ServerManager.Servers[serverName];
-                if (ushort.TryParse(textSmDownloadPort.Text, out ushort port))
-                {
-                    server.DLPort = port;
-                }
-            }
+            if (!ushort.TryParse(textSmDownloadPort.Text, out var port))
+                return;
+
+            UpdateCurrentServer(s =>
+                new Server(s.LobbyIP, s.LPort, s.DLIP, port));
         }
 
         private void btnSmRemove_Click(object sender, RoutedEventArgs e)
         {
-            if (serverComboBox.SelectedItem is string serverName)
+            if (serverComboBox.SelectedItem is string name)
             {
-                ServerManager.RemoveServer(serverName);
+                _serverManager.RemoveServer(name);
                 UpdateServerList();
             }
         }
@@ -216,6 +170,18 @@ namespace DDO_Launcher
         private void btnSmAdd_Click(object sender, RoutedEventArgs e)
         {
             AddNewServer();
+        }
+
+        private void btnSmAccept_Click(object sender, RoutedEventArgs e)
+        {
+            _serverManager.SaveServers();
+            Close();
+        }
+
+        private void btnSmCancel_Click(object sender, RoutedEventArgs e)
+        {
+            _serverManager.LoadServers();
+            Close();
         }
     }
 }

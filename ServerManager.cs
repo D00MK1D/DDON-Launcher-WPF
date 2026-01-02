@@ -2,169 +2,231 @@
 
 using IniParser;
 using IniParser.Model;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DDO_Launcher
 {
-    public class ServerManager
+    public sealed class ServerManager
     {
-        private static readonly string SELECTED_SERVER_SECTION = "General";
+        private static class IniKeys
+        {
+            public const string General = "General";
+            public const string LobbyIP = "LobbyIP";
+            public const string LobbyPort = "LPort";
+            public const string DownloadIP = "DLIP";
+            public const string DownloadPort = "DLPort";
+        }
 
-        private static readonly string LOBBY_IP_KEY = "LobbyIP";
-        private static readonly string LOBBY_PORT_KEY = "LPort";
-        private static readonly string DOWNLOAD_IP_KEY = "DLIP";
-        private static readonly string DOWNLOAD_PORT_KEY = "DLPort";
+        private const string BACKWARDS_COMPAT_DEFAULT_SERVER_NAME = "DDOn";
 
-        private static readonly string BACKWARDS_COMPAT_DEFAULT_SERVER_NAME = "DDOn";
+        private readonly FileIniDataParser _parser;
+        private readonly string _serversFile;
 
         public string? SelectedServer { get; private set; }
-        public Dictionary<string, Server> Servers { get; private set; }
+        public Dictionary<string, Server> Servers { get; } = new();
 
-        private FileIniDataParser Parser = new FileIniDataParser();
-
-        private readonly string ServersFile;
-
-        public ServerManager(string serversFile)
+        public ServerManager(string serversFile, FileIniDataParser? parser = null)
         {
-            ServersFile = serversFile;
+            ArgumentException.ThrowIfNullOrWhiteSpace(serversFile);
+
+            _serversFile = serversFile;
+            _parser = parser ?? new FileIniDataParser();
+
             LoadServers();
         }
 
         public void SelectServer(string name)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
             if (!Servers.ContainsKey(name))
-            {
-                throw new ArgumentException("Server not found");
-            }
+                throw new ArgumentException("Server not found.", nameof(name));
+
             SelectedServer = name;
         }
 
         public void AddServer(string name, Server server)
         {
-            Servers.Add(name, server);
-            if (SelectedServer == null)
-            {
-                SelectServer(name);
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+            ArgumentNullException.ThrowIfNull(server);
+
+            if (!Servers.TryAdd(name, server))
+                throw new InvalidOperationException("Server already exists.");
+
+            SelectedServer ??= name;
         }
 
         public void RemoveServer(string name)
         {
-            Servers.Remove(name);
-            if (name == SelectedServer)
-            {
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
+            if (!Servers.Remove(name))
+                return;
+
+            if (SelectedServer == name)
                 SelectedServer = null;
-            }
         }
 
-        public void RenameServer(string oldName, string newName)
+        public bool RenameServer(string oldName, string newName)
         {
-            Server server = Servers[oldName];
-            Servers.Remove(oldName);
-            try
-            {
-                Servers.Add(newName, server);
-            }
-            catch
-            {
-                // Do nothing to avoid exception
+            ArgumentException.ThrowIfNullOrWhiteSpace(oldName);
+            ArgumentException.ThrowIfNullOrWhiteSpace(newName);
 
-                // Typing something in nameTextBox results in a "search" of registered servers if the name is the same
-                // But allow users to register servers with the same name that will break initialization of launcher...
+            if (!Servers.Remove(oldName, out var server))
+                return false;
 
+            if (!Servers.TryAdd(newName, server))
+            {
+                Servers.Add(oldName, server);
+                return false;
             }
 
-            if (oldName == SelectedServer)
-            {
-                SelectServer(newName);
-            }
+            if (SelectedServer == oldName)
+                SelectedServer = newName;
+
+            return true;
         }
 
         public void LoadServers()
         {
-            if (!File.Exists(ServersFile))
+            Servers.Clear();
+            SelectedServer = null;
+
+            if (!File.Exists(_serversFile))
+                CreateDefaultIni();
+
+            IniData data = _parser.ReadFile(_serversFile);
+
+            foreach (var section in data.Sections.Where(s => s.SectionName != IniKeys.General))
             {
-                IniData defaultData = new IniData();
-
-                defaultData["General"]["DLIP"] = "localhost";
-                defaultData["General"]["DLPort"] = "52099";
-                defaultData["General"]["LobbyIP"] = "localhost";
-                defaultData["General"]["LPort"] = "52100";
-
-                Parser.WriteFile(ServersFile, defaultData);
+                var server = CreateServerFromSection(section.SectionName, data);
+                if (server != null)
+                    Servers[section.SectionName] = server;
             }
 
-            IniData data = Parser.ReadFile(ServersFile);
-
-            Servers = data.Sections
-                .Where(section => section.SectionName != SELECTED_SERVER_SECTION)
-                .ToDictionary(section => section.SectionName, section => new Server
-                {
-                    LobbyIP = data[section.SectionName][LOBBY_IP_KEY],
-                    LPort = ushort.Parse(data[section.SectionName][LOBBY_PORT_KEY]),
-                    DLIP = data[section.SectionName][DOWNLOAD_IP_KEY],
-                    DLPort = ushort.Parse(data[section.SectionName][DOWNLOAD_PORT_KEY])
-                });
-
-            SelectedServer = Servers
-                .Where(server => server.Value.LobbyIP == data[SELECTED_SERVER_SECTION][LOBBY_IP_KEY] &&
-                                 server.Value.LPort == ushort.Parse(data[SELECTED_SERVER_SECTION][LOBBY_PORT_KEY]) &&
-                                 server.Value.DLIP == data[SELECTED_SERVER_SECTION][DOWNLOAD_IP_KEY] &&
-                                 server.Value.DLPort == ushort.Parse(data[SELECTED_SERVER_SECTION][DOWNLOAD_PORT_KEY]))
-                .Select(server => server.Key)
-                .FirstOrDefault();
-
-            if (SelectedServer == null)
-            {
-                try
-                {
-                    // Backwards compatibility with the old launcher
-                    Server server = new Server
-                    {
-                        LobbyIP = data[SELECTED_SERVER_SECTION][LOBBY_IP_KEY],
-                        LPort = ushort.Parse(data[SELECTED_SERVER_SECTION][LOBBY_PORT_KEY]),
-                        DLIP = data[SELECTED_SERVER_SECTION][DOWNLOAD_IP_KEY],
-                        DLPort = ushort.Parse(data[SELECTED_SERVER_SECTION][DOWNLOAD_PORT_KEY])
-                    };
-                    Servers.Add(BACKWARDS_COMPAT_DEFAULT_SERVER_NAME, server);
-                    SelectedServer = BACKWARDS_COMPAT_DEFAULT_SERVER_NAME;
-                }
-                catch (ArgumentNullException)
-                {
-                    // Ignore
-                }
-            }
-
+            ResolveSelectedServer(data);
         }
 
         public void SaveServers()
         {
-            IniData data = new IniData();
-            foreach (var server in Servers)
+            IniData data = new();
+
+            foreach (var (name, server) in Servers)
             {
-                data[server.Key][LOBBY_IP_KEY] = server.Value.LobbyIP;
-                data[server.Key][LOBBY_PORT_KEY] = server.Value.LPort.ToString();
-                data[server.Key][DOWNLOAD_IP_KEY] = server.Value.DLIP;
-                data[server.Key][DOWNLOAD_PORT_KEY] = server.Value.DLPort.ToString();
+                data[name][IniKeys.LobbyIP] = server.LobbyIP;
+                data[name][IniKeys.LobbyPort] = server.LPort.ToString();
+                data[name][IniKeys.DownloadIP] = server.DLIP;
+                data[name][IniKeys.DownloadPort] = server.DLPort.ToString();
             }
 
-            if (SelectedServer != null)
+            if (SelectedServer != null && Servers.TryGetValue(SelectedServer, out var selected))
             {
-                data[SELECTED_SERVER_SECTION][LOBBY_IP_KEY] = Servers[SelectedServer].LobbyIP;
-                data[SELECTED_SERVER_SECTION][LOBBY_PORT_KEY] = Servers[SelectedServer].LPort.ToString();
-                data[SELECTED_SERVER_SECTION][DOWNLOAD_IP_KEY] = Servers[SelectedServer].DLIP;
-                data[SELECTED_SERVER_SECTION][DOWNLOAD_PORT_KEY] = Servers[SelectedServer].DLPort.ToString();
+                data[IniKeys.General][IniKeys.LobbyIP] = selected.LobbyIP;
+                data[IniKeys.General][IniKeys.LobbyPort] = selected.LPort.ToString();
+                data[IniKeys.General][IniKeys.DownloadIP] = selected.DLIP;
+                data[IniKeys.General][IniKeys.DownloadPort] = selected.DLPort.ToString();
             }
 
-            Parser.WriteFile(ServersFile, data);
+            _parser.WriteFile(_serversFile, data);
+        }
+
+        private void CreateDefaultIni()
+        {
+            IniData data = new();
+
+            data[IniKeys.General][IniKeys.LobbyIP] = "localhost";
+            data[IniKeys.General][IniKeys.LobbyPort] = "52100";
+            data[IniKeys.General][IniKeys.DownloadIP] = "localhost";
+            data[IniKeys.General][IniKeys.DownloadPort] = "52099";
+
+            _parser.WriteFile(_serversFile, data);
+        }
+
+        private Server? CreateServerFromSection(string sectionName, IniData data)
+        {
+            try
+            {
+                return new Server(
+                    lobbyIP: data[sectionName][IniKeys.LobbyIP] ?? "",
+                    lPort: ParsePort(data[sectionName][IniKeys.LobbyPort], 52100),
+                    dlip: data[sectionName][IniKeys.DownloadIP] ?? "",
+                    dlPort: ParsePort(data[sectionName][IniKeys.DownloadPort], 52099)
+                );
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private void ResolveSelectedServer(IniData data)
+        {
+            var general = data[IniKeys.General];
+            if (general == null)
+                return;
+
+            foreach (var (name, server) in Servers)
+            {
+                if (server.Matches(
+                    general[IniKeys.LobbyIP],
+                    general[IniKeys.LobbyPort],
+                    general[IniKeys.DownloadIP],
+                    general[IniKeys.DownloadPort]))
+                {
+                    SelectedServer = name;
+                    return;
+                }
+            }
+
+            // Backwards compatibility
+            try
+            {
+                var legacyServer = new Server(
+                    general[IniKeys.LobbyIP] ?? "",
+                    ParsePort(general[IniKeys.LobbyPort], 52100),
+                    general[IniKeys.DownloadIP] ?? "",
+                    ParsePort(general[IniKeys.DownloadPort], 52099)
+                );
+
+                Servers[BACKWARDS_COMPAT_DEFAULT_SERVER_NAME] = legacyServer;
+                SelectedServer = BACKWARDS_COMPAT_DEFAULT_SERVER_NAME;
+            }
+            catch
+            {
+                // Ignorado propositalmente
+            }
+        }
+
+        private static ushort ParsePort(string? value, ushort defaultPort)
+        {
+            return ushort.TryParse(value, out var port) ? port : defaultPort;
         }
     }
 
-    public class Server
+    public sealed class Server
     {
-        public string LobbyIP = "";
-        public ushort LPort = 52100;
-        public string DLIP = "";
-        public ushort DLPort = 52099;
+        public string LobbyIP { get; }
+        public ushort LPort { get; }
+        public string DLIP { get; }
+        public ushort DLPort { get; }
+
+        public Server(string lobbyIP, ushort lPort, string dlip, ushort dlPort)
+        {
+            LobbyIP = lobbyIP ?? throw new ArgumentNullException(nameof(lobbyIP));
+            DLIP = dlip ?? throw new ArgumentNullException(nameof(dlip));
+            LPort = lPort;
+            DLPort = dlPort;
+        }
+
+        internal bool Matches(string? lobbyIp, string? lobbyPort, string? dlip, string? dlPort)
+        {
+            return LobbyIP == lobbyIp &&
+                   DLIP == dlip &&
+                   ushort.TryParse(lobbyPort, out var lp) && lp == LPort &&
+                   ushort.TryParse(dlPort, out var dp) && dp == DLPort;
+        }
     }
 }

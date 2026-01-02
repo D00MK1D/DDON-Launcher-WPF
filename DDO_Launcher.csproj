@@ -7,9 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>DDO_Launcher</AssemblyName>
-    <Version>1.0.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.1.0</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
     <Company>White Dragon Temple</Company>
     <Product>DDO_Launcher</Product>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -46,9 +46,9 @@
     <Resource Include="Fonts\EBGaramond-Regular.ttf" />
     <Resource Include="Fonts\Jersey25-Regular.ttf" />
     <Resource Include="icon.ico" />
-    <Resource Include="Images\logo.png" />
-    <Resource Include="Images\background.png" />
-    <Resource Include="Images\newsbanner.png" />
+    <Resource Include="Images\launcher\logo.png" />
+    <Resource Include="Images\launcher\background.png" />
+    <Resource Include="Images\news\newsbanner.png" />
     <Resource Include="Update\update_launcher.bat">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
