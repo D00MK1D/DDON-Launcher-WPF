@@ -15,12 +15,12 @@ https://www.steamgriddb.com/logo/96344
 
 ## For server hosts
 ### Custom background and logo
-- Create a folder called `launcher` inside `Server\Files\www`
+- Create a folder called `launcher` inside `Server\Files\www`<br />
 <img width="540" height="271" alt="image" src="https://github.com/user-attachments/assets/ef34fd4a-fdf5-4598-b4fe-25e8b2b007be" />
 
 <br /><br />
 
-- Place the images you want inside it and name them `background.png` and `logo.png` (Background and logo must be PNG)
+- Place the images you want inside it and name them `background.png` and `logo.png` (Background and logo must be PNG)<br />
 <img width="360" height="236" alt="image" src="https://github.com/user-attachments/assets/ba9c5da4-3be6-4302-940b-a08edbdab779" />
 
 
@@ -36,13 +36,13 @@ Optimal resolutions (they're not a limit)
 This panel actually supports one new at time.<br />
 <br />
 
-- Create a folder called `news` inside `Server\Files\www`
+- Create a folder called `news` inside `Server\Files\www`<br />
 <img width="540" height="271" alt="image" src="https://github.com/user-attachments/assets/629bd885-1bdc-4862-85f6-1798792e405f" />
 
 <br /><br />
 
 - Place the image banner you want inside it and name it `newsbanner.png` (Must be PNG - 665x200)
-- Create a `news.html` too
+- Create a `news.html` too <br />
 <img width="629" height="177" alt="image" src="https://github.com/user-attachments/assets/5f5d0837-9fe9-42c6-b585-b3798f57bcd6" />
 
 <br /><br />
