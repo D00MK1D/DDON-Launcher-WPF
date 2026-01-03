@@ -103,7 +103,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             try
             {
-                //response = await client.PostAsync("http://localhost:52099" + path, content);
                 response = await client.PostAsync("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
                               ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + path, content);
             }
@@ -471,10 +470,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            MessageBox.Show(
-                "Error while checking for updates:\n\n" + ex.Message,
-                "Update Check",
-                MessageBoxButton.OK);
+            // Do nothing
         }
     }
 
@@ -607,7 +603,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             cbRemember.Visibility = Visibility.Hidden;
         }
 
-        else //if ((string)btnSubmit.Content == "Register")
+        else
         {
             btnSubmit.Content = "Login";
             btnChangeAction.Content = "Register";
