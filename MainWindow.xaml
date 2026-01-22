@@ -365,7 +365,9 @@
                         <TextBlock 
                             x:Name="textAnnouncementType" 
                             Style="{StaticResource MaintenanceTextStyle}" 
-                            Text="NO EVENT?"/>
+                            Text="NO EVENT?"
+                            FontFamily="/Fonts/#Geo"
+                            FontSize="18"/>
                     </Border>
 
                     <Border CornerRadius="4" Padding="0,2,6,2">
