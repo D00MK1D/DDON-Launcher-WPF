@@ -49,6 +49,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             cbRemember.IsChecked = Properties.Settings.Default.rememberMe;
             serverComboBox.SelectedIndex = Properties.Settings.Default.lastServerSelected;
         }
+
+        if (Properties.Settings.Default.translationPatchUrl.EndsWith("heads/main/gmd.csv"))
+        {
+            Properties.Settings.Default.translationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/English/gmd.csv";
+            Properties.Settings.Default.Save();
+        }
     }
 
     public class ServerResponse
@@ -412,7 +418,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (Properties.Settings.Default.firstInstalledTranslation != true)
             {
                 btnTranslationPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50"));
-                btnTranslation.ToolTip = "Translation update needed.";
+                btnTranslation.ToolTip = "Translation update available.";
                 return false;
             }
 
