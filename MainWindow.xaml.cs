@@ -163,17 +163,24 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                             Properties.Settings.Default.Save();
                         }
 
-                            Process.Start("ddo.exe",
-                                          " addr=" + ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
-                                          " port=" + ServerManager.Servers[ServerManager.SelectedServer].LPort +
-                                          " token=" + serverResponse.Token +
-                                          " DL=http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
-                                          ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort +
-                                          "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+                        var psi = new ProcessStartInfo
+                        {
+                            FileName = "ddo.exe",
+                            Arguments = " addr=" + ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                                        " port=" + ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                                        " token=" + serverResponse.Token +
+                                        " DL=http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                                        ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort +
+                                        "/win/ LVer=03.04.003.20181115.0 RVer=3040008",
+                            UseShellExecute = false
+                        };
+
+                        psi.EnvironmentVariables["__COMPAT_LAYER"] = "RUNASINVOKER";
+                        Process.Start(psi);
 
                         btnChangeAction.IsEnabled = true;
                         btnSubmit.IsEnabled = true;
-                        
+
                         Application.Current.Shutdown();
                     }
                     catch (Win32Exception e)
@@ -182,14 +189,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                         {
                             MessageBox.Show(
                                 "Launcher couldn't find DDO.exe!\nMake sure the launcher is located in the game folder",
-                                "Dragon's Dogma Online",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                        }
-                        else if(e.NativeErrorCode == 740)
-                        {
-                            MessageBox.Show(
-                                "Launcher couldn't run DDO.exe!\nMake sure the launcher is running as Admin.",
                                 "Dragon's Dogma Online",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error);
@@ -442,7 +441,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             return false;
         }
-        
+
     }
 
     public async Task UpdateLauncher()
