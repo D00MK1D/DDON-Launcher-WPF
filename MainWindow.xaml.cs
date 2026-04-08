@@ -917,10 +917,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             var doc = System.Xml.Linq.XDocument.Parse(wrappedXml);
 
-            string type = doc.Root.Element("type")?.Value.TrimEnd().TrimStart() ?? "NO EVENT";
-            string date = doc.Root.Element("date")?.Value.TrimEnd().TrimStart() ?? "No Date";
-            string title = doc.Root.Element("title")?.Value.TrimEnd().TrimStart() ?? "No Title";
-            string content = doc.Root.Element("content")?.Value.TrimEnd().TrimStart() ?? "No Description";
+            string type = doc.Root.Element("type")?.Value.TrimEnd().TrimStart() ?? "NO EVENT?";
+            string date = doc.Root.Element("date")?.Value.TrimEnd().TrimStart() ?? "No Date?";
+            string title = doc.Root.Element("title")?.Value.TrimEnd().TrimStart() ?? "No Title?";
+            string content = doc.Root.Element("content")?.Value.TrimEnd().TrimStart() ?? "No Description?";
 
             textAnnouncementType.Text = type;
             textAnnouncementDate.Text = date;
@@ -951,10 +951,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void ApplyDefaultNews()
     {
-        textAnnoucementTitle.Text = "No Title";
-        textAnnouncementType.Text = "NO EVENT";
-        textAnnouncementDate.Text = "No Date";
-        textAnnoucementContent.Text = "No Description";
+        textAnnoucementTitle.Text = "No Title?";
+        textAnnouncementType.Text = "NO EVENT?";
+        textAnnouncementDate.Text = "No Date?";
+        textAnnoucementContent.Text = "No Description?";
 
         colorAnnouncementTypeBg.Background =
             new SolidColorBrush((Color)ColorConverter.ConvertFromString("#348B3A"));
