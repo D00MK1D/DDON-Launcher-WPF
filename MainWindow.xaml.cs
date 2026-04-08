@@ -302,7 +302,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             HorizontalAlignment = HorizontalAlignment.Right
         };
 
-        var cancelButton = new Button { Content = "Cancel", Width = 60,  Margin = new Thickness(5) };
+        var cancelButton = new Button { Content = "Cancel", Width = 60, Margin = new Thickness(5) };
         var okButton = new Button { Content = "OK", Width = 60, Margin = new Thickness(5) };
 
 
@@ -744,23 +744,50 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         try
         {
-            string[] labels = { "Translated texts", "Original texts" };
+            string url = string.Empty;
+            string[] labels = { "English", "日本語", "Português (Brasil)", "Español", "中文（繁體）", "Tiếng Việt", "Custom" };
             string[] languages = { "English", "Japanese" };
             int selectedLanguageIndex = ShowDropdownDialog("Select language", "Translation Patch", labels);
-            if (selectedLanguageIndex == -1)
-                return;
+            
+            switch (selectedLanguageIndex)
+            {
+                case -1:
+                    return;
+                    break;
 
-            var result = ShowInputDialog("Install translation patch?", "Translation Patch", out string url, Properties.Settings.Default.translationPatchUrl);
-            Properties.Settings.Default.translationPatchUrl = url;
-            if (!result)
-                return;
+                case 0:
+                    Properties.Settings.Default.translationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/English/gmd.csv";
+                    break;
+                case 1:
+                    Properties.Settings.Default.translationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/gmd.csv";
+                    break;
+                case 2:
+                    Properties.Settings.Default.translationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/Portuguese%20(Brazil)/gmd.csv";
+                    break;
+                case 3:
+                    Properties.Settings.Default.translationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/Spanish/gmd.csv";
+                    break;
+                case 4:
+                    Properties.Settings.Default.translationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/Traditional%20Chinese/gmd.csv";
+                    break;
+                case 5:
+                    Properties.Settings.Default.translationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/Viet/gmd.csv";
+                    break;
+                case 6:
+                    var result = ShowInputDialog("Link to CSV file:", "Custom Translation Patch", out url, Properties.Settings.Default.translationPatchUrl);
+                    Properties.Settings.Default.translationPatchUrl = url;
+                    if (!result)
+                        return;
+                    break;
+
+            }
 
             waitWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             waitWindow.Show();
-            
+
             (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First().Text = "Checking for translation patch updates...";
 
-            var update = await TranslationUpdateVerify(url);
+            var update = await TranslationUpdateVerify(Properties.Settings.Default.translationPatchUrl);
 
             waitWindow.Hide();
 
@@ -776,7 +803,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     return;
             }
 
-            waitWindow.Show(); 
+            waitWindow.Show();
             (waitWindow.Content as StackPanel)!.Children.OfType<TextBlock>().First().Text = "Downloading translation patch...";
 
             var patchDownload = await client.GetAsync(Properties.Settings.Default.translationPatchUrl);
@@ -800,8 +827,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             try
             {
-                await Task.Run(() =>
-                    GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[selectedLanguageIndex], progress));
+                if (selectedLanguageIndex == 1)
+                {
+                    await Task.Run(() =>
+                        GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[selectedLanguageIndex], progress));
+                }
+                else
+                {
+                    await Task.Run(() =>
+                        GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[0], progress));
+                }
             }
             catch (Exception ex)
             {
