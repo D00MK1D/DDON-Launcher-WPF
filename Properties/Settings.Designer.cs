@@ -73,19 +73,6 @@ namespace DDO_Launcher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/m" +
-            "ain/gmd.csv")]
-        public string translationPatchUrl {
-            get {
-                return ((string)(this["translationPatchUrl"]));
-            }
-            set {
-                this["translationPatchUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool firstInstalledTranslation {
             get {
@@ -117,6 +104,18 @@ namespace DDO_Launcher.Properties {
             }
             set {
                 this["launcherUpdateHash"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool localPlayMode {
+            get {
+                return ((bool)(this["localPlayMode"]));
+            }
+            set {
+                this["localPlayMode"] = value;
             }
         }
     }

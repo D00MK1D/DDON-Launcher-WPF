@@ -80,31 +80,132 @@ Any other text will have EVENT green color<br /><br />
 
 !! Other tags are just text, you can input whatever you want !! 
 
+## Local Play Build
+
+This launcher can expose the Arrowgene.DragonsDogmaOnline server as a local single-player-style experience. The published launcher stays lightweight: the server is downloaded from the Arrowgene.DragonsDogmaOnline GitHub releases page only when Local Play needs it.
+
+### Requirements
+
+- Git
+- .NET 10 SDK
+- Visual Studio 2022/2026 or the .NET CLI
+
+### Publishing the local build
+
+From the launcher repository root, run:
+
+```sh
+dotnet publish DDO_Launcher.csproj -c Release
+```
+
+The publish output is created at:
+
+```text
+bin\Release\net10.0-windows\win-x64\publish
+```
+
+Copy the contents of that `publish` folder into the Dragon's Dogma Online game folder, next to `ddo.exe`, then run `DDO_Launcher.exe`.
+
+The normal release files are `DDO_Launcher.exe` and `DDO_Launcher.ini`. `DDO_Launcher.ini` contains user-editable launcher URLs:
+
+```ini
+[Launcher]
+TranslationPatchUrl = https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/English/gmd.csv
+
+[LocalPlay]
+ServerReleaseUrl = https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/releases
+AutoUpdateServer = true
+ServerStartupTimeoutSeconds = 90
+```
+
+When a user opens Local Play, the launcher checks the latest GitHub release and compares it against `LocalServer\server-release.json`. If the server is missing or out of date, the Local Play screen offers a download/update button. Pressing Play will also install/update the local server when needed, then start it automatically.
+
+Set `AutoUpdateServer = false` to keep an installed local server frozen. Pressing Play will still download the server if it is missing, but it will not automatically replace an installed server with a newer release. The Local Play update icon can still be used to update manually.
+
+Set `ServerStartupTimeoutSeconds` higher if the local server needs more time to start on slower machines. Values below 30 seconds or above 300 seconds are clamped by the launcher.
+
+The downloaded release is extracted under:
+
+```text
+LocalServer\Server
+```
+
+When Local Play starts, the launcher automatically runs the server's `dbmigration` command before starting the local server. Normal users do not need to run database migration commands manually. If an existing local SQLite database is present, the launcher creates a timestamped backup under:
+
+```text
+LocalServer\Server\Files\Database\Backups
+```
+
+If the launcher starts the local server itself, it stays hidden while the game is running and shuts that server down when the game exits. If a local server was already running before Play was pressed, the launcher leaves it running.
+
+When the server is updated, the installer preserves the local SQLite database, database backups, and `Files\Arrowgene.Ddon.config.json`.
+
+### Updating the server dependency
+
+Runtime Local Play updates come from the release page configured in `DDO_Launcher.ini`. Publish a new `win-x64-*.tar.gz` release asset in Arrowgene.DragonsDogmaOnline, then the launcher can discover and install it without rebuilding the launcher.
+
+For the best end-user experience, server release assets should be self-contained so players do not need to install .NET separately. The launcher can fall back to running framework-dependent server releases through `dotnet` when needed, but that requires the matching .NET runtime to be installed on the player's machine.
+
+The launcher still references Arrowgene client/shared projects at build time. After cloning the launcher repository, initialize the submodule before building:
+
+```sh
+git submodule update --init --recursive
+```
+
+To update the build-time submodule pointer:
+
+```sh
+git -C Arrowgene.DragonsDogmaOnline fetch origin
+git -C Arrowgene.DragonsDogmaOnline checkout develop
+git -C Arrowgene.DragonsDogmaOnline pull --ff-only origin develop
+```
+
+Then rebuild/publish the launcher when you intentionally want newer client/shared build-time logic:
+
+```sh
+dotnet publish DDO_Launcher.csproj -c Release
+```
+
+If you want to commit the launcher repository so everyone else uses the same server revision, commit the updated submodule pointer:
+
+```sh
+git add Arrowgene.DragonsDogmaOnline
+git commit -m "Update bundled Arrowgene server"
+```
+
+After someone else pulls that commit, they should run:
+
+```sh
+git submodule update --init --recursive
+```
+
 ## Development
 
 ### Requirements
 
 - Git
-- .NET 9
+- .NET 10 SDK
 - Visual Studio 2022 or 2026
 
 ### Setting up the development environment
 
 1. Clone the repository
 2. Initialize git submodules ``` git submodule update --init --recursive ```
-3. Compile the required submodules
-	- Run `dotnet build --configuration Release` on **./Arrowgene.DragonsDogmaOnline/Arrowgene.Ddon.Client**
-4. Open the project in Visual Studio
+3. Open the project in Visual Studio
 
 ### Building
 
-To build the launcher in a single .exe:
+To build the launcher locally:
 
-**Not depend** on .net runtime download (~130Mb): <br />
-```dotnet publish -c Release -r win-x64 --self-contained -p:PublishSingleFile=true```
+```sh
+dotnet build DDO_Launcher.csproj
+```
 
-**Depend** on .net runtime installation like the releases (~8Mb): <br />
-```dotnet publish -c Release -r win-x64 --no-self-contained -p:PublishSingleFile=true```
+To create the local-play publish output:
+
+```sh
+dotnet publish DDO_Launcher.csproj -c Release
+```
 
 ## Extra features
 

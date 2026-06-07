@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <RestorePackagesPath>$(MSBuildThisFileDirectory).nuget\packages</RestorePackagesPath>
+  </PropertyGroup>
+</Project>

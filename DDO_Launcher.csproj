@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -13,6 +13,14 @@
     <Company>White Dragon Temple</Company>
     <Product>DDO_Launcher</Product>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
   </PropertyGroup>
   
   <ItemGroup>
@@ -31,15 +39,12 @@
 
   <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="DDO_Launcher.ini" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Arrowgene.Ddon.Client">
-      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Debug\net9.0\Arrowgene.Ddon.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Arrowgene.Ddon.Shared">
-      <HintPath>Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\bin\Debug\net9.0\Arrowgene.Ddon.Shared.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj" />
+    <ProjectReference Include="Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +54,7 @@
     <Resource Include="Images\launcher\logo.png" />
     <Resource Include="Images\launcher\background.png" />
     <Resource Include="Images\news\newsbanner.png" />
+    <Resource Include="Images\news\localnewsbanner.png" Condition="Exists('Images\news\localnewsbanner.png')" />
     <Resource Include="Update\update_launcher.bat">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -68,4 +74,20 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+
+  <Target Name="RemoveSymbolsFromPublishItems"
+          BeforeTargets="_CopyResolvedFilesToPublishPreserveNewest;_CopyResolvedFilesToPublishAlways">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb'" />
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="$([System.String]::Copy('%(RelativePath)').StartsWith('Files\'))" />
+      <_ResolvedFileToPublishPreserveNewest Remove="@(_ResolvedFileToPublishPreserveNewest)" Condition="'%(Extension)' == '.pdb'" />
+      <_ResolvedFileToPublishPreserveNewest Remove="@(_ResolvedFileToPublishPreserveNewest)" Condition="$([System.String]::Copy('%(RelativePath)').StartsWith('Files\'))" />
+      <_ResolvedFileToPublishAlways Remove="@(_ResolvedFileToPublishAlways)" Condition="'%(Extension)' == '.pdb'" />
+      <_ResolvedFileToPublishAlways Remove="@(_ResolvedFileToPublishAlways)" Condition="$([System.String]::Copy('%(RelativePath)').StartsWith('Files\'))" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="RemoveObsoleteLauncherConfigFromPublish" AfterTargets="Publish" Condition="'$(PublishDir)' != ''">
+    <Delete Files="$(PublishDir)$(AssemblyName).dll.config;$(PublishDir)$(AssemblyName).exe.config" TreatErrorsAsWarnings="true" />
+  </Target>
 </Project>

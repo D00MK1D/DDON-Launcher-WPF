@@ -2,6 +2,7 @@
 /.vs
 /bin
 /obj
+/.nuget
 DDO_Launcher.csproj.user
 DDO_Launcher.csproj.user
 *.user
