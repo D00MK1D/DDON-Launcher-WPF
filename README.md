@@ -320,5 +320,6 @@ If arc is null, the paths can be either backward or forward slashes. The paths a
 - Rumi ([@Najelith](https://github.com/Najelith)), for the Cici smile launcher that made me work on my own
 - Laith ([@alborrajo](https://github.com/alborrajo)), for the server selection and mod/translation install features
 - Kythera ([@KytheLXI](https://github.com/KytheLXI)), for all contribution and tips on UI/UX
+- Annuate ([@pacampbell](https://github.com/pacambell)), for the general code clean/fixes and local play feature
 - All devs, translators and server owner from The White Dragon Temple [discord](https://discord.gg/jS3bNDmSCr) for all the support and patience
 - And all Dragon's Dogma Online players who used my launcher, i never thought this would be used by someone other than me hahah 😅
