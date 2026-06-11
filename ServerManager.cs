@@ -14,18 +14,30 @@ namespace DDO_Launcher
         private static class IniKeys
         {
             public const string General = "General";
+            public const string Launcher = "Launcher";
+            public const string LocalPlay = "LocalPlay";
             public const string LobbyIP = "LobbyIP";
             public const string LobbyPort = "LPort";
             public const string DownloadIP = "DLIP";
             public const string DownloadPort = "DLPort";
+            public const string TranslationPatchUrl = "TranslationPatchUrl";
+            public const string ServerReleaseUrl = "ServerReleaseUrl";
+            public const string AutoUpdateServer = "AutoUpdateServer";
+            public const string ServerStartupTimeoutSeconds = "ServerStartupTimeoutSeconds";
         }
 
         private const string BACKWARDS_COMPAT_DEFAULT_SERVER_NAME = "DDOn";
+        public const string DefaultTranslationPatchUrl = "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/English/gmd.csv";
+        public const string DefaultLocalServerReleaseUrl = "https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/releases";
 
         private readonly FileIniDataParser _parser;
         private readonly string _serversFile;
 
         public string? SelectedServer { get; private set; }
+        public string TranslationPatchUrl { get; private set; } = DefaultTranslationPatchUrl;
+        public string LocalServerReleaseUrl { get; private set; } = DefaultLocalServerReleaseUrl;
+        public bool LocalServerAutoUpdate { get; private set; } = true;
+        public int LocalServerStartupTimeoutSeconds { get; private set; } = 90;
         public Dictionary<string, Server> Servers { get; } = new();
 
         public ServerManager(string serversFile, FileIniDataParser? parser = null)
@@ -102,11 +114,16 @@ namespace DDO_Launcher
 
             foreach (var section in data.Sections.Where(s => s.SectionName != IniKeys.General))
             {
+                if (section.SectionName == IniKeys.Launcher || section.SectionName == IniKeys.LocalPlay)
+                    continue;
+
                 var server = CreateServerFromSection(section.SectionName, data);
                 if (server != null)
                     Servers[section.SectionName] = server;
             }
 
+            ResolveLauncherSettings(data);
+            ResolveLocalPlaySettings(data);
             ResolveSelectedServer(data);
         }
 
@@ -130,7 +147,20 @@ namespace DDO_Launcher
                 data[IniKeys.General][IniKeys.DownloadPort] = selected.DLPort.ToString();
             }
 
+            data[IniKeys.Launcher][IniKeys.TranslationPatchUrl] = TranslationPatchUrl;
+            data[IniKeys.LocalPlay][IniKeys.ServerReleaseUrl] = LocalServerReleaseUrl;
+            data[IniKeys.LocalPlay][IniKeys.AutoUpdateServer] = LocalServerAutoUpdate.ToString();
+            data[IniKeys.LocalPlay][IniKeys.ServerStartupTimeoutSeconds] = LocalServerStartupTimeoutSeconds.ToString();
+
             _parser.WriteFile(_serversFile, data);
+        }
+
+        public void SetTranslationPatchUrl(string url)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(url);
+
+            TranslationPatchUrl = url.Trim();
+            SaveServers();
         }
 
         private void CreateDefaultIni()
@@ -141,8 +171,39 @@ namespace DDO_Launcher
             data[IniKeys.General][IniKeys.LobbyPort] = "52100";
             data[IniKeys.General][IniKeys.DownloadIP] = "localhost";
             data[IniKeys.General][IniKeys.DownloadPort] = "52099";
+            data[IniKeys.Launcher][IniKeys.TranslationPatchUrl] = DefaultTranslationPatchUrl;
+            data[IniKeys.LocalPlay][IniKeys.ServerReleaseUrl] = DefaultLocalServerReleaseUrl;
+            data[IniKeys.LocalPlay][IniKeys.AutoUpdateServer] = true.ToString();
+            data[IniKeys.LocalPlay][IniKeys.ServerStartupTimeoutSeconds] = "90";
 
             _parser.WriteFile(_serversFile, data);
+        }
+
+        private void ResolveLauncherSettings(IniData data)
+        {
+            string? translationPatchUrl = data[IniKeys.Launcher]?[IniKeys.TranslationPatchUrl];
+            TranslationPatchUrl = string.IsNullOrWhiteSpace(translationPatchUrl)
+                ? DefaultTranslationPatchUrl
+                : translationPatchUrl.Trim();
+        }
+
+        private void ResolveLocalPlaySettings(IniData data)
+        {
+            string? releaseUrl = data[IniKeys.LocalPlay]?[IniKeys.ServerReleaseUrl];
+            LocalServerReleaseUrl = string.IsNullOrWhiteSpace(releaseUrl)
+                ? DefaultLocalServerReleaseUrl
+                : releaseUrl.Trim();
+
+            string? autoUpdate = data[IniKeys.LocalPlay]?[IniKeys.AutoUpdateServer];
+            LocalServerAutoUpdate = string.IsNullOrWhiteSpace(autoUpdate) ||
+                !bool.TryParse(autoUpdate, out bool parsed) ||
+                parsed;
+
+            string? startupTimeout = data[IniKeys.LocalPlay]?[IniKeys.ServerStartupTimeoutSeconds];
+            LocalServerStartupTimeoutSeconds =
+                int.TryParse(startupTimeout, out int timeoutSeconds)
+                    ? Math.Clamp(timeoutSeconds, 30, 300)
+                    : 90;
         }
 
         private Server? CreateServerFromSection(string sectionName, IniData data)

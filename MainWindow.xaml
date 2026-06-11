@@ -139,7 +139,7 @@
 
                     <Button x:Name="btnChangeAction" 
                             Content="Register" 
-                            Margin="10,259,10,0" TabIndex="5" 
+                            Margin="10,259,140,0" TabIndex="5" 
                             Click="btnChangeAction_Click" 
                             FontFamily="/Fonts/#EB Garamond" 
                             BorderThickness="0,0,0,0" 
@@ -199,6 +199,180 @@
                             </Style>
                         </Button.Style>
                     </Button>
+
+                    <Button x:Name="btnModeToggle" 
+                            Content="Local Play" 
+                            Margin="140,259,10,0" TabIndex="6" 
+                            Click="btnModeToggle_Click" 
+                            FontFamily="/Fonts/#EB Garamond" 
+                            BorderThickness="0,0,0,0" 
+                            Foreground="#FFB1B1B1"
+                            FontSize="15"
+                            Height="24" 
+                            VerticalAlignment="Top">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="border"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="2"
+                                                    BorderThickness="0"
+                                                    BorderBrush="Gray">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="border" Property="Background">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#FF5A5A5A"/>
+                                                                <GradientStop Color="#FF3F3F3F" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter TargetName="border" Property="Background">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#FF2A2A2A"/>
+                                                                <GradientStop Color="#FF1A1A1A" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF494949"/>
+                                            <GradientStop Color="#FF1A1A1A" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Label x:Name="labelLocalPlay"
+                           Content="Local Play"
+                           Margin="6,38,14,0"
+                           Height="42"
+                           VerticalAlignment="Top"
+                           FontSize="28"
+                           Foreground="#D3D3D3"
+                           Visibility="Hidden"/>
+
+                    <StackPanel x:Name="localServerAddressPanel"
+                                Orientation="Horizontal"
+                                Margin="42,112,10,0"
+                                Height="24"
+                                VerticalAlignment="Top"
+                                Visibility="Hidden">
+                        <TextBlock x:Name="textLocalServerAddress"
+                                   Text="localhost"
+                                   VerticalAlignment="Center"
+                                   FontFamily="/Fonts/#EB Garamond"
+                                   FontSize="15"
+                                   Foreground="#D3D3D3"/>
+
+                        <Button x:Name="btnCopyLocalServer"
+                            Margin="10,0,0,0"
+                            Width="20"
+                            Height="22"
+                            VerticalAlignment="Center"
+                            BorderThickness="0"
+                            Padding="0"
+                            Foreground="#FFD87A"
+                            ToolTip="Copy local network address"
+                            Cursor="Hand"
+                            Click="btnCopyLocalServer_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="border" Background="Transparent">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <Path Width="14"
+                              Height="14"
+                              Stretch="Uniform"
+                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                              Data="M8 2a2 2 0 0 0-2 2v1H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8Zm6 11V7a2 2 0 0 0-2-2H8V4h7v9h-1ZM5 7h7v9H5V7Z"/>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel x:Name="localServerStatusPanel"
+                                Orientation="Horizontal"
+                                Margin="42,86,10,0"
+                                Height="18"
+                                VerticalAlignment="Top"
+                                Visibility="Hidden">
+                        <Ellipse x:Name="localServerStatusDot"
+                                 Width="6"
+                                 Height="6"
+                                 Margin="0,6,6,0"
+                                 VerticalAlignment="Top"
+                                 Fill="#8FE388"/>
+                        <TextBlock x:Name="textLocalServerStatus"
+                                   Text=""
+                                   VerticalAlignment="Center"
+                                   FontFamily="/Fonts/#EB Garamond"
+                                   FontSize="13"
+                                   Foreground="#D3D3D3"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <Button x:Name="btnDownloadLocalServer"
+                                Width="20"
+                                Height="18"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                BorderThickness="0"
+                                Padding="0"
+                                Foreground="#FFD87A"
+                                ToolTip="Download or update local server"
+                                Cursor="Hand"
+                                Visibility="Collapsed"
+                                Click="btnDownloadLocalServer_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="Transparent">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                            <Path Width="14"
+                                  Height="14"
+                                  Stretch="Uniform"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                  Data="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1ZM5 18a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z"/>
+                        </Button>
+                    </StackPanel>
 
                     <Label x:Name="labelAccount" 
                            Content="Account Name" 
@@ -384,6 +558,7 @@
                     Margin="0,4,0,4" Style="{DynamicResource HeadlineTextBlock}"/>
 
                 <ScrollViewer 
+                    x:Name="newsScrollViewer"
                     Grid.Row="1"
                     Grid.RowSpan="2"
                     VerticalScrollBarVisibility="Auto"
@@ -405,6 +580,42 @@
                 Source="/Images/launcher/logo.png" 
                 Margin="20,16,10,0" 
                 IsHitTestVisible="False" Grid.RowSpan="2"/>
+
+            <Border x:Name="localServerProgressOverlay"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Height="44"
+                    Margin="34,0,36,20"
+                    VerticalAlignment="Bottom"
+                    Background="#E5191A19"
+                    CornerRadius="4"
+                    Visibility="Hidden">
+                <Grid Margin="14,7,14,8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="6"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="textLocalServerInstallProgress"
+                               Text=""
+                               Grid.Row="0"
+                               FontFamily="/Fonts/#EB Garamond"
+                               FontSize="14"
+                               Foreground="#D3D3D3"
+                               TextTrimming="CharacterEllipsis"/>
+
+                    <ProgressBar x:Name="localServerProgressBar"
+                                 Grid.Row="1"
+                                 Height="5"
+                                 Margin="0,6,0,0"
+                                 VerticalAlignment="Top"
+                                 Minimum="0"
+                                 Maximum="100"
+                                 Foreground="#FFD34A"
+                                 Background="#252525"
+                                 BorderThickness="0"/>
+                </Grid>
+            </Border>
 
             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
@@ -448,7 +659,7 @@
 
                 <Button x:Name="btnModinstall" Grid.Row="0"
             Grid.Column="1"
-            ToolTip="Mod Install"
+            ToolTip="Install mods"
             Margin="581,10,94,11"
             Background="Transparent"
             BorderThickness="0" Click="btnInstallMod_Click" Cursor="Hand">
@@ -499,7 +710,7 @@
 
                 <Button x:Name="btnTranslation" Grid.Row="0"
             Grid.Column="1"
-            ToolTip="Install Translation"
+            ToolTip="Translation patch"
             Margin="547,10,128,11"
             Background="Transparent"
             BorderThickness="0" Click="btnInstallTranslation_Click">
